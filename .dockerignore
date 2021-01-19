@@ -1,0 +1,25 @@
+Dockerfile
+docker-compose.yml
+node_modules/
+.next/
+src/.next/
+
+.DS_Store
+.git/
+.gitignore
+README.md
+
+env.*
+/devops/*
+*.csv
+/tmp/*
+
+.prettierignore
+.prettierrc
+.idea
+
+# Dolphin linux
+.directory
+
+# Design & documentation files
+doc
