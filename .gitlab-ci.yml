@@ -1,0 +1,25 @@
+image: ubuntu:20.04
+
+stages:
+  - development
+
+development-aws:
+  stage: development
+  script:
+    - cat $ENV_DEV > .env
+    - chmod 400 $DEV_PEM
+    - ssh -i $DEV_PEM -o "StrictHostKeyChecking no" ubuntu@$IP_DEV "rm -rf $WORKDIR_DEV/* && exit"
+    - scp -i $DEV_PEM -r ./.env ubuntu@$IP_DEV:~/$WORKDIR_DEV
+    - scp -i $DEV_PEM -r ./* ubuntu@$IP_DEV:~/$WORKDIR_DEV
+    - ssh -i $DEV_PEM ubuntu@$IP_DEV "
+      cd $WORKDIR_DEV
+      && docker-compose up --force-recreate --build -d
+      && docker container prune -f
+      && docker image prune -a -f
+      && exit"
+  environment:
+    name: development
+    url: https://dev.valevaledor.com
+  only:
+    - development
+    - ci-cd
