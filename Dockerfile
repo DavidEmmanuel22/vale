@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM node:lts
   WORKDIR /home/ubuntu/valevaledor
   COPY . .  
   RUN npm install
