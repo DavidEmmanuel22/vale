@@ -7,6 +7,8 @@ development-aws:
   stage: development
   script:
     - cat $ENV_DEV > .env
+    - ls -lha
+    - ls -lha $DEV_PEM
     - chmod 400 $DEV_PEM
     - ssh -i $DEV_PEM -o "StrictHostKeyChecking no" ubuntu@$IP_DEV "rm -rf $WORKDIR_DEV/* && exit"
     - scp -i $DEV_PEM -r ./.env ubuntu@$IP_DEV:~/$WORKDIR_DEV
