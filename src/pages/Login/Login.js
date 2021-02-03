@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
-import decorationimg from 'image/vale-ribbn.png'
-import logologin from 'image/valedor-logo.png'
+import decorationimg from 'images/vale-ribbn.png'
+import logologin from 'images/valedor-logo.png'
 import './Login.css'
 import StylesTheme from './StylesTheme'
 
