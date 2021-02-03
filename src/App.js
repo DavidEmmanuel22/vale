@@ -4,7 +4,7 @@ import React from 'react'
 function App() {
   return (
     <div >
-     Hi!
+     <h1>Hi!</h1>
     </div>
   )
 }
