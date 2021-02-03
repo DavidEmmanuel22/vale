@@ -1,1 +1,12 @@
+* {
+  background-repeat: no-repeat;
+  padding: 0;
+  margin: 0;
+}
 
+body {
+  background-color: #ffffff;
+  font-family: 'Avenir Next W01', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #1c242b;
+}
