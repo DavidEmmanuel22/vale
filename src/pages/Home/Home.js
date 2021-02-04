@@ -5,7 +5,7 @@ import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
 import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
-import Dialog from 'components/Dialog/PopUp'
+import PopUp from 'components/Dialog/PopUp'
 import Login from 'pages/Login/Login'
 import StylesTheme from './StylesTheme'
 // import logo from 'image/logo-appbar.png'
@@ -68,9 +68,9 @@ const Home = (props) => {
       {selectedTab === 2 && <Business />}
       {selectedTab === 3 && <ContactUs />}
       <div>
-        <Dialog openDialog={openDialog} setOpenDialog={setOpenDialog}>
+        <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
           <Login />
-        </Dialog>
+        </PopUp>
       </div>
     </div>
   )
