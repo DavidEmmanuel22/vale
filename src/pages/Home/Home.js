@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Tabs, Tab, AppBar, Button } from '@material-ui/core'
-import ContactUs from 'pages/ContactUs/ContactUs'
+import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
 import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
