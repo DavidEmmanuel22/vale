@@ -4,7 +4,7 @@ import ActionButton from 'components/ActionButton/ActionButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Styles from './Styles'
 
-const DialogPopup = (props) => {
+const Popup = (props) => {
   const classes = Styles()
   const { children, openDialog, setOpenDialog } = props
 
@@ -28,4 +28,4 @@ const DialogPopup = (props) => {
   )
 }
 
-export default DialogPopup
+export default Popup

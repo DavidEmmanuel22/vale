@@ -40,9 +40,9 @@ const Login = () => {
     <ThemeProvider theme={StylesTheme}>
       <div className="content">
         <div className="foto-tom">
-          <img className="decoration" src={decorationimg}></img>
+          <img className="decoration" src={decorationimg} alt="Hola"></img>
           <div className="logo-content">
-            <img className="logo-login" src={logologin}></img>
+            <img className="logo-login" src={logologin} alt="Hola"></img>
           </div>
         </div>
         <div>
