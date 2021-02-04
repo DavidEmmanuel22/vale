@@ -18,17 +18,17 @@ const Home = (props) => {
   const { page } = params
 
   const tabNameToIndex = {
-    0: 'about',
+    0: 'acerca',
     1: 'valedor',
-    2: 'business',
-    3: 'contact'
+    2: 'negocio',
+    3: 'contacto'
   }
 
   const indexToTabName = {
-    about: 0,
+    acerca: 0,
     valedor: 1,
-    business: 2,
-    contact: 3
+    negocio: 2,
+    contacto: 3
   }
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
