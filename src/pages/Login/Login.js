@@ -91,7 +91,7 @@ const Login = () => {
               </Button>
             </div>
             <div className="forgot-password">
-              <a>¿Olvidaste tu contraseña?</a>
+              <a href="">¿Olvidaste tu contraseña?</a>
             </div>
           </form>
         </div>
