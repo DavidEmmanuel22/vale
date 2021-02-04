@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Tabs, Tab, AppBar, Button } from '@material-ui/core'
-import Login from 'pages/Login/login'
+import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
 import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
