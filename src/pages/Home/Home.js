@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { Tabs, Tab, AppBar, Button } from '@material-ui/core'
+import Login from 'pages/Login/login'
+import PopUp from 'components/Dialog/PopUp'
 import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
 import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
 import StylesTheme from './StylesTheme'
-// import logo from 'image/logo-appbar.png'
+// import logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 
 const Home = (props) => {
@@ -30,7 +32,7 @@ const Home = (props) => {
   }
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
-  // const [openDialog, setOpenDialog] = useState(false)
+  const [openDialog, setOpenDialog] = useState(false)
 
   const handleChange = (event, newValue) => {
     history.push(`/${tabNameToIndex[newValue]}`)
@@ -52,7 +54,12 @@ const Home = (props) => {
             <Tab value={3} label="Contáctanos" />
           </Tabs>
         </AppBar>
-        <Button className={classes.ButtonAppBar} color="inherit" size="small">
+        <Button
+          className={classes.ButtonAppBar}
+          color="inherit"
+          size="small"
+          onClick={() => setOpenDialog(true)}
+        >
           Inicia Sesión
         </Button>
       </ThemeProvider>
@@ -60,7 +67,11 @@ const Home = (props) => {
       {selectedTab === 1 && <Valedor />}
       {selectedTab === 2 && <Business />}
       {selectedTab === 3 && <ContactUs />}
-      <div></div>
+      <div>
+        <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
+          <Login />
+        </PopUp>
+      </div>
     </div>
   )
 }
