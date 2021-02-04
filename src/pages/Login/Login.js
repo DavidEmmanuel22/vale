@@ -91,7 +91,7 @@ const Login = () => {
               </Button>
             </div>
             <div className="forgot-password">
-              <a href="">¿Olvidaste tu contraseña?</a>
+              <a href="https://reactjs.org/">¿Olvidaste tu contraseña?</a>
             </div>
           </form>
         </div>
