@@ -28,10 +28,13 @@ const StylesTheme = createMuiTheme({
       root: {
         fontWeight: '600',
         textTransform: 'capitalize',
-        borderRadius: '14px'
+        borderRadius: '14px',
+        color: 'white'
+      },
+      '&:hover': {
+        backgroundColor: '#efc64f'
       },
       colorInherit: {
-        color: 'white',
         backgroundColor: '#efc64f'
       },
       textSizeSmall: {
