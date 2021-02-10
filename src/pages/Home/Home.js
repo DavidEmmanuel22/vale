@@ -9,6 +9,9 @@ import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
 import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
+import Christmas from 'images/christmas.png'
+import Map from 'images/location-map.png'
+import Hero from 'images/valedor-hero.jpg'
 import Styles from './Styles'
 
 const Home = (props) => {
@@ -64,6 +67,15 @@ const Home = (props) => {
         >
           Inicia Sesión
         </Button>
+        <div>
+          <img src={Hero} alt="Hero"></img>
+        </div>
+        <div>
+          <img src={Map} alt="Map"></img>
+        </div>
+        <div>
+          <img src={Christmas} alt="logo"></img>
+        </div>
       </ThemeProvider>
       {selectedTab === 0 && <AboutUs />}
       {selectedTab === 1 && <Valedor />}
