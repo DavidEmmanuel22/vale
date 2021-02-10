@@ -42,6 +42,9 @@ const Styles = makeStyles(() => ({
   },
   ImageHero: {
     marginTop: '7px'
+  },
+  ContentMap: {
+    display: 'flex'
   }
 }))
 
