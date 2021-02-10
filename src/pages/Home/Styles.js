@@ -21,6 +21,14 @@ const Styles = makeStyles(() => ({
     left: '92%',
     top: '20px',
     backgroundColor: '#efc64f'
+  },
+  ContentLogo: {
+    width: '16%',
+    position: 'absolute',
+    margin: '0px 30px 0px'
+  },
+  ImgLogo: {
+    width: '278px'
   }
 }))
 

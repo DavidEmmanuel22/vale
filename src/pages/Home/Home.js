@@ -42,8 +42,8 @@ const Home = (props) => {
   return (
     <div>
       <ThemeProvider theme={StylesTheme}>
-        <div>
-          <img src={Logo} alt="logo"></img>
+        <div className={classes.ContentLogo}>
+          <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
         </div>
         <AppBar position="static" color="transparent">
           <Tabs
