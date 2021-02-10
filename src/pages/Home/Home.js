@@ -67,15 +67,6 @@ const Home = (props) => {
         >
           Inicia Sesión
         </Button>
-        <div>
-          <img src={Hero} alt="Hero"></img>
-        </div>
-        <div>
-          <img src={Map} alt="Map"></img>
-        </div>
-        <div>
-          <img src={Christmas} alt="logo"></img>
-        </div>
       </ThemeProvider>
       {selectedTab === 0 && <AboutUs />}
       {selectedTab === 1 && <Valedor />}
@@ -85,6 +76,15 @@ const Home = (props) => {
         <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
           <Login />
         </PopUp>
+      </div>
+      <div>
+        <img src={Hero} alt="Hero"></img>
+      </div>
+      <div>
+        <img src={Map} alt="Map"></img>
+      </div>
+      <div>
+        <img src={Christmas} alt="logo"></img>
       </div>
     </div>
   )
