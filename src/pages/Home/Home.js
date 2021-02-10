@@ -77,14 +77,20 @@ const Home = (props) => {
           <Login />
         </PopUp>
       </div>
-      <div>
-        <img src={Hero} alt="Hero"></img>
+      <div className={classes.ContentHero}>
+        <img className={classes.ImageHero} src={Hero} alt="Hero"></img>
       </div>
       <div>
-        <img src={Map} alt="Map"></img>
+        <div>
+          <img src={Christmas} alt="logo"></img>
+        </div>
+        <div></div>
       </div>
       <div>
-        <img src={Christmas} alt="logo"></img>
+        <div>
+          <img src={Map} alt="Map"></img>
+        </div>
+        <div></div>
       </div>
     </div>
   )

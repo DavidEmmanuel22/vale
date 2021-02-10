@@ -35,6 +35,13 @@ const Styles = makeStyles(() => ({
   },
   ImgLogo: {
     width: '278px'
+  },
+  ContentHero: {
+    display: 'flex',
+    justifyContent: 'flex-end'
+  },
+  ImageHero: {
+    marginTop: '7px'
   }
 }))
 
