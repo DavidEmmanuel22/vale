@@ -32,10 +32,11 @@ const StylesTheme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        BoxShadow: '-1px 9px 13px -3px rgba(8,8,8,8)',
+        BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8)',
         '&:hover': {
           backgroundColor: '#efc64f'
-        }
+        },
+        transition: 'none'
       }
     }
   }
