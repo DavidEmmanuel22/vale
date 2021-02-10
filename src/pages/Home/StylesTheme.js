@@ -28,8 +28,7 @@ const StylesTheme = createMuiTheme({
     MuiButton: {
       root: {
         fontWeight: '600',
-        textTransform: 'capitalize',
-        borderRadius: '14px'
+        textTransform: 'capitalize'
       },
       textSizeSmall: {
         padding: '5px 8px'

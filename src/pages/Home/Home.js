@@ -8,7 +8,7 @@ import AboutUs from 'pages/AboutUs/AboutUs'
 import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
 import StylesTheme from './StylesTheme'
-// import logo from 'images/logo-appbar.png'
+import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 
 const Home = (props) => {
@@ -42,6 +42,9 @@ const Home = (props) => {
   return (
     <div>
       <ThemeProvider theme={StylesTheme}>
+        <div>
+          <img src={Logo} alt="logo"></img>
+        </div>
         <AppBar position="static" color="transparent">
           <Tabs
             value={selectedTab}

@@ -19,7 +19,8 @@ const Styles = makeStyles(() => ({
   ButtonAppBar: {
     position: 'absolute',
     left: '92%',
-    top: '20px'
+    top: '20px',
+    backgroundColor: '#efc64f'
   }
 }))
 
