@@ -31,16 +31,8 @@ const StylesTheme = createMuiTheme({
         textTransform: 'capitalize',
         borderRadius: '14px'
       },
-      colorInherit: {
-        backgroundColor: '#efc64f'
-      },
       textSizeSmall: {
         padding: '5px 8px'
-      }
-    },
-    MuiButtonBase: {
-      root: {
-        color: '#ffff'
       }
     },
     MuiAppBar: {
