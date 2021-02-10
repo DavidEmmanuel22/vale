@@ -27,9 +27,14 @@ const styles = makeStyles(() => ({
     margin: '35px 0px 0px',
     height: '40px'
   },
+  '&:hover': {
+    border: '1px solid #2d6a4f',
+    backgroundColor: '#2d6a4f'
+  },
   MuiButtonoutlinedPrimary: {
-    color: '#2d6a4f',
-    border: '1px solid #2d6a4f'
+    color: '#fff',
+    border: '1px solid #2d6a4f',
+    backgroundColor: '#2d6a4f'
   }
 }))
 
