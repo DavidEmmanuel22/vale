@@ -56,7 +56,7 @@ const Home = (props) => {
         </AppBar>
         <Button
           className={classes.ButtonAppBar}
-          color="inherit"
+          color="secondary"
           size="small"
           onClick={() => setOpenDialog(true)}
         >

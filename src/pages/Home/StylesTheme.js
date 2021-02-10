@@ -28,17 +28,18 @@ const StylesTheme = createMuiTheme({
       root: {
         fontWeight: '600',
         textTransform: 'capitalize',
-        borderRadius: '14px',
-        color: 'white'
-      },
-      '&:hover': {
-        backgroundColor: '#efc64f'
+        borderRadius: '14px'
       },
       colorInherit: {
         backgroundColor: '#efc64f'
       },
       textSizeSmall: {
         padding: '5px 8px'
+      }
+    },
+    MuiButtonBase: {
+      root: {
+        color: '#ffff'
       }
     },
     MuiAppBar: {
