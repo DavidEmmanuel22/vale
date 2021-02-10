@@ -24,8 +24,7 @@ const Styles = makeStyles(() => ({
     color: 'white',
     textTransform: 'capitalize',
     fontSize: '16px',
-    padding: '7px 10px',
-    BoxShadow: '-1px 9px 13px -3px #88888',
+    padding: '4px 10px',
     borderRadius: '20px'
   },
   ContentLogo: {

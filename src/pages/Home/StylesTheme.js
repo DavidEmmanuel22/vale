@@ -29,6 +29,14 @@ const StylesTheme = createMuiTheme({
       root: {
         height: '80px'
       }
+    },
+    MuiButton: {
+      root: {
+        BoxShadow: '-1px 9px 13px -3px rgba(8,8,8,8)',
+        '&:hover': {
+          backgroundColor: '#efc64f'
+        }
+      }
     }
   }
 })
