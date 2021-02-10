@@ -37,16 +37,6 @@ const StylesTheme = createMuiTheme({
         },
         transition: 'none'
       }
-    },
-    MuiInput: {
-      underline: {
-        '&:hover': {
-          BoderBottom: '2px solid #eaeaea'
-        },
-        '&:before': {
-          BoderBottom: '2px solid #eaeaea'
-        }
-      }
     }
   }
 })
