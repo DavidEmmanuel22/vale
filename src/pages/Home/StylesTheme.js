@@ -32,11 +32,20 @@ const StylesTheme = createMuiTheme({
     },
     MuiButton: {
       root: {
-        BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8)',
         '&:hover': {
           backgroundColor: '#efc64f'
         },
         transition: 'none'
+      }
+    },
+    MuiInput: {
+      underline: {
+        '&:hover': {
+          BoderBottom: '2px solid #eaeaea'
+        },
+        '&:before': {
+          BoderBottom: '2px solid #eaeaea'
+        }
       }
     }
   }

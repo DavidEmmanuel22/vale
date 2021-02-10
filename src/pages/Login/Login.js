@@ -40,9 +40,13 @@ const Login = () => {
     <ThemeProvider theme={StylesTheme}>
       <div className="content">
         <div className="foto-tom">
-          <img className="decoration" src={decorationimg} alt="Hola"></img>
+          <img
+            className="decoration"
+            src={decorationimg}
+            alt="Logo-Login"
+          ></img>
           <div className="logo-content">
-            <img className="logo-login" src={logologin} alt="Hola"></img>
+            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
           </div>
         </div>
         <div>
@@ -66,7 +70,7 @@ const Login = () => {
             <TextField
               className={classes.widthnew}
               id="input-with-icon-password"
-              placeholder="Password"
+              placeholder="Contraseña"
               type="password"
               autoComplete="current-password"
               InputProps={{
