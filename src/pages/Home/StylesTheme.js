@@ -25,15 +25,6 @@ const StylesTheme = createMuiTheme({
         color: '#2d6a4f'
       }
     },
-    MuiButton: {
-      root: {
-        fontWeight: '600',
-        textTransform: 'capitalize'
-      },
-      textSizeSmall: {
-        padding: '5px 8px'
-      }
-    },
     MuiAppBar: {
       root: {
         height: '80px'
