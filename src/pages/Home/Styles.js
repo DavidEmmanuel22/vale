@@ -18,18 +18,19 @@ const Styles = makeStyles(() => ({
   },
   ButtonAppBar: {
     position: 'absolute',
-    left: '90%',
+    left: '88%',
     top: '20px',
     backgroundColor: '#efc64f',
     color: 'white',
     textTransform: 'capitalize',
     fontSize: '16px',
-    padding: '7px 10px'
+    padding: '7px 10px',
+    BoxShadow: '-1px 9px 13px -3px #888888'
   },
   ContentLogo: {
     width: '16%',
     position: 'absolute',
-    margin: '0px 30px 0px'
+    margin: '0% 6% 0%'
   },
   ImgLogo: {
     width: '278px'

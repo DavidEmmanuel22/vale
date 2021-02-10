@@ -6,7 +6,7 @@ const StylesTheme = createMuiTheme({
       flexContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        margin: '3px 10%'
+        margin: '3px 13%'
       },
       indicator: {
         backgroundColor: 'transparent'
