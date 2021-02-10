@@ -17,8 +17,9 @@ const StylesTheme = createMuiTheme({
     },
     MuiTab: {
       root: {
-        fontWeight: '600',
-        textTransform: 'capitalize'
+        fontWeight: '500',
+        textTransform: 'capitalize',
+        fontSize: '18px'
       },
       textColorInherit: {
         color: '#2d6a4f'
