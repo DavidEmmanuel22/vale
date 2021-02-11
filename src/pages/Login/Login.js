@@ -18,7 +18,7 @@ const styles = makeStyles(() => ({
     width: 300,
     display: 'flex',
     'flex-direction': 'column',
-    marginTop: 20,
+    marginTop: 30,
     margin: 'auto'
   },
   widthbutton: {
@@ -53,7 +53,7 @@ const Login = () => {
         <div>
           <form className="content-form">
             <div className="bienvenido-content">
-              <h1 className="inicia-sesion">Inicia Sesión</h1>
+              <h1 className="inicia-sesion"></h1>
             </div>
             <TextField
               className={classes.widthnew}
@@ -87,9 +87,8 @@ const Login = () => {
             />
             <div className="button-login">
               <Button
-                className={`${classes.widthbutton} ${classes.MuiButtonoutlinedPrimary}`}
+                className={`${classes.widthbutton} `}
                 type="submit"
-                variant="outlined"
                 color="primary"
               >
                 Iniciar Sesión
