@@ -13,8 +13,8 @@ const Inicio = () => {
         <img className={classes.ImageHero} src={Hero} alt="Hero"></img>
       </div>
       <div>
-        <div>
-          <img src={Green} alt="logo"></img>
+        <div className={classes.ContentGreen}>
+          <img className={classes.ImageGreen} src={Green} alt="logo"></img>
         </div>
         <div></div>
       </div>

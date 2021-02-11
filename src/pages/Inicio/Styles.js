@@ -1,12 +1,18 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const Styles = makeStyles(() => ({
+const Styles = makeStyles((theme) => ({
   ContentHero: {
     display: 'flex',
     justifyContent: 'flex-end'
   },
   ImageHero: {
     marginTop: '6px'
+  },
+  ContentGreen: {},
+  [theme.breakpoints.up('lg')]: {
+    ImageGreen: {
+      width: '100%'
+    }
   },
   ContentMap: {
     display: 'flex'

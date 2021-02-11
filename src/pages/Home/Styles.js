@@ -38,24 +38,6 @@ const Styles = makeStyles(() => ({
   },
   ImgLogo: {
     width: '278px'
-  },
-  ContentHero: {
-    display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  ImageHero: {
-    marginTop: '6px'
-  },
-  ContentMap: {
-    display: 'flex'
-  },
-  LocationMap: {
-    width: '60%',
-    position: 'absolute',
-    left: '55%'
-  },
-  ImageMap: {
-    width: '70%'
   }
 }))
 
