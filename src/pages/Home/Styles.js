@@ -20,13 +20,13 @@ const Styles = makeStyles(() => ({
     position: 'absolute',
     left: '88%',
     top: '20px',
-    BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8)',
     backgroundColor: '#efc64f',
     color: 'white',
     textTransform: 'capitalize',
     fontSize: '16px',
     padding: '4px 10px',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8)'
   },
   ContentLogo: {
     width: '16%',

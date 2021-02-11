@@ -9,7 +9,7 @@ import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
 import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
-import Christmas from 'images/christmas.png'
+import Green from 'images/valedor-green.jpg'
 import Map from 'images/location-map.png'
 import Hero from 'images/valedor-hero.jpg'
 import Styles from './Styles'
@@ -82,7 +82,7 @@ const Home = (props) => {
       </div>
       <div>
         <div>
-          <img src={Christmas} alt="logo"></img>
+          <img src={Green} alt="logo"></img>
         </div>
         <div></div>
       </div>

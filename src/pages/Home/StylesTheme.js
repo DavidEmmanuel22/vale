@@ -22,7 +22,7 @@ const StylesTheme = createMuiTheme({
         fontSize: '18px'
       },
       textColorInherit: {
-        color: '#2d6a4f'
+        color: '#007772'
       }
     },
     MuiAppBar: {
