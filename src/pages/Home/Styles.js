@@ -45,6 +45,14 @@ const Styles = makeStyles(() => ({
   },
   ContentMap: {
     display: 'flex'
+  },
+  LocationMap: {
+    width: '60%',
+    position: 'absolute',
+    left: '55%'
+  },
+  ImageMap: {
+    width: '70%'
   }
 }))
 

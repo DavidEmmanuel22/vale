@@ -88,8 +88,8 @@ const Home = (props) => {
       </div>
       <div className={classes.ContentMap}>
         <div></div>
-        <div>
-          <img src={Map} alt="Map"></img>
+        <div className={classes.LocationMap}>
+          <img className={classes.ImageMap} src={Map} alt="Map"></img>
         </div>
       </div>
     </div>
