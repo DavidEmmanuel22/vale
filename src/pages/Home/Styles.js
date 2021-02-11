@@ -30,7 +30,7 @@ const Styles = makeStyles(() => ({
   ContentLogo: {
     width: '16%',
     position: 'absolute',
-    margin: '0% 6% 0%'
+    margin: '0% 3% 0%'
   },
   ImgLogo: {
     width: '278px'
