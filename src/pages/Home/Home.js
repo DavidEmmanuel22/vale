@@ -3,15 +3,13 @@ import { ThemeProvider } from '@material-ui/core/styles'
 import { Tabs, Tab, AppBar, Button } from '@material-ui/core'
 import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
+import Inicio from 'pages/Inicio/Inicio'
 import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
 import Business from 'pages/Business/Business'
 import Valedor from 'pages/Valedor/Valedor'
 import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
-import Green from 'images/valedor-green.png'
-import Map from 'images/location-map.png'
-import Hero from 'images/valedor-hero.jpg'
 import Styles from './Styles'
 
 const Home = (props) => {
@@ -21,17 +19,19 @@ const Home = (props) => {
   const { page } = params
 
   const tabNameToIndex = {
-    0: 'about',
-    1: 'valedor',
-    2: 'negocio',
-    3: 'contáctanos'
+    0: 'inicio',
+    1: 'about',
+    2: 'valedor',
+    3: 'negocio',
+    4: 'contáctanos'
   }
 
   const indexToTabName = {
-    about: 0,
-    valedor: 1,
-    negocio: 2,
-    contáctanos: 3
+    inicio: 0,
+    about: 1,
+    valedor: 2,
+    negocio: 3,
+    contáctanos: 4
   }
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
@@ -54,10 +54,11 @@ const Home = (props) => {
             onChange={handleChange}
             indicatorColor="primary"
           >
-            <Tab value={0} label="Acerca de" />
-            <Tab value={1} label="Valedor" />
-            <Tab value={2} label="Negocios" />
-            <Tab value={3} label="Contáctanos" />
+            <Tab value={0} label="Inicio" />
+            <Tab value={1} label="Acerca de" />
+            <Tab value={2} label="Valedor" />
+            <Tab value={3} label="Negocios" />
+            <Tab value={4} label="Contáctanos" />
           </Tabs>
         </AppBar>
         <Button
@@ -68,29 +69,15 @@ const Home = (props) => {
           Inicia Sesión
         </Button>
       </ThemeProvider>
-      {selectedTab === 0 && <AboutUs />}
-      {selectedTab === 1 && <Valedor />}
-      {selectedTab === 2 && <Business />}
-      {selectedTab === 3 && <ContactUs />}
+      {selectedTab === 0 && <Inicio />}
+      {selectedTab === 1 && <AboutUs />}
+      {selectedTab === 2 && <Valedor />}
+      {selectedTab === 3 && <Business />}
+      {selectedTab === 4 && <ContactUs />}
       <div>
         <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
           <Login />
         </PopUp>
-      </div>
-      <div className={classes.ContentHero}>
-        <img className={classes.ImageHero} src={Hero} alt="Hero"></img>
-      </div>
-      <div>
-        <div>
-          <img src={Green} alt="logo"></img>
-        </div>
-        <div></div>
-      </div>
-      <div className={classes.ContentMap}>
-        <div></div>
-        <div className={classes.LocationMap}>
-          <img className={classes.ImageMap} src={Map} alt="Map"></img>
-        </div>
       </div>
     </div>
   )

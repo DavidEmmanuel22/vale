@@ -40,7 +40,7 @@ const Styles = makeStyles(() => ({
     justifyContent: 'flex-end'
   },
   ImageHero: {
-    marginTop: '3px'
+    marginTop: '6px'
   },
   ContentMap: {
     display: 'flex'
