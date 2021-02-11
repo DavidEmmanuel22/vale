@@ -28,9 +28,6 @@ const styles = makeStyles(() => ({
     height: '40px',
     backgroundColor: '#007772',
     color: '#ffff'
-  },
-  '&:hover': {
-    backgroundColor: '#007772'
   }
 }))
 
@@ -52,9 +49,6 @@ const Login = () => {
         </div>
         <div>
           <form className="content-form">
-            <div className="bienvenido-content">
-              <h1 className="inicia-sesion"></h1>
-            </div>
             <TextField
               className={classes.widthnew}
               id="input-with-icon-textfield"
