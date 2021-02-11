@@ -55,7 +55,10 @@ a {
   border-bottom: 1px solid #eaeaea !important;
 }
 .MuiInput-underline:hover :not(.Mui-disabled)::before {
-  border-bottom: 1px solid #eaeaea !important;
+  border-bottom: 1px solid #007772 !important;
+}
+.MuiInput-underline:after {
+  border-bottom: 2px solid #007772 !important;
 }
 img.decoration {
   width: 358px;

@@ -35,8 +35,7 @@ const StylesTheme = createMuiTheme({
         '&:hover': {
           backgroundColor: '#efc64f'
         },
-        transition: 'none',
-        BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8)'
+        transition: 'none'
       }
     }
   }

@@ -25,7 +25,8 @@ const Styles = makeStyles(() => ({
     textTransform: 'capitalize',
     fontSize: '16px',
     padding: '4px 10px',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    BoxShadow: '-1px 3px 13px -3px rgba(8,8,8,8) !important'
   },
   ContentLogo: {
     width: '16%',
