@@ -9,4 +9,5 @@ body {
   font-family: 'Avenir Next W01', Helvetica, Arial, sans-serif;
   font-size: 14px;
   color: #1c242b;
+  overflow-x: hidden;
 }
