@@ -27,7 +27,7 @@ const StylesTheme = createMuiTheme({
     },
     MuiAppBar: {
       root: {
-        height: '80px'
+        height: '90px'
       }
     },
     MuiButton: {

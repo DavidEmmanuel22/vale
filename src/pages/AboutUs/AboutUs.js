@@ -1,10 +1,6 @@
 import React from 'react'
 
 const AboutUs = () => {
-  return (
-    <div>
-      <h1>Está es nuestra página Acerca de..</h1>
-    </div>
-  )
+  return <div></div>
 }
 export default AboutUs
