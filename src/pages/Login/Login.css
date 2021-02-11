@@ -44,7 +44,7 @@ form.content-form {
 }
 
 a {
-  color: #2d6a4f;
+  color: #007772;
   text-decoration: none;
 }
 
@@ -52,10 +52,10 @@ a {
   color: #eaeaea;
 }
 .MuiInput-underline:before {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea !important;
 }
 .MuiInput-underline:hover :not(.Mui-disabled)::before {
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea !important;
 }
 img.decoration {
   width: 358px;
