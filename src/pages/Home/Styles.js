@@ -25,7 +25,11 @@ const Styles = makeStyles(() => ({
     textTransform: 'capitalize',
     fontSize: '16px',
     padding: '4px 10px',
-    borderRadius: '20px'
+    borderRadius: '20px',
+    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
+  },
+  '&:hover': {
+    backgroundColor: '#007772'
   },
   ContentLogo: {
     width: '16%',
