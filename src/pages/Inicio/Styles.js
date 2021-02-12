@@ -29,7 +29,7 @@ const Styles = makeStyles((theme) => ({
     width: '50%',
     position: 'absolute',
     top: '26%',
-    margin: '1px 35px'
+    margin: '4px 60px'
   },
   BlackText: {
     fontWeight: 'lighter',
@@ -47,12 +47,17 @@ const Styles = makeStyles((theme) => ({
   },
   KnowMore: {
     backgroundColor: '#efc64f',
+    margin: '7% 1% 0%',
+    width: '25%',
     color: 'white',
     textTransform: 'capitalize',
     fontSize: '16px',
-    padding: '4px 10px',
+    padding: '8px 16px',
     borderRadius: '20px',
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
+  },
+  '&:hover': {
+    backgroundColor: '#007772'
   }
 }))
 
