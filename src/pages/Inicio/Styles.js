@@ -24,7 +24,11 @@ const Styles = makeStyles((theme) => ({
   },
   ImageMap: {
     width: '70%'
-  }
+  },
+  ContentJointo: {},
+  BlackText: {},
+  JoinText: {},
+  ValedorText: {}
 }))
 
 export default Styles
