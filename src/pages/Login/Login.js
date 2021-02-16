@@ -17,7 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState()
   const [error, setError] = useState()
 
-  const { setUserData } = useContext(UserContext)
+  const setUserData = useContext(UserContext)
   const history = useHistory()
 
   const Submit = async (event) => {
