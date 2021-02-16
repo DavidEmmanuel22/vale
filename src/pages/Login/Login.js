@@ -24,7 +24,10 @@ const Login = () => {
     event.preventDefault()
     try {
       const loginUser = { email, password }
-      const loginRes = await Axios.post('http://3.17.238.227/login', loginUser)
+      const loginRes = await Axios.post(
+        'https://devbackend.valevaledor.com/login',
+        loginUser
+      )
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user
