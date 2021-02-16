@@ -27,7 +27,7 @@ const Inicio = () => {
         <div className={classes.ContentGreen}>
           <img className={classes.ImageGreen} src={Green} alt="logo"></img>
         </div>
-        <div>
+        <div className={classes.ContentAdvantage}>
           <h4>Descubre las ventajas de ser un valedor</h4>
           <h1>Quieres ser un Valedor</h1>
           <Typography>
@@ -42,7 +42,7 @@ const Inicio = () => {
         </div>
       </div>
       <div className={classes.ContentMap}>
-        <div>
+        <div className={classes.ContentMapText}>
           <h4>Afiliate a Vale Valedor</h4>
           <h1>Quieres que nuestros Vales se usen en tu negocio?</h1>
           <Typography>

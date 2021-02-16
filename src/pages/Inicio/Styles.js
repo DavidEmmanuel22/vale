@@ -14,6 +14,18 @@ const Styles = makeStyles((theme) => ({
       width: '100%'
     }
   },
+  ContentAdvantage: {
+    width: '50%',
+    position: 'absolute',
+    top: '100%',
+    left: '84%'
+  },
+  ContentMapText: {
+    width: '50%',
+    position: 'absolute',
+    top: '151%',
+    left: '7%'
+  },
   ContentMap: {
     display: 'flex'
   },
