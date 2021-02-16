@@ -25,7 +25,7 @@ const Login = () => {
     try {
       const loginUser = { email, password }
       const loginRes = await Axios.post(
-        'https://devbackend.valevaledor.com/login',
+        'Access-Control-Allow-Origin: https://devbackend.valevaledor.com/login',
         loginUser
       )
       setUserData({
