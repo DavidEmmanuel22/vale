@@ -35,7 +35,7 @@ const Login = () => {
       localStorage.setItem('auth-token', loginRes.data.token)
       history.push('/dashboard')
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message)
+      error.response.data.msg && setError(error.response.data.msg)
     }
   }
 
