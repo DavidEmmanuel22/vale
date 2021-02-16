@@ -7,8 +7,8 @@ import AppRouter from 'components/AppRoute/AppRouter'
 
 const Routes = () => {
   const [userData, setUserData] = useState({
-    token: undefined,
-    user: undefined
+    token: '',
+    user: ''
   })
 
   return (
