@@ -1,41 +1,46 @@
-import React from 'react'
-import {
-  TextField,
-  Button,
-  makeStyles,
-  InputAdornment,
-  ThemeProvider
-} from '@material-ui/core'
+import React, { useContext, useState } from 'react'
+import Axios from 'axios'
+import { useHistory } from 'react-router-dom'
+import { TextField, Button, InputAdornment } from '@material-ui/core'
+import UserContext from 'hooks/UserContext'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import ActionAlerts from 'components/Alert/Alert'
 import LockIcon from '@material-ui/icons/Lock'
 import decorationimg from 'images/vale-ribbn.png'
 import logologin from 'images/valedor-logo.png'
 import './Login.css'
-import StylesTheme from './StylesTheme'
-
-const styles = makeStyles(() => ({
-  widthnew: {
-    width: 300,
-    display: 'flex',
-    'flex-direction': 'column',
-    marginTop: 30,
-    margin: 'auto'
-  },
-  widthbutton: {
-    width: '300px',
-    borderRadius: 10,
-    margin: '35px 0px 0px',
-    height: '40px',
-    backgroundColor: '#007772',
-    color: '#ffff'
-  }
-}))
+import Styles from './Styles'
 
 const Login = () => {
-  const classes = styles()
+  const classes = Styles()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [error, setError] = useState
+
+  const { setUserData } = useContext(UserContext)
+  const history = useHistory()
+
+  const Submit = async (event) => {
+    event.preventDefault()
+    try {
+      const loginUser = { email, password }
+      const loginRes = await Axios.post('3.17.238.227/login', loginUser)
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user
+      })
+      localStorage.setItem('auth-token', loginRes.data.token)
+      history.push('/dashboard')
+    } catch (err) {
+      err.response.data.msg && setError(err.response.data.msg)
+    }
+  }
 
   return (
-    <ThemeProvider theme={StylesTheme}>
+    <div>
+      {error && (
+        <ActionAlerts message={error} clearError={() => setError(undefined)} />
+      )}
       <div className="content">
         <div className="foto-tom">
           <img
@@ -48,12 +53,13 @@ const Login = () => {
           </div>
         </div>
         <div>
-          <form className="content-form">
+          <form className="content-form" onSubmit={Submit}>
             <TextField
               className={classes.widthnew}
               id="input-with-icon-textfield"
               placeholder="Correo"
               type="email"
+              onChange={(event) => setEmail(event.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -68,6 +74,7 @@ const Login = () => {
               placeholder="Contraseña"
               type="password"
               autoComplete="current-password"
+              onChange={(event) => setPassword(event.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment
@@ -94,7 +101,7 @@ const Login = () => {
           </form>
         </div>
       </div>
-    </ThemeProvider>
+    </div>
   )
 }
 
