@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
+import Drawer from 'components/Drawer/Drawer'
 import PopUp from 'components/Dialog/PopUp'
 import Inicio from 'pages/Inicio/Inicio'
 import ContactUs from 'pages/ContactUs/Contact'
@@ -45,6 +46,11 @@ const Home = (props) => {
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
   const [openDialog, setOpenDialog] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  const handleMobileOpen = () => setIsMobile(() => true)
+
+  const handleMobileClose = () => setIsMobile(() => false)
 
   const handleChange = (event, newValue) => {
     history.push(`/${tabNameToIndex[newValue]}`)
@@ -59,7 +65,11 @@ const Home = (props) => {
             <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
           </div>
         </Hidden>
-        <AppBar position="static" color="transparent">
+        <AppBar
+          position="static"
+          color="transparent"
+          onMobileOpen={handleMobileOpen}
+        >
           <Hidden lgUp>
             <IconButton color="inherit" onClick={onMobileOpen}>
               <SvgIcon fontSize="large" className={classes.SvgIconHam}>
@@ -67,6 +77,7 @@ const Home = (props) => {
               </SvgIcon>
             </IconButton>
           </Hidden>
+          <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
           <Hidden smDown>
             <Tabs
               value={selectedTab}
