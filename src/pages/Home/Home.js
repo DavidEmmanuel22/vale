@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
-import Drawer from 'components/Drawer/Drawer'
 import PopUp from 'components/Dialog/PopUp'
 import Inicio from 'pages/Inicio/Inicio'
 import ContactUs from 'pages/ContactUs/Contact'
@@ -24,7 +23,7 @@ import Styles from './Styles'
 
 const Home = (props) => {
   const classes = Styles()
-  const { match, history, MobileOpen } = props
+  const { match, history } = props
   const { params } = match
   const { page } = params
 
@@ -46,11 +45,11 @@ const Home = (props) => {
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
   const [openDialog, setOpenDialog] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  // const [isMobile, setIsMobile] = useState(false)
 
-  const handleMobileOpen = () => setIsMobile(() => true)
+  // const handleMobileOpen = () => setIsMobile(() => true)
 
-  const handleMobileClose = () => setIsMobile(() => false)
+  // const handleMobileClose = () => setIsMobile(() => false)
 
   const handleChange = (event, newValue) => {
     history.push(`/${tabNameToIndex[newValue]}`)
@@ -68,10 +67,10 @@ const Home = (props) => {
         <AppBar
           position="static"
           color="transparent"
-          onMobileOpen={handleMobileOpen}
+          // onMobileOpen={handleMobileOpen}
         >
           <Hidden lgUp>
-            <IconButton color="inherit" onClick={MobileOpen}>
+            <IconButton color="inherit">
               <SvgIcon fontSize="large" className={classes.SvgIconHam}>
                 <Menu />
               </SvgIcon>
@@ -100,7 +99,6 @@ const Home = (props) => {
             Inicia Sesión
           </Button>
         </Hidden>
-        <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
       </ThemeProvider>
       {selectedTab === 0 && <Inicio />}
       {selectedTab === 1 && <AboutUs />}
