@@ -20,7 +20,7 @@ const Styles = makeStyles((theme) => ({
     top: '236%',
     left: '52%'
   },
-  [theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.down('sm')]: {
     ContentAdvantage: {
       width: '65%',
       position: 'absolute',
