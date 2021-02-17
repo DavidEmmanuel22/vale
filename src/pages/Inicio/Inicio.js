@@ -2,7 +2,7 @@ import React from 'react'
 import Green from 'images/valedor-green.png'
 import Map from 'images/location-map.png'
 import Hero from 'images/valedor-hero.jpg'
-import { Button, Typography } from '@material-ui/core'
+// import { Button, Typography } from '@material-ui/core'
 import Styles from './Styles'
 
 const Inicio = () => {
@@ -13,48 +13,12 @@ const Inicio = () => {
       <div className={classes.ContentHero}>
         <img className={classes.ImageHero} src={Hero} alt="Hero"></img>
       </div>
-      <div className={classes.ContentJointo}>
-        <h4 className={classes.BlackText}>
-          Necesitas presupuesto para emprender tu negocio?
-        </h4>
-        <h1 className={classes.JoinText}>Únete a Vale</h1>
-        <h1 className={classes.ValedorText}>Valedor</h1>
-        <Button className={classes.KnowMore} size="small">
-          Conoce más
-        </Button>
-      </div>
       <div>
         <div className={classes.ContentGreen}>
           <img className={classes.ImageGreen} src={Green} alt="logo"></img>
         </div>
-        <div className={classes.ContentAdvantage}>
-          <h4>Descubre las ventajas de ser un valedor</h4>
-          <h1>Quieres ser un Valedor</h1>
-          <Typography>
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, leo erat
-            bibendum sed torquent lectus, sapien auctor cum diam praesent
-            malesuada. Himenaeos bibendum nec ac vivamus viverra mattis orci
-            penatibus, magna accumsan nisl augue donec porttitor nostra
-          </Typography>
-          <Button className={classes.KnowMore} size="small">
-            Conoce más
-          </Button>
-        </div>
       </div>
       <div className={classes.ContentMap}>
-        <div className={classes.ContentMapText}>
-          <h4>Afiliate a Vale Valedor</h4>
-          <h1>Quieres que nuestros Vales se usen en tu negocio?</h1>
-          <Typography>
-            Lorem ipsum dolor sit amet consectetur adipiscing elit, leo erat
-            bibendum sed torquent lectus, sapien auctor cum diam praesent
-            malesuada. Himenaeos bibendum nec ac vivamus viverra mattis orci
-            penatibus, magna accumsan nisl augue donec porttitor nostra
-          </Typography>
-          <Button className={classes.KnowMore} size="small">
-            Conoce más
-          </Button>
-        </div>
         <div className={classes.LocationMap}>
           <img className={classes.ImageMap} src={Map} alt="Map"></img>
         </div>
