@@ -16,14 +16,6 @@ const DrawerLeft = ({ openMobile, onMobileClose }) => {
           classes={{ paper: classes.mobileDrawer }}
         ></Drawer>
       </Hidden>
-      <Hidden mdDown>
-        <Drawer
-          anchor="right"
-          variant="persistent"
-          open
-          classes={{ paper: classes.desktopDrawer }}
-        ></Drawer>
-      </Hidden>
     </Fragment>
   )
 }
