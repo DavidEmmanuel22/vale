@@ -54,9 +54,11 @@ const Home = (props) => {
   return (
     <div>
       <ThemeProvider theme={StylesTheme}>
-        <div className={classes.ContentLogo}>
-          <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
-        </div>
+        <Hidden>
+          <div className={classes.ContentLogo}>
+            <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
+          </div>
+        </Hidden>
         <AppBar position="static" color="transparent">
           <Hidden lgUp>
             <IconButton color="inherit" onClick={onMobileOpen}>
@@ -79,13 +81,15 @@ const Home = (props) => {
             </Tabs>
           </Hidden>
         </AppBar>
-        <Button
-          className={classes.ButtonAppBar}
-          size="small"
-          onClick={() => setOpenDialog(true)}
-        >
-          Inicia Sesión
-        </Button>
+        <Hidden smDown>
+          <Button
+            className={classes.ButtonAppBar}
+            size="small"
+            onClick={() => setOpenDialog(true)}
+          >
+            Inicia Sesión
+          </Button>
+        </Hidden>
       </ThemeProvider>
       {selectedTab === 0 && <Inicio />}
       {selectedTab === 1 && <AboutUs />}
