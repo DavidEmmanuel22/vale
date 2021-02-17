@@ -22,9 +22,9 @@ import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 
-const Home = (props, onMobileOpen) => {
+const Home = (props) => {
   const classes = Styles()
-  const { match, history } = props
+  const { match, history, onMobileOpen } = props
   const { params } = match
   const { page } = params
 
@@ -91,9 +91,6 @@ const Home = (props, onMobileOpen) => {
             </Tabs>
           </Hidden>
         </AppBar>
-        <Hidden lgUp>
-          <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
-        </Hidden>
         <Hidden smDown>
           <Button
             className={classes.ButtonAppBar}
@@ -103,6 +100,7 @@ const Home = (props, onMobileOpen) => {
             Inicia Sesión
           </Button>
         </Hidden>
+        <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
       </ThemeProvider>
       {selectedTab === 0 && <Inicio />}
       {selectedTab === 1 && <AboutUs />}

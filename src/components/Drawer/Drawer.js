@@ -4,7 +4,7 @@ import React, { Fragment } from 'react'
 const DrawerLeft = ({ openMobile, onMobileClose }) => {
   return (
     <Fragment>
-      <Hidden>
+      <Hidden lgUp>
         <Drawer
           anchor="right"
           variant="temporary"
