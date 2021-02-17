@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Redirect } from 'react-router-dom'
 import Home from 'pages/Home/Home'
 import Login from 'pages/Login/Login'
 import AppRouter from 'components/AppRoute/AppRouter'
-import DashboardLayout from 'components/Layouts/DashboardLayout'
+import DashboardLayout from 'components/Layouts/DashboardLayout/DashboardLayout'
 
 const Routes = () => {
   const [userData, setUserData] = useState({
