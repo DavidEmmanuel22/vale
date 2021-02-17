@@ -7,7 +7,11 @@ const DrawerLeft = () => {
   return (
     <Fragment>
       <Hidden lgUp>
-        <Drawer anchor="left" className={classes.mobileDrawer}></Drawer>
+        <Drawer
+          anchor="left"
+          variant="temporary"
+          className={classes.mobileDrawer}
+        ></Drawer>
       </Hidden>
     </Fragment>
   )
