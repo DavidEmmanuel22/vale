@@ -16,8 +16,8 @@ const Routes = () => {
     <BrowserRouter>
       <UserContext.Provider value={{ userData, setUserData }}>
         <Switch>
-          <AppRouter path="/:page?" exact component={Home} />
-          <AppRouter path="/dashboard" exact component={DashboardLayout} />
+          <AppRouter exact path="/:page?" component={Home} />
+          <AppRouter exact path="/dashboard" component={DashboardLayout} />
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>
