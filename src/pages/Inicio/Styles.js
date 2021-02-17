@@ -15,16 +15,16 @@ const Styles = makeStyles((theme) => ({
     }
   },
   ContentAdvantage: {
-    width: '50%',
+    width: '45%',
     position: 'absolute',
-    top: '100%',
-    left: '84%'
+    top: '236%',
+    left: '52%'
   },
   ContentMapText: {
-    width: '50%',
+    width: '45%',
     position: 'absolute',
-    top: '151%',
-    left: '7%'
+    top: '331%',
+    left: '8%'
   },
   ContentMap: {
     display: 'flex'

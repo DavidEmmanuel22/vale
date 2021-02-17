@@ -1,6 +1,15 @@
 import React, { useState } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Tabs, Tab, AppBar, Button } from '@material-ui/core'
+import {
+  Tabs,
+  Tab,
+  AppBar,
+  Button,
+  Hidden,
+  SvgIcon,
+  IconButton
+} from '@material-ui/core'
+import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
 import Inicio from 'pages/Inicio/Inicio'
@@ -14,7 +23,7 @@ import Styles from './Styles'
 
 const Home = (props) => {
   const classes = Styles()
-  const { match, history } = props
+  const { match, history, onMobileOpen } = props
   const { params } = match
   const { page } = params
 
@@ -49,6 +58,13 @@ const Home = (props) => {
           <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
         </div>
         <AppBar position="static" color="transparent">
+          <Hidden lgUp>
+            <IconButton color="inherit" onClick={onMobileOpen}>
+              <SvgIcon fontSize="small">
+                <Menu />
+              </SvgIcon>
+            </IconButton>
+          </Hidden>
           <Tabs
             value={selectedTab}
             onChange={handleChange}
