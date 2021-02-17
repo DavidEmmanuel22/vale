@@ -65,17 +65,19 @@ const Home = (props) => {
               </SvgIcon>
             </IconButton>
           </Hidden>
-          <Tabs
-            value={selectedTab}
-            onChange={handleChange}
-            indicatorColor="primary"
-          >
-            <Tab value={0} label="Inicio" />
-            <Tab value={1} label="Acerca de" />
-            <Tab value={2} label="Valedor" />
-            <Tab value={3} label="Negocios" />
-            <Tab value={4} label="Contáctanos" />
-          </Tabs>
+          <Hidden smDown>
+            <Tabs
+              value={selectedTab}
+              onChange={handleChange}
+              indicatorColor="primary"
+            >
+              <Tab value={0} label="Inicio" />
+              <Tab value={1} label="Acerca de" />
+              <Tab value={2} label="Valedor" />
+              <Tab value={3} label="Negocios" />
+              <Tab value={4} label="Contáctanos" />
+            </Tabs>
+          </Hidden>
         </AppBar>
         <Button
           className={classes.ButtonAppBar}
