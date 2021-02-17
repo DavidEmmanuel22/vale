@@ -12,6 +12,7 @@ import {
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
+import Drawer from 'components/Drawer/Drawer'
 import Inicio from 'pages/Inicio/Inicio'
 import ContactUs from 'pages/ContactUs/Contact'
 import AboutUs from 'pages/AboutUs/AboutUs'
@@ -100,6 +101,7 @@ const Home = (props) => {
           </Button>
         </Hidden>
       </ThemeProvider>
+      <Drawer />
       {selectedTab === 0 && <Inicio />}
       {selectedTab === 1 && <AboutUs />}
       {selectedTab === 2 && <Valedor />}
