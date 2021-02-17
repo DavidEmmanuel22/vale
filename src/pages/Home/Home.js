@@ -24,7 +24,7 @@ import Styles from './Styles'
 
 const Home = (props) => {
   const classes = Styles()
-  const { match, history, onMobileOpen } = props
+  const { match, history, MobileOpen } = props
   const { params } = match
   const { page } = params
 
@@ -71,7 +71,7 @@ const Home = (props) => {
           onMobileOpen={handleMobileOpen}
         >
           <Hidden lgUp>
-            <IconButton color="inherit" onClick={onMobileOpen}>
+            <IconButton color="inherit" onClick={MobileOpen}>
               <SvgIcon fontSize="large" className={classes.SvgIconHam}>
                 <Menu />
               </SvgIcon>
