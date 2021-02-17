@@ -46,11 +46,6 @@ const Home = (props) => {
 
   const [selectedTab, setSelectedTab] = React.useState(indexToTabName[page])
   const [openDialog, setOpenDialog] = useState(false)
-  // const [isMobile, setIsMobile] = useState(false)
-
-  // const handleMobileOpen = () => setIsMobile(() => true)
-
-  // const handleMobileClose = () => setIsMobile(() => false)
 
   const handleChange = (event, newValue) => {
     history.push(`/${tabNameToIndex[newValue]}`)
@@ -60,16 +55,12 @@ const Home = (props) => {
   return (
     <div>
       <ThemeProvider theme={StylesTheme}>
-        <Hidden>
+        <Hidden smDown>
           <div className={classes.ContentLogo}>
             <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
           </div>
         </Hidden>
-        <AppBar
-          position="static"
-          color="transparent"
-          // onMobileOpen={handleMobileOpen}
-        >
+        <AppBar position="static" color="transparent">
           <Hidden lgUp>
             <IconButton color="inherit">
               <SvgIcon fontSize="large" className={classes.SvgIconHam}>
@@ -91,6 +82,7 @@ const Home = (props) => {
             </Tabs>
           </Hidden>
         </AppBar>
+        <Drawer />
         <Hidden smDown>
           <Button
             className={classes.ButtonAppBar}
@@ -101,7 +93,6 @@ const Home = (props) => {
           </Button>
         </Hidden>
       </ThemeProvider>
-      <Drawer />
       {selectedTab === 0 && <Inicio />}
       {selectedTab === 1 && <AboutUs />}
       {selectedTab === 2 && <Valedor />}
