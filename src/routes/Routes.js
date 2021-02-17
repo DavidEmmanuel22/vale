@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Redirect } from 'react-router-dom'
 import Home from 'pages/Home/Home'
 import Login from 'pages/Login/Login'
 import AppRouter from 'components/AppRoute/AppRouter'
+import DashboardLayout from 'components/Layouts/DashboardLayout'
 
 const Routes = () => {
   const [userData, setUserData] = useState({
@@ -18,6 +19,7 @@ const Routes = () => {
           <Redirect exact from="/" to="/inicio" />
           <AppRouter path="/:page?" exact component={Home} />
           <AppRouter path="/login" exact component={Login} />
+          <AppRouter path="/dashboard" exact component={DashboardLayout} />
         </Switch>
       </UserContext.Provider>
     </BrowserRouter>

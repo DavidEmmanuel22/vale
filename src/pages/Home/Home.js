@@ -55,11 +55,9 @@ const Home = (props) => {
   return (
     <div>
       <ThemeProvider theme={StylesTheme}>
-        <Hidden smDown>
-          <div className={classes.ContentLogo}>
-            <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
-          </div>
-        </Hidden>
+        <div className={classes.ContentLogo}>
+          <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
+        </div>
         <AppBar position="static" color="transparent">
           <Hidden lgUp>
             <IconButton color="inherit">

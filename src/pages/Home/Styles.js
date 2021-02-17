@@ -19,12 +19,12 @@ const Styles = makeStyles(() => ({
   ButtonAppBar: {
     position: 'absolute',
     left: '88%',
-    top: '20px',
+    top: '5%',
     backgroundColor: '#efc64f',
     color: 'white',
     textTransform: 'capitalize',
-    fontSize: '16px',
-    padding: '4px 10px',
+    fontSize: '22px',
+    padding: '5px 11px',
     borderRadius: '20px',
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
   },
@@ -37,7 +37,7 @@ const Styles = makeStyles(() => ({
     margin: '0% 3% 0%'
   },
   ImgLogo: {
-    width: '278px'
+    width: '370px'
   },
   SvgIconHam: {
     position: 'relative',
