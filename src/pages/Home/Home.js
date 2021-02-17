@@ -22,9 +22,9 @@ import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 
-const Home = (props) => {
+const Home = (props, { onMobileOpen }) => {
   const classes = Styles()
-  const { match, history, onMobileOpen } = props
+  const { match, history } = props
   const { params } = match
   const { page } = params
 
