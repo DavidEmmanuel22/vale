@@ -77,7 +77,9 @@ const Home = (props) => {
               </SvgIcon>
             </IconButton>
           </Hidden>
-          <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
+          <Hidden lgUp>
+            <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
+          </Hidden>
           <Hidden smDown>
             <Tabs
               value={selectedTab}

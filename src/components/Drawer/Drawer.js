@@ -9,7 +9,7 @@ const DrawerLeft = ({ openMobile, onMobileClose }) => {
     <Fragment>
       <Hidden lgUp>
         <Drawer
-          anchor="left"
+          anchor="right"
           variant="temporary"
           open={openMobile}
           onClose={onMobileClose}
@@ -18,7 +18,7 @@ const DrawerLeft = ({ openMobile, onMobileClose }) => {
       </Hidden>
       <Hidden mdDown>
         <Drawer
-          anchor="left"
+          anchor="right"
           variant="persistent"
           open
           classes={{ paper: classes.desktopDrawer }}
