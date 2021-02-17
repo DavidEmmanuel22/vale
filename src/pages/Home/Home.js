@@ -62,7 +62,7 @@ const Home = (props) => {
         <AppBar position="static" color="transparent">
           <Hidden lgUp>
             <IconButton color="inherit" onClick={onMobileOpen}>
-              <SvgIcon fontSize="small">
+              <SvgIcon fontSize="large" className={classes.SvgIconHam}>
                 <Menu />
               </SvgIcon>
             </IconButton>

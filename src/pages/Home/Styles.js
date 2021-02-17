@@ -38,6 +38,11 @@ const Styles = makeStyles(() => ({
   },
   ImgLogo: {
     width: '278px'
+  },
+  SvgIconHam: {
+    position: 'relative',
+    left: '43%',
+    top: '10px'
   }
 }))
 
