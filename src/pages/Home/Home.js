@@ -22,7 +22,7 @@ import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 
-const Home = (props, { onMobileOpen }) => {
+const Home = (props, onMobileOpen) => {
   const classes = Styles()
   const { match, history } = props
   const { params } = match
@@ -77,9 +77,6 @@ const Home = (props, { onMobileOpen }) => {
               </SvgIcon>
             </IconButton>
           </Hidden>
-          <Hidden lgUp>
-            <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
-          </Hidden>
           <Hidden smDown>
             <Tabs
               value={selectedTab}
@@ -94,6 +91,9 @@ const Home = (props, { onMobileOpen }) => {
             </Tabs>
           </Hidden>
         </AppBar>
+        <Hidden lgUp>
+          <Drawer onMobileClose={handleMobileClose} openMobile={isMobile} />
+        </Hidden>
         <Hidden smDown>
           <Button
             className={classes.ButtonAppBar}
