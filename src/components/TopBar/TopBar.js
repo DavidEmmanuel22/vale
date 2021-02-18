@@ -68,11 +68,10 @@ const Home = (props) => {
               onChange={handleChange}
               indicatorColor="primary"
             >
-              <Tab value={0} label="Inicio" />
-              <Tab value={1} label="Acerca de" />
-              <Tab value={2} label="Valedor" />
-              <Tab value={3} label="Negocios" />
-              <Tab value={4} label="Contáctanos" />
+              <Tab value={0} label="Acerca de" />
+              <Tab value={1} label="Valedor" />
+              <Tab value={2} label="Negocios" />
+              <Tab value={3} label="Contáctanos" />
             </Tabs>
           </Hidden>
         </AppBar>
