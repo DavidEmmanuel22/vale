@@ -6,7 +6,7 @@ const StylesTheme = createMuiTheme({
       flexContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        margin: '3px 10%'
+        margin: '29px 13%'
       },
       indicator: {
         backgroundColor: 'transparent'
@@ -17,21 +17,22 @@ const StylesTheme = createMuiTheme({
     },
     MuiTab: {
       root: {
-        fontWeight: '600',
+        fontWeight: '400',
         textTransform: 'capitalize'
       },
       textColorInherit: {
-        color: '#2d6a4f'
+        color: '#007772'
       }
     },
     MuiButton: {
       root: {
-        fontWeight: '600',
-        textTransform: 'capitalize'
+        fontWeight: '400',
+        textTransform: 'capitalize',
+        fontSize: '22px'
       },
       colorInherit: {
         color: 'white',
-        backgroundColor: '#2d6a4f'
+        backgroundColor: '#007772'
       },
       textSizeSmall: {
         padding: '5px 8px'
@@ -39,7 +40,7 @@ const StylesTheme = createMuiTheme({
     },
     MuiAppBar: {
       root: {
-        height: '80px'
+        height: '110px'
       }
     }
   }

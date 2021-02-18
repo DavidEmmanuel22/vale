@@ -29,7 +29,7 @@ const Styles = makeStyles(() => ({
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
   },
   '&:hover': {
-    backgroundColor: '#007772'
+    backgroundColor: '#efc64f'
   },
   ContentLogo: {
     width: '16%',

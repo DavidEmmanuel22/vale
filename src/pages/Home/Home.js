@@ -12,13 +12,14 @@ import {
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
+import Logo from 'images/logo-appbar.png'
 // import ContactUs from 'pages/ContactUs/Contact'
 // import AboutUs from 'pages/AboutUs/AboutUs'
 // import Business from 'pages/Business/Business'
 // import Valedor from 'pages/Valedor/Valedor'
-import StylesTheme from './StylesTheme'
-import Logo from 'images/logo-appbar.png'
+import Inicio from 'pages/Inicio/Inicio'
 import Styles from './Styles'
+import StylesTheme from './StylesTheme'
 
 const Home = () => {
   const classes = Styles()
@@ -57,6 +58,7 @@ const Home = () => {
             Inicia Sesión
           </Button>
         </Hidden>
+        <Inicio />
       </ThemeProvider>
       <div>
         <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
