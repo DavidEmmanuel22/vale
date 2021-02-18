@@ -53,7 +53,7 @@ const DashboardLayout = () => {
   }
 
   const content = (
-    <Box height="100%" display="flex" flexDirection="column">
+    <Box height="1150px" display="flex" flexDirection="column">
       <Box p={2} display="flex" justifyContent="center">
         <List disablePadding component="nav" className={classes.w100}>
           {sidebarConfig.map(({ title, href, icon: Icon }, index) => (
@@ -93,9 +93,7 @@ const DashboardLayout = () => {
             color="inherit"
             noWrap
             className={classes.title}
-          >
-            Dashboard
-          </Typography>
+          ></Typography>
         </Toolbar>
       </AppBar>
       <Drawer

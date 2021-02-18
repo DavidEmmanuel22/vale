@@ -7,7 +7,8 @@ const Styles = makeStyles((theme) => ({
     display: 'flex'
   },
   toolbar: {
-    paddingRight: 24
+    paddingRight: 24,
+    height: '100px'
   },
   toolbarIcon: {
     display: 'flex',
@@ -40,7 +41,8 @@ const Styles = makeStyles((theme) => ({
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    backgroundColor: 'white'
   },
   appBarShift: {
     marginLeft: drawerWidth,
