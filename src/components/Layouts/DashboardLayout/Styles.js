@@ -76,7 +76,7 @@ const Styles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    width: theme.spacing(100),
+    width: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9)
     }
