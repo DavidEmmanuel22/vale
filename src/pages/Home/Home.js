@@ -16,7 +16,6 @@ import PopUp from 'components/Dialog/PopUp'
 // import AboutUs from 'pages/AboutUs/AboutUs'
 // import Business from 'pages/Business/Business'
 // import Valedor from 'pages/Valedor/Valedor'
-import Inicio from 'pages/Inicio/Inicio'
 import StylesTheme from './StylesTheme'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
@@ -58,7 +57,6 @@ const Home = () => {
             Inicia Sesión
           </Button>
         </Hidden>
-        <Inicio />
       </ThemeProvider>
       <div>
         <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
