@@ -6,8 +6,8 @@ import Inicio from 'pages/Inicio/Inicio'
 const Home = () => {
   return (
     <div>
-      <TopBar />
       <Inicio />
+      <TopBar />
     </div>
   )
 }
