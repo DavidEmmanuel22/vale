@@ -13,7 +13,7 @@ import {
   IconButton
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
-import { Persona, Gente, Tienda } from '@material-ui/icons'
+import { Person, People, Store } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import Styles from './Styles'
@@ -22,17 +22,17 @@ const sidebarConfig = [
   {
     title: 'Perfil',
     href: '/dashboard',
-    icon: Persona
+    icon: Person
   },
   {
     title: 'Valedores',
     href: '/dashboard/Vales',
-    icon: Gente
+    icon: People
   },
   {
     title: 'Negocios',
     href: '/dashboard/Negocio',
-    icon: Tienda
+    icon: Store
   }
 ]
 
