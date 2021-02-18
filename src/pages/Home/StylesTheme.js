@@ -6,7 +6,7 @@ const StylesTheme = createMuiTheme({
       flexContainer: {
         display: 'flex',
         justifyContent: 'flex-end',
-        margin: '29px 13%'
+        margin: '23px 13%'
       },
       indicator: {
         backgroundColor: 'transparent'
@@ -18,7 +18,8 @@ const StylesTheme = createMuiTheme({
     MuiTab: {
       root: {
         fontWeight: '400',
-        textTransform: 'capitalize'
+        textTransform: 'capitalize',
+        fontSize: '22px'
       },
       textColorInherit: {
         color: '#007772'
