@@ -24,7 +24,10 @@ const Login = () => {
     try {
       const loginUser = { email, password }
       console.log(loginUser)
-      const loginRes = await Axios.post('', loginUser)
+      const loginRes = await Axios.post(
+        'https://devbackend.valevaledor.com/login',
+        loginUser
+      )
       console.log(loginRes)
       /* setUserData({
         token: loginRes.token,
