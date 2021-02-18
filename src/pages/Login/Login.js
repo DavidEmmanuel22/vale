@@ -20,7 +20,7 @@ const Login = () => {
   const setUserData = useContext(UserContext)
   const history = useHistory()
 
-  const Submit = async (event) => {
+  const submit = async (event) => {
     event.preventDefault()
     try {
       const loginUser = { email, password }
@@ -56,7 +56,7 @@ const Login = () => {
           </div>
         </div>
         <div>
-          <form className="content-form" onSubmit={Submit}>
+          <form className="content-form" onSubmit={submit}>
             <TextField
               className={classes.widthnew}
               id="input-with-icon-textfield"

@@ -9,7 +9,7 @@ const Inicio = () => {
   const classes = Styles()
 
   return (
-    <div className={classes.ContentHome}>
+    <div>
       <div className={classes.ContentHero}>
         <img className={classes.ImageHero} src={Hero} alt="Hero"></img>
       </div>
