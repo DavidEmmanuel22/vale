@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
 import UserContext from 'hooks/UserContext'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import ActionAlerts from 'components/Alert/Alert'
 import LockIcon from '@material-ui/icons/Lock'
 import decorationimg from 'images/vale-ribbn.png'
 import logologin from 'images/valedor-logo.png'
@@ -15,7 +14,7 @@ const Login = () => {
   const classes = Styles()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const [error, setError] = useState()
+  // const [error, setError] = useState()
 
   const setUserData = useContext(UserContext)
   const history = useHistory()
@@ -24,10 +23,7 @@ const Login = () => {
     event.preventDefault()
     try {
       const loginUser = { email, password }
-      const loginRes = await Axios.post(
-        'https://devbackend.valevaledor.com/login',
-        loginUser
-      )
+      const loginRes = await Axios.post('', loginUser)
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user
@@ -35,15 +31,12 @@ const Login = () => {
       localStorage.setItem('auth-token', loginRes.data.token)
       history.push('/dashboard')
     } catch (error) {
-      error.response.data.message && setError(error.response.data.message)
+      console.log(error)
     }
   }
 
   return (
     <div>
-      {error && (
-        <ActionAlerts message={error} clearError={() => setError(undefined)} />
-      )}
       <div className="content">
         <div className="foto-tom">
           <img
