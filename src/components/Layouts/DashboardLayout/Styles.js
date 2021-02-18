@@ -53,7 +53,8 @@ const Styles = makeStyles((theme) => ({
     })
   },
   menuButton: {
-    marginRight: 36
+    margin: '5px 5px',
+    color: '#007772'
   },
   menuButtonHidden: {
     display: 'none'
@@ -76,16 +77,31 @@ const Styles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    width: '100px',
-    [theme.breakpoints.up('sm')]: {
+    width: '100px'
+    /* [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9)
-    }
+    } */
   },
   w100: {
     width: '229px'
   },
   minWidth: {
     minWidth: 'fit-content'
+  },
+  ButtonAppBar: {
+    position: 'absolute',
+    left: '84%',
+    top: '25px',
+    backgroundColor: '#efc64f',
+    color: 'white',
+    textTransform: 'capitalize',
+    fontSize: '16px',
+    padding: '3px 9px',
+    borderRadius: '20px',
+    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
+  },
+  '&:hover': {
+    backgroundColor: '#efc64f'
   }
 }))
 

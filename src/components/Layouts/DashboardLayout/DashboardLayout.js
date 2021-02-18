@@ -10,11 +10,14 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  IconButton
+  IconButton,
+  Button,
+  Hidden
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Person, People, Store } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
+import Logo from 'components/Logo/Logo'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import Styles from './Styles'
 
@@ -50,6 +53,11 @@ const DashboardLayout = () => {
   }
   const handleDrawerClose = () => {
     setOpen(false)
+  }
+
+  const LogOut = () => {
+    localStorage.clear()
+    history.push('/')
   }
 
   const content = (
@@ -94,6 +102,15 @@ const DashboardLayout = () => {
             noWrap
             className={classes.title}
           ></Typography>
+          <Hidden smDown>
+            <Button
+              className={classes.ButtonAppBar}
+              size="small"
+              onClick={LogOut}
+            >
+              Cerrar Sesión
+            </Button>
+          </Hidden>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -104,6 +121,7 @@ const DashboardLayout = () => {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <Logo />
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
