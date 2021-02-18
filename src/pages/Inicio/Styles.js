@@ -69,7 +69,8 @@ const Styles = makeStyles((theme) => ({
     },
     '&:hover': {
       backgroundColor: '#007772'
-    }
+    },
+    ContentHome: {}
   },
   [theme.breakpoints.down('sm')]: {
     ContentAdvantage: {

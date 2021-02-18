@@ -78,6 +78,12 @@ const Styles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9)
     }
+  },
+  w100: {
+    width: '100%'
+  },
+  minWidth: {
+    minWidth: 'fit-content'
   }
 }))
 
