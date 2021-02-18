@@ -6,7 +6,6 @@ import { BrowserRouter, Switch } from 'react-router-dom'
 import AppRouter from 'components/AppRoute/AppRouter'
 import DashboardLayout from 'components/Layouts/DashboardLayout/DashboardLayout'
 import TopBar from 'components/TopBar/TopBar'
-import Inicio from 'pages/Inicio/Inicio'
 
 const Routes = () => {
   const [userData, setUserData] = useState({
@@ -19,7 +18,6 @@ const Routes = () => {
       <UserContext.Provider value={{ userData, setUserData }}>
         <Switch>
           <AppRouter exact path="/" component={TopBar} />
-          <AppRouter exact path="/" component={Inicio} />
           <AppRouter exact path="/dashboard" component={DashboardLayout} />
         </Switch>
       </UserContext.Provider>
