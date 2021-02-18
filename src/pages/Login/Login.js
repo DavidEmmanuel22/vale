@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import Axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
-import UserContext from 'hooks/UserContext'
+// import UserContext from 'hooks/UserContext'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
 import decorationimg from 'images/vale-ribbn.png'
@@ -16,18 +16,20 @@ const Login = () => {
   const [password, setPassword] = useState()
   // const [error, setError] = useState()
 
-  const setUserData = useContext(UserContext)
+  // const setUserData = useContext(UserContext)
   const history = useHistory()
 
   const submit = async (event) => {
     event.preventDefault()
     try {
       const loginUser = { email, password }
+      console.log(loginUser)
       const loginRes = await Axios.post('', loginUser)
-      setUserData({
-        token: loginRes.data.token,
-        user: loginRes.data.user
-      })
+      console.log(loginRes)
+      /* setUserData({
+        token: loginRes.token,
+        user: loginRes.user
+      }) */
       localStorage.setItem('auth-token', loginRes.data.token)
       history.push('/dashboard')
     } catch (error) {
