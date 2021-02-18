@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 
-const drawerWidth = 240
+const drawerWidth = 300
 
 const Styles = makeStyles((theme) => ({
   root: {
@@ -76,13 +76,13 @@ const Styles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    width: theme.spacing(7),
+    width: theme.spacing(100),
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9)
     }
   },
   w100: {
-    width: '100%'
+    width: '229px'
   },
   minWidth: {
     minWidth: 'fit-content'
