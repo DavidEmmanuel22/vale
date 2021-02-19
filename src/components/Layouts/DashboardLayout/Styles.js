@@ -98,10 +98,10 @@ const Styles = makeStyles((theme) => ({
     fontSize: '16px',
     padding: '3px 9px',
     borderRadius: '20px',
-    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
-  },
-  '&:hover': {
-    backgroundColor: '#efc64f'
+    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
+    '&:hover': {
+      backgroundColor: '#efc64f'
+    }
   }
 }))
 

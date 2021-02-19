@@ -26,10 +26,10 @@ const Styles = makeStyles(() => ({
     fontSize: '22px',
     padding: '5px 11px',
     borderRadius: '20px',
-    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
-  },
-  '&:hover': {
-    backgroundColor: '#efc64f'
+    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
+    '&:hover': {
+      backgroundColor: '#efc64f'
+    }
   },
   ContentLogo: {
     width: '16%',

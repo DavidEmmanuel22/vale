@@ -14,7 +14,10 @@ const Styles = makeStyles(() => ({
     margin: '35px 0px 0px',
     height: '40px',
     backgroundColor: '#007772',
-    color: '#ffff'
+    color: '#ffff',
+    '&:hover': {
+      backgroundColor: '#007772'
+    }
   }
 }))
 

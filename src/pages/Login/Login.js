@@ -3,6 +3,7 @@ import Axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
 // import UserContext from 'hooks/UserContext'
+import Alert from 'components/Alert/Alert'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
 import decorationimg from 'images/vale-ribbn.png'
@@ -14,7 +15,7 @@ const Login = () => {
   const classes = Styles()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  // const [error, setError] = useState()
+  const [error, setError] = useState()
 
   // const setUserData = useContext(UserContext)
   const history = useHistory()
@@ -36,12 +37,15 @@ const Login = () => {
       localStorage.setItem('auth-token', loginRes.data.token)
       history.push('/dashboard')
     } catch (error) {
-      console.log(error)
+      error.response.data.msg && setError(error.response.data.msg)
     }
   }
 
   return (
     <div>
+      {error && (
+        <Alert message={error} clearError={() => setError(undefined)} />
+      )}
       <div className="content">
         <div className="foto-tom">
           <img

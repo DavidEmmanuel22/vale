@@ -49,7 +49,7 @@ a {
 }
 
 .MuiInputBase-input:focus {
-  color: #eaeaea;
+  color: black;
 }
 .MuiInput-underline:before {
   border-bottom: 1px solid #eaeaea !important;
