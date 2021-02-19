@@ -20,7 +20,7 @@ const Styles = makeStyles(() => ({
     position: 'absolute',
     left: '88%',
     top: '30px',
-    backgroundColor: '#efc64f',
+    backgroundColor: '#f9a02b',
     color: 'white',
     textTransform: 'capitalize',
     fontSize: '22px',
@@ -28,7 +28,7 @@ const Styles = makeStyles(() => ({
     borderRadius: '20px',
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
     '&:hover': {
-      backgroundColor: '#efc64f'
+      backgroundColor: '#f9a02b'
     }
   },
   ContentLogo: {
