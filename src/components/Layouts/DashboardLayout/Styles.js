@@ -60,7 +60,11 @@ const Styles = makeStyles((theme) => ({
     display: 'none'
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    fontsize: '16px',
+    lineheight: '3.5',
+    marginleft: '10px',
+    color: '#6c757d'
   },
   drawerPaper: {
     position: 'relative',
@@ -86,7 +90,8 @@ const Styles = makeStyles((theme) => ({
     width: '229px'
   },
   minWidth: {
-    minWidth: 'fit-content'
+    minWidth: 'fit-content',
+    fontSize: 'xx-large'
   },
   ButtonAppBar: {
     position: 'absolute',
