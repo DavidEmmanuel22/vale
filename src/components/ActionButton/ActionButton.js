@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '@material-ui/core'
 import Styles from './Styles'
 
-export default function ActionButton(props) {
+const ActionButton = (props) => {
   const { children, onClick } = props
   const classes = Styles()
 
@@ -15,3 +15,5 @@ export default function ActionButton(props) {
     </Button>
   )
 }
+
+export default ActionButton

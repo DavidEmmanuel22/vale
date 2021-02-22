@@ -1,7 +1,12 @@
 import React from 'react'
+import LogoPng from 'images/logo-appbar.png'
+import Styles from './Styles'
 
 const Logo = () => {
-  return <img alt="Logo-Valedor" width={100} src="/images/logo-appbar.png" />
+  const classes = Styles()
+  return (
+    <img className={classes.Toolbarlogo} alt="Logo-Valedor" src={LogoPng} />
+  )
 }
 
 export default Logo

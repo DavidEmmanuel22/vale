@@ -86,6 +86,9 @@ const Styles = makeStyles((theme) => ({
       width: theme.spacing(9)
     } */
   },
+  MuiItemText: {
+    margin: '17px 8px'
+  },
   w100: {
     width: '229px'
   },
@@ -95,7 +98,7 @@ const Styles = makeStyles((theme) => ({
   },
   ButtonAppBar: {
     position: 'absolute',
-    left: '82%',
+    left: '88%',
     top: '25px',
     backgroundColor: '#f9a02b',
     color: 'white',
@@ -107,6 +110,31 @@ const Styles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: '#f9a02b'
     }
+  },
+  wrapper: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden',
+    paddingTop: 64,
+    [theme.breakpoints.up('lg')]: {
+      padding: '100px 0px',
+      backgroundColor: '#eaeaea'
+    }
+  },
+  contentContainer: {
+    display: 'flex',
+    flex: '1 1 auto',
+    overflow: 'hidden',
+    marginBottom: 25,
+    minHeight: '100%'
+  },
+  contentHeader: {
+    flex: '1 1 auto',
+    height: '100%',
+    overflow: 'auto'
+  },
+  MuiBox: {
+    margin: '37px 0px 0px'
   }
 }))
 

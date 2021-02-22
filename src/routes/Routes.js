@@ -1,22 +1,28 @@
 import React from 'react'
-// import UserContext from 'hooks/UserContext'
 import { BrowserRouter, Switch } from 'react-router-dom'
 import Home from 'pages/Home/Home'
 import AppRouter from 'components/AppRoute/AppRouter'
+import Dashboard from 'pages/Dashboard/Dashboard'
+import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
 import DashboardLayout from 'components/Layouts/DashboardLayout/DashboardLayout'
-// import Inicio from 'pages/Inicio/Inicio'
 
 const Routes = () => {
-  /* const [userData, setUserData] = useState({
-    token: undefined,
-    user: undefined
-  }) */
-
   return (
     <BrowserRouter>
       <Switch>
         <AppRouter exact path="/" component={Home} />
-        <AppRouter exact path="/dashboard" component={DashboardLayout} />
+        <AppRouter
+          exact
+          path="/dashboard/perfil"
+          component={DashboardPerfil}
+          layout={DashboardLayout}
+        />
+        <AppRouter
+          exact
+          path="/dashboard/"
+          component={Dashboard}
+          layout={DashboardLayout}
+        />
       </Switch>
     </BrowserRouter>
   )
