@@ -10,7 +10,7 @@ const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <AppRouter exact path="/" component={Home} />
+        <AppRouter exact path="/" component={Home} layout={Home} />
         <AppRouter
           exact
           path="/dashboard/perfil"
