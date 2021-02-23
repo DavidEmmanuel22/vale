@@ -7,15 +7,6 @@ const AppRouter = ({
   component: Component,
   layout: Layout,
   ...rest
-}) => (
-  <Route
-    {...rest}
-    render={(props) => (
-      <Layout>
-        <Component {...props} />
-      </Layout>
-    )}
-  ></Route>
-)
+}) => <Route {...rest} render={(props) => <Component {...props} />}></Route>
 
 export default AppRouter
