@@ -15,15 +15,15 @@ const Styles = makeStyles((theme) => ({
     ContentGreen: {},
     ContentAdvantage: {
       width: '45%',
-      position: 'absolute',
-      top: '236%',
-      left: '52%'
+      position: 'relative',
+      top: '-400px',
+      left: '23%'
     },
     ContentMapText: {
-      width: '45%',
+      width: '66%',
       position: 'absolute',
-      top: '331%',
-      left: '8%'
+      top: '19%',
+      left: '-84%'
     },
     ContentMap: {
       display: 'flex'
@@ -31,13 +31,15 @@ const Styles = makeStyles((theme) => ({
     LocationMap: {
       width: '60%',
       position: 'absolute',
-      left: '55%'
+      left: '55%',
+      top: '181%'
     },
     ImageMap: {
       width: '70%'
     },
     ContentJointo: {
-      width: '50%',
+      width: '60%',
+      left: '0%',
       position: 'absolute',
       top: '26%',
       margin: '4px 60px'
@@ -65,12 +67,31 @@ const Styles = makeStyles((theme) => ({
       fontSize: '16px',
       padding: '8px 16px',
       borderRadius: '20px',
-      boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
+      boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
+      '&:hover': {
+        backgroundColor: '#f9a02b'
+      },
     },
-    '&:hover': {
-      backgroundColor: '#007772'
+    ContentHome: {},
+    ImageFooter:{
+      width: '100%',
+      position: 'absolute',
+      top: '260%'
     },
-    ContentHome: {}
+    WhiteText:{
+      fontSize: '20px',
+      color: 'white',
+      margin: '0px 0px 11px'
+    },
+    BeValedor:{
+      color: 'white',
+      margin: '0px 0px 10px'
+    },
+    TextFake:{
+      color: 'white',
+      fontSize: '20px',
+      lineHeight: '26px'
+    }
   },
   [theme.breakpoints.down('sm')]: {
     ContentAdvantage: {
@@ -112,7 +133,7 @@ const Styles = makeStyles((theme) => ({
       boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)'
     },
     '&:hover': {
-      backgroundColor: '#007772'
+      backgroundColor: '#f9a02b'
     },
     ImageGreen: {
       width: '100%'
@@ -153,6 +174,25 @@ const Styles = makeStyles((theme) => ({
       fontsize: '20px',
       fontWeight: '400',
       margin: '2% 0% 0%'
+    },
+    ImageFooter:{
+      width: '100%',
+      position: 'absolute',
+      top: '260%'
+    },
+    WhiteText:{
+      fontSize: '20px',
+      color: 'white',
+      margin: '0px 0px 11px'
+    },
+    BeValedor:{
+      color: 'white',
+      margin: '0px 0px 10px'
+    },
+    TextFake:{
+      color: 'white',
+      fontSize: '20px',
+      lineHeight: '26px'
     }
   }
 }))
