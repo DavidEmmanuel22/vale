@@ -16,6 +16,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
+import { Dashboard, Person, People, Store } from '@material-ui/icons'
 import MailIcon from '@material-ui/icons/Mail'
 import DashboardIcon from '@material-ui/icons/Dashboard'
 import PersonIcon from '@material-ui/icons/Person'
@@ -26,7 +27,7 @@ import { Link } from 'react-router-dom'
 import HeaderRoutes from 'components/HeaderRoutes/HeaderRoutes'
 import { Container, Button } from '@material-ui/core'
 
-const drawerWidth = 240
+const drawerWidth = 280
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
@@ -49,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
-    })
+    }),
+    height: '100px',
+    backgroundColor: 'white'
   },
   menuButton: {
     marginRight: 36
@@ -86,7 +89,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar
+    ...theme.mixins.toolbar,
+    minHeight: '100px'
   },
   content: {
     flexGrow: 1,
@@ -99,6 +103,7 @@ export default function GeneralLayout({ children }) {
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -107,6 +112,10 @@ export default function GeneralLayout({ children }) {
   const handleDrawerClose = () => {
     setOpen(false)
   }
+
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
 
   return (
     <div className={classes.root}>
@@ -131,7 +140,7 @@ export default function GeneralLayout({ children }) {
           </IconButton>
           <div style={{ display: 'flex', width: '100%' }}>
             <Typography variant="h6" noWrap>
-              Administration Panel
+            
             </Typography>
             <Button
               variant="contained"
@@ -171,9 +180,12 @@ export default function GeneralLayout({ children }) {
           {/*     ADMIN ROUTES		*/}
           {
             <Link className="listLink" to="/dashboard">
-              <ListItem button>
+              <ListItem button
+               selected={selectedIndex === 0}
+               onClick={(event) => handleListItemClick(event, 0)}
+              >
                 <ListItemIcon>
-                  <DashboardIcon></DashboardIcon>
+                  <Dashboard></Dashboard>
                 </ListItemIcon>
                 <ListItemText primary={'Dashboard'} />
               </ListItem>
@@ -181,9 +193,12 @@ export default function GeneralLayout({ children }) {
           }
           {
             <Link className="listLink" to="/dashboard/profile">
-              <ListItem button>
+              <ListItem button
+              selected={selectedIndex === 1}
+              onClick={(event) => handleListItemClick(event, 1)}
+              >
                 <ListItemIcon>
-                  <PersonIcon />
+                  <Person/>
                 </ListItemIcon>
                 <ListItemText primary={'Perfil'} />
               </ListItem>
@@ -191,9 +206,12 @@ export default function GeneralLayout({ children }) {
           }
           {
             <Link className="listLink" to="/dashboard/valedores">
-              <ListItem button>
+              <ListItem button
+               selected={selectedIndex === 2}
+               onClick={(event) => handleListItemClick(event, 2)}
+              >
                 <ListItemIcon>
-                  <InboxIcon />
+                  <People/>
                 </ListItemIcon>
                 <ListItemText primary={'Valedores'} />
               </ListItem>
@@ -201,9 +219,12 @@ export default function GeneralLayout({ children }) {
           }
           {
             <Link className="listLink" to="/dashboard/negocios">
-              <ListItem button>
+              <ListItem button
+               selected={selectedIndex === 3}
+               onClick={(event) => handleListItemClick(event, 3)}
+              >
                 <ListItemIcon>
-                  <BusinessCenterIcon></BusinessCenterIcon>
+                  <Store/>
                 </ListItemIcon>
                 <ListItemText primary={'Negocios'} />
               </ListItem>
@@ -211,7 +232,10 @@ export default function GeneralLayout({ children }) {
           }
           {
             <Link className="listLink" to="/dashboard/compras">
-              <ListItem button>
+              <ListItem button
+               selected={selectedIndex === 4}
+               onClick={(event) => handleListItemClick(event, 4)}
+              >
                 <ListItemIcon>
                   <LoyaltyIcon></LoyaltyIcon>
                 </ListItemIcon>
@@ -221,7 +245,10 @@ export default function GeneralLayout({ children }) {
           }
           {
             <Link className="listLink" to="/dashboard/contactos">
-              <ListItem button>
+              <ListItem button
+              selected={selectedIndex === 5}
+               onClick={(event) => handleListItemClick(event, 5)}
+              >
                 <ListItemIcon>
                   <ContactsIcon></ContactsIcon>
                 </ListItemIcon>
