@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
@@ -25,6 +25,7 @@ import ContactsIcon from '@material-ui/icons/Contacts'
 import { Link } from 'react-router-dom'
 import HeaderRoutes from 'components/HeaderRoutes/HeaderRoutes'
 import { Container, Button } from '@material-ui/core'
+import { UserContext } from '../../../context/userContext'
 
 const drawerWidth = 240
 
@@ -100,6 +101,8 @@ export default function GeneralLayout({ children }) {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
 
+  const { isAuthenticated, user, logout } = useContext(UserContext)
+
   const handleDrawerOpen = () => {
     setOpen(true)
   }
@@ -137,6 +140,7 @@ export default function GeneralLayout({ children }) {
               variant="contained"
               style={{ marginLeft: 'auto' }}
               color="secondary"
+              onClick={logout}
             >
               Logout
             </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
@@ -10,6 +10,7 @@ import decorationimg from 'images/vale-ribbn.png'
 import logologin from 'images/valedor-logo.png'
 import './Login.css'
 import Styles from './Styles'
+import { UserContext } from '../../context/userContext'
 
 const Login = () => {
   const classes = Styles()
@@ -17,7 +18,7 @@ const Login = () => {
   const [password, setPassword] = useState()
   const [error, setError] = useState()
 
-  // const setUserData = useContext(UserContext)
+  const { isAuthenticated, user, login } = useContext(UserContext)
   const history = useHistory()
 
   const submit = async (event) => {
@@ -31,10 +32,10 @@ const Login = () => {
       )
       console.log(loginRes)
       /* setUserData({
-        token: loginRes.token,
-        user: loginRes.user
-      }) */
-      localStorage.setItem('auth-token', loginRes.data.token)
+			  token: loginRes.token,
+			  user: loginRes.user
+			}) */
+      login(loginRes.data.token)
       history.push('/dashboard')
     } catch (error) {
       error.response.data.msg && setError(error.response.data.msg)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { ThemeProvider } from '@material-ui/core/styles'
 import {
   Tabs,
@@ -20,11 +20,22 @@ import Logo from 'images/logo-appbar.png'
 import Inicio from 'pages/Inicio/Inicio'
 import Styles from './Styles'
 import StylesTheme from './StylesTheme'
+import { UserContext } from '../../context/userContext'
 
 const Home = () => {
   const classes = Styles()
 
   const [openDialog, setOpenDialog] = useState(false)
+
+  const { isAuthenticated, logout } = useContext(UserContext)
+
+  const handleNavButton = () => {
+    if (isAuthenticated) {
+      logout()
+    } else {
+      setOpenDialog(true)
+    }
+  }
 
   return (
     <div>
@@ -53,9 +64,9 @@ const Home = () => {
           <Button
             className={classes.ButtonAppBar}
             size="small"
-            onClick={() => setOpenDialog(true)}
+            onClick={() => handleNavButton()}
           >
-            Inicia Sesión
+            {isAuthenticated ? 'Cerrar Sesion' : 'Iniciar Sesion'}
           </Button>
         </Hidden>
         <Inicio />

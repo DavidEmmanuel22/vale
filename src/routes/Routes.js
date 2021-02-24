@@ -1,45 +1,45 @@
-import React from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import Home from 'pages/Home/Home'
-import AppRouter from 'components/AppRoute/AppRouter'
+import React, { useContext, Fragment } from 'react'
+import { Switch, Route, Redirect } from 'react-router-dom'
+import Home from '../pages/Home/Home'
 import Dashboard from 'pages/Dashboard/Dashboard'
 import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
-import DashboardLayout from 'components/Layouts/DashboardLayout/DashboardLayout'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
+import { UserContext } from '../context/userContext'
+import PrivateRoute from './PrivateRoute'
 
 const Routes = () => {
+  const { isAuthenticated } = useContext(UserContext)
+
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/dashboard/profile">
-          <GeneralLayout>
-            <DashboardPerfil></DashboardPerfil>
-          </GeneralLayout>
-        </Route>
+    <Switch>
+      <PrivateRoute exact path="/dashboard/profile">
+        <GeneralLayout>
+          <DashboardPerfil></DashboardPerfil>
+        </GeneralLayout>
+      </PrivateRoute>
 
-        <Route path="/dashboard/valedores">
-          <GeneralLayout>
-            <h1>Valedores</h1>
-          </GeneralLayout>
-        </Route>
+      <PrivateRoute exact path="/dashboard/valedores">
+        <GeneralLayout>
+          <h1>Valedores</h1>
+        </GeneralLayout>
+      </PrivateRoute>
 
-        <Route path="/dashboard/negocios">
-          <GeneralLayout>
-            <h1>Negocios</h1>
-          </GeneralLayout>
-        </Route>
+      <PrivateRoute exact path="/dashboard/negocios">
+        <GeneralLayout>
+          <h1>Negocios</h1>
+        </GeneralLayout>
+      </PrivateRoute>
 
-        <Route path="/dashboard">
-          <GeneralLayout>
-            <Dashboard></Dashboard>
-          </GeneralLayout>
-        </Route>
+      <PrivateRoute path="/dashboard">
+        <GeneralLayout>
+          <Dashboard></Dashboard>
+        </GeneralLayout>
+      </PrivateRoute>
 
-        <Route path="/">
-          <Home></Home>
-        </Route>
-      </Switch>
-    </BrowserRouter>
+      <Route exact path="/">
+        <Home></Home>
+      </Route>
+    </Switch>
   )
 }
 
