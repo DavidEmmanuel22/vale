@@ -4,7 +4,6 @@ import Home from 'pages/Home/Home'
 import AppRouter from 'components/AppRoute/AppRouter'
 import Dashboard from 'pages/Dashboard/Dashboard'
 import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
-import DashboardLayout from 'components/Layouts/DashboardLayout/DashboardLayout'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
 
 const Routes = () => {

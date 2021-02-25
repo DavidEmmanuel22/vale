@@ -7,7 +7,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Typography from '@material-ui/core/Typography'
-import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -15,17 +14,13 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
 import { Dashboard, Person, People, Store } from '@material-ui/icons'
-import MailIcon from '@material-ui/icons/Mail'
-import DashboardIcon from '@material-ui/icons/Dashboard'
-import PersonIcon from '@material-ui/icons/Person'
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import ContactsIcon from '@material-ui/icons/Contacts'
 import { Link } from 'react-router-dom'
 import HeaderRoutes from 'components/HeaderRoutes/HeaderRoutes'
 import { Container, Button } from '@material-ui/core'
+import './Styles.css'
 
 const drawerWidth = 280
 
@@ -33,7 +28,7 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
 }
 
-const useStyles = makeStyles((theme) => ({
+const Styles = makeStyles((theme) => ({
   root: {
     display: 'flex'
   },
@@ -42,7 +37,10 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    height: '100px',
+    backgroundColor: 'white',
+    position: 'absolute'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -55,7 +53,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white'
   },
   menuButton: {
-    marginRight: 36
+    margin: '-7px -9px -39px',
+    color: '#007772'
   },
   hide: {
     display: 'none'
@@ -89,21 +88,39 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    minHeight: '100px'
+    ...theme.mixins.toolbar
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
+    padding: theme.spacing(3),
+    backgroundColor: '#e5e5e5',
+    height: '1000px',
+    margin: '101px 0px 0px'
+  },
+  dividerLine: {
+    margin: '30px 0px'
+  },
+  ButtonLogin: {
+    marginLeft: 'auto',
+    position: 'absolute',
+    top: '21px',
+    left: '84%',
+    color: 'white',
+    padding: '5px 11px',
+    fontSize: '22px',
+    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
+    borderRadius: '20px',
+    textTransform: 'capitalize',
+    backgroundColor: '#f9a02b'
   }
 }))
 
 // eslint-disable-next-line react/prop-types
 export default function GeneralLayout({ children }) {
-  const classes = useStyles()
+  const classes = Styles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(1)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -114,8 +131,8 @@ export default function GeneralLayout({ children }) {
   }
 
   const handleListItemClick = (event, index) => {
-    setSelectedIndex(index);
-  };
+    setSelectedIndex(index)
+  }
 
   return (
     <div className={classes.root}>
@@ -139,15 +156,9 @@ export default function GeneralLayout({ children }) {
             <MenuIcon />
           </IconButton>
           <div style={{ display: 'flex', width: '100%' }}>
-            <Typography variant="h6" noWrap>
-            
-            </Typography>
-            <Button
-              variant="contained"
-              style={{ marginLeft: 'auto' }}
-              color="secondary"
-            >
-              Logout
+            <Typography variant="h6" noWrap></Typography>
+            <Button variant="contained" className={classes.ButtonLogin}>
+              Cerrar Sesión
             </Button>
           </div>
         </Toolbar>
@@ -166,7 +177,7 @@ export default function GeneralLayout({ children }) {
         }}
       >
         <div className={classes.toolbar}>
-          <img style={{ width: '90%' }} src="/logo-appbar.png"></img>
+          <img style={{ width: '80%' }} src="/logo-appbar.png"></img>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
@@ -175,95 +186,100 @@ export default function GeneralLayout({ children }) {
             )}
           </IconButton>
         </div>
-        <Divider />
-        <List style={{ marginTop: '50px' }}>
+        <List style={{ marginTop: '62px', padding: '10px' }}>
           {/*     ADMIN ROUTES		*/}
           {
             <Link className="listLink" to="/dashboard">
-              <ListItem button
-               selected={selectedIndex === 0}
-               onClick={(event) => handleListItemClick(event, 0)}
+              <ListItem
+                button
+                selected={selectedIndex === 0}
+                onClick={(event) => handleListItemClick(event, 0)}
               >
                 <ListItemIcon>
-                  <Dashboard></Dashboard>
+                  <Dashboard style={{ color: '#007772' }}></Dashboard>
                 </ListItemIcon>
-                <ListItemText primary={'Dashboard'} />
+                <ListItemText style={{ color: 'grey' }} primary={'Dashboard'} />
               </ListItem>
             </Link>
           }
           {
             <Link className="listLink" to="/dashboard/profile">
-              <ListItem button
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
+              <ListItem
+                button
+                selected={selectedIndex === 1}
+                onClick={(event) => handleListItemClick(event, 1)}
               >
                 <ListItemIcon>
-                  <Person/>
+                  <Person style={{ color: '#007772' }} />
                 </ListItemIcon>
-                <ListItemText primary={'Perfil'} />
+                <ListItemText style={{ color: 'grey' }} primary={'Perfil'} />
               </ListItem>
             </Link>
           }
           {
             <Link className="listLink" to="/dashboard/valedores">
-              <ListItem button
-               selected={selectedIndex === 2}
-               onClick={(event) => handleListItemClick(event, 2)}
+              <ListItem
+                button
+                selected={selectedIndex === 2}
+                onClick={(event) => handleListItemClick(event, 2)}
               >
                 <ListItemIcon>
-                  <People/>
+                  <People style={{ color: '#007772' }} />
                 </ListItemIcon>
-                <ListItemText primary={'Valedores'} />
+                <ListItemText style={{ color: 'grey' }} primary={'Valedores'} />
               </ListItem>
             </Link>
           }
           {
             <Link className="listLink" to="/dashboard/negocios">
-              <ListItem button
-               selected={selectedIndex === 3}
-               onClick={(event) => handleListItemClick(event, 3)}
+              <ListItem
+                button
+                selected={selectedIndex === 3}
+                onClick={(event) => handleListItemClick(event, 3)}
               >
                 <ListItemIcon>
-                  <Store/>
+                  <Store style={{ color: '#007772' }} />
                 </ListItemIcon>
-                <ListItemText primary={'Negocios'} />
+                <ListItemText style={{ color: 'grey' }} primary={'Negocios'} />
               </ListItem>
             </Link>
           }
           {
             <Link className="listLink" to="/dashboard/compras">
-              <ListItem button
-               selected={selectedIndex === 4}
-               onClick={(event) => handleListItemClick(event, 4)}
+              <ListItem
+                button
+                selected={selectedIndex === 4}
+                onClick={(event) => handleListItemClick(event, 4)}
               >
                 <ListItemIcon>
-                  <LoyaltyIcon></LoyaltyIcon>
+                  <LoyaltyIcon style={{ color: '#007772' }}></LoyaltyIcon>
                 </ListItemIcon>
-                <ListItemText primary={'Lista Compras'} />
+                <ListItemText
+                  style={{ color: 'grey' }}
+                  primary={'Lista Compras'}
+                />
               </ListItem>
             </Link>
           }
           {
             <Link className="listLink" to="/dashboard/contactos">
-              <ListItem button
-              selected={selectedIndex === 5}
-               onClick={(event) => handleListItemClick(event, 5)}
+              <ListItem
+                button
+                selected={selectedIndex === 5}
+                onClick={(event) => handleListItemClick(event, 5)}
               >
                 <ListItemIcon>
-                  <ContactsIcon></ContactsIcon>
+                  <ContactsIcon style={{ color: '#007772' }}></ContactsIcon>
                 </ListItemIcon>
-                <ListItemText primary={'Contactos'} />
+                <ListItemText style={{ color: 'grey' }} primary={'Contactos'} />
               </ListItem>
             </Link>
           }
         </List>
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <Container maxWidth={false}>
-          <HeaderRoutes />
-          {children}
-        </Container>
+        <HeaderRoutes />
+        <Container maxWidth={false}>{children}</Container>
       </main>
     </div>
   )
