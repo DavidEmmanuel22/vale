@@ -10,7 +10,7 @@ import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import { getValedores } from 'requests/allValedores'
-import RegisterValedor from 'components/valedor/register'
+import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 const columns = [
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Valedores = () => {
+const Negocios = () => {
   const classes = useStyles()
   const classes2 = useStyles2()
 
@@ -61,7 +61,7 @@ const Valedores = () => {
       console.log(allValedores)
       setIsLoading(false)
     }
-    getAllValedores()
+    //getAllValedores()
   }, [openDialog])
 
   return (
@@ -75,7 +75,7 @@ const Valedores = () => {
             variant="contained"
             style={{ marginLeft: 'auto' }}
           >
-            Agregar Valedor
+            Agregar Negocio
           </Button>
         </Paper>
         <Paper className={classes.paper}>
@@ -118,10 +118,10 @@ const Valedores = () => {
         </Paper>
       </Grid>
       <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
-        <RegisterValedor></RegisterValedor>
+        <RegisterNegocio></RegisterNegocio>
       </PopUp>
     </Grid>
   )
 }
 
-export default Valedores
+export default Negocios
