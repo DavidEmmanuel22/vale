@@ -1,54 +1,76 @@
 import React, { useState } from 'react'
 import Axios from 'axios'
-import { useHistory } from 'react-router-dom'
+import Alert from 'components/Alert/Alert'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
-// import UserContext from 'hooks/UserContext'
-import Alert from '../Alert/Alert'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import LockIcon from '@material-ui/icons/Lock'
-import decorationimg from '../../images/vale-ribbn.png'
 import logologin from '../../images/valedor-logo.png'
 import './registerNegocio.css'
 import Styles from './Styles'
 
-const RegisterNegocio = () => {
+const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
+// const RfcExpression = /^[A-Z0-9]$/
+// const AdressExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
+const validationSchema = yup.object({
+  email: yup
+    .string()
+    .email('Correo Electronico Invalido')
+    .required('Email es requerido'),
+  bussinesName: yup
+    .string()
+    .matches(NameExpression, 'Solo se permiten letras para este campo')
+    .min(5, 'Mínimo 5 caracteres')
+    .max(25, 'Maxímo 25 caracteres')
+    .required('Negocio es requerido'),
+  bussinesAdress: yup
+    .string()
+    // .matches( AdressExpression,"Solo se permiten letras Y numeros para este campo")
+    .min(5, 'Mínimo 5 caracteres')
+    .max(25, 'Maxímo 25 caracteres')
+    .required('Dirección es requerida'),
+  bussinesRfc: yup
+    .string()
+    // .matches( RfcExpression,"Solo se permiten letras mayusculas y nùmeros enteros")
+    .min(7, 'Mínimo 5 caracteres')
+    .max(14, 'Maxímo 25 caracteres')
+    .required('RFC es requerido')
+})
+
+const RegisterNegocio = (props) => {
   const classes = Styles()
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState()
+  const [alert, setAlert] = useState()
 
-  // const setUserData = useContext(UserContext)
-  const history = useHistory()
-
-  const submit = async (event) => {
-    event.preventDefault()
-    /*  try {
-			const loginUser = {
-				email,
-				password,
-				passwordCheck: password,
-				firstName,
-				lastName
-			}
-			console.log(loginUser)
-			const loginRes = await Axios.post(
-				'https://devbackend.valevaledor.com/register',
-				loginUser
-			)
-			console.log(loginRes.data)
-			setError("El valedor ha sido creado satisfactoriamente")
-		} catch (error) {
-			error.response.data.msg && setError(error.response.data.msg)
-		}  */
-    setError('This section will be activated soon!')
-  }
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      bussinesName: '',
+      bussinesAdress: '',
+      bussinesRfc: ''
+    },
+    onSubmit: async (values, { resetForm }) => {
+      console.log(JSON.stringify(values))
+      // event.preventDefault()
+      try {
+        const registerRes = await Axios.post(
+          'https://devbackend.valevaledor.com/register',
+          values
+        )
+        console.log(registerRes.data)
+        setAlert('El Negocio ha sido creado satisfactoriamente')
+        // console.log('El Negocio ha sido creado satisfactoriamente')
+      } catch (error) {
+        console.log(error)
+      }
+      resetForm({ values: '' })
+    },
+    validationSchema: validationSchema
+  })
 
   return (
-    <div className="register-negocio">
-      {error && (
-        <Alert message={error} clearError={() => setError(undefined)} />
+    <div className="register-valedor">
+      {alert && (
+        <Alert message={alert} clearError={() => setAlert(undefined)} />
       )}
       <div className="content">
         <div className="foto-tom">
@@ -57,14 +79,17 @@ const RegisterNegocio = () => {
           </div>
         </div>
         <div>
-          <h4 className="modal-title">Registra un negocio</h4>
-          <form className="content-form" onSubmit={submit}>
+          <h4 className="modal-title">Registra un Negocio</h4>
+          <form className="content-form" onSubmit={formik.handleSubmit}>
             <TextField
               className={classes.widthnew}
-              id="input-with-icon-textfield"
-              placeholder="Correo"
+              id="email"
+              placeholder="Email"
               type="email"
-              onChange={(event) => setEmail(event.target.value)}
+              value={formik.values.email || ''}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -75,10 +100,18 @@ const RegisterNegocio = () => {
             />
             <TextField
               className={classes.widthnew}
-              id="input-with-icon-textfield"
-              placeholder="Nombre"
-              type="string"
-              // onChange={(event) => setEmail(event.target.value)}
+              id="bussinesName"
+              placeholder="Negocio"
+              type="text"
+              value={formik.values.bussinesName || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesName &&
+                Boolean(formik.errors.bussinesName)
+              }
+              helperText={
+                formik.touched.bussinesName && formik.errors.bussinesName
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -89,10 +122,18 @@ const RegisterNegocio = () => {
             />
             <TextField
               className={classes.widthnew}
-              id="input-with-icon-textfield"
-              placeholder="Apellido"
-              type="string"
-              // onChange={(event) => setEmail(event.target.value)}
+              id="bussinesAdress"
+              placeholder="Direcciòn del negocio"
+              value={formik.values.bussinesAdress || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesAdress &&
+                Boolean(formik.errors.bussinesAdress)
+              }
+              helperText={
+                formik.touched.bussinesAdress && formik.errors.bussinesAdress
+              }
+              type="text"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -103,18 +144,21 @@ const RegisterNegocio = () => {
             />
             <TextField
               className={classes.widthnew}
-              id="input-with-icon-password"
-              placeholder="Contraseña"
-              type="password"
-              autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
+              id="bussinesRfc"
+              placeholder="RFC"
+              value={formik.values.bussinesRfc || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesRfc && Boolean(formik.errors.bussinesRfc)
+              }
+              helperText={
+                formik.touched.bussinesRfc && formik.errors.bussinesRfc
+              }
+              type="text"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment
-                    position="start"
-                    className="MuiInputAdornment-root"
-                  >
-                    <LockIcon />
+                  <InputAdornment position="start">
+                    <AccountCircle />
                   </InputAdornment>
                 )
               }}
@@ -125,7 +169,7 @@ const RegisterNegocio = () => {
                 type="submit"
                 color="primary"
               >
-                Iniciar Sesión
+                Registrar Negocio
               </Button>
             </div>
           </form>
