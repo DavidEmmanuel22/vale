@@ -6,6 +6,7 @@ import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
 import { UserContext } from '../context/userContext'
 import PrivateRoute from './PrivateRoute'
+import Valedores from 'pages/valedores/Valedores'
 
 const Routes = () => {
   const { isAuthenticated } = useContext(UserContext)
@@ -20,7 +21,7 @@ const Routes = () => {
 
       <PrivateRoute exact path="/dashboard/valedores">
         <GeneralLayout>
-          <h1>Valedores</h1>
+          <Valedores></Valedores>
         </GeneralLayout>
       </PrivateRoute>
 
