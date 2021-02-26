@@ -10,6 +10,7 @@ import FormPerfil from 'components/Forms/FormPerfil/FormPerfil'
 import Styles from './Styles'
 import RegisterValedor from '../valedor/register'
 import RegisterNegocio from 'components/negocio/register'
+import CustomizedDialogs from 'responsivePopUp'
 
 const CenteredGrid = () => {
   const classes = Styles()

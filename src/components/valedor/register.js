@@ -7,7 +7,7 @@ import { TextField, Button, InputAdornment, Grid } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
 import logologin from '../../images/valedor-logo.png'
-import './Login.css'
+import './registerValedor.css'
 import Styles from './Styles'
 
 const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
@@ -69,91 +69,100 @@ const RegisterValedor = (props) => {
       {alert && (
         <Alert message={alert} clearError={() => setAlert(undefined)} />
       )}
-      <Grid className="content" container direction="column">
-        <h4 className="modal-title">Registra un Valedor</h4>
-        <form className="content-form" onSubmit={formik.handleSubmit}>
-          <TextField
-            className={classes.widthnew}
-            id="email"
-            placeholder="Correo"
-            type="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="firstName"
-            placeholder="Nombre"
-            value={formik.values.firstName}
-            onChange={formik.handleChange}
-            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-            helperText={formik.touched.firstName && formik.errors.firstName}
-            type="text"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="lastName"
-            placeholder="Apellido"
-            value={formik.values.lastName}
-            onChange={formik.handleChange}
-            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-            helperText={formik.touched.lastName && formik.errors.lastName}
-            type="text"
-            // onChange={(event) => setLastName(event.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="credits"
-            placeholder="Credito"
-            type="number"
-            value={formik.values.credits}
-            onChange={formik.handleChange}
-            error={formik.touched.credits && Boolean(formik.errors.credits)}
-            helperText={formik.touched.credits && formik.errors.credits}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  className="MuiInputAdornment-root"
-                >
-                  <LockIcon />
-                </InputAdornment>
-              )
-            }}
-          />
-          <div className="button-login">
-            <Button
-              className={`${classes.widthbutton} `}
-              type="submit"
-              color="primary"
-            >
-              Registrar Valedor{' '}
-            </Button>
+      <Grid className="content" container>
+        <Grid className="foto-tom">
+          <div className="logo-content">
+            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
           </div>
-        </form>
+        </Grid>
+        <Grid className="content" direction="column" maxWidth={false}>
+          <h4 className="modal-title">Registra un Valedor</h4>
+          <form className="content-form" onSubmit={formik.handleSubmit}>
+            <TextField
+              className={classes.widthnew}
+              id="email"
+              placeholder="Correo"
+              type="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="firstName"
+              placeholder="Nombre"
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.firstName && Boolean(formik.errors.firstName)
+              }
+              helperText={formik.touched.firstName && formik.errors.firstName}
+              type="text"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="lastName"
+              placeholder="Apellido"
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+              helperText={formik.touched.lastName && formik.errors.lastName}
+              type="text"
+              // onChange={(event) => setLastName(event.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="credits"
+              placeholder="Credito"
+              type="number"
+              value={formik.values.credits}
+              onChange={formik.handleChange}
+              error={formik.touched.credits && Boolean(formik.errors.credits)}
+              helperText={formik.touched.credits && formik.errors.credits}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    className="MuiInputAdornment-root"
+                  >
+                    <LockIcon />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <div className="button-login">
+              <Button
+                className={`${classes.widthbutton} `}
+                type="submit"
+                color="primary"
+              >
+                Registrar Valedor{' '}
+              </Button>
+            </div>
+          </form>
+        </Grid>
       </Grid>
     </div>
   )
