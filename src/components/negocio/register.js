@@ -72,99 +72,109 @@ const RegisterNegocio = (props) => {
       {alert && (
         <Alert message={alert} clearError={() => setAlert(undefined)} />
       )}
-      <Grid className="content" direction="column">
-        <h4 className="modal-title">Registra un Negocio</h4>
-        <form className="content-form" onSubmit={formik.handleSubmit}>
-          <TextField
-            className={classes.widthnew}
-            id="email"
-            placeholder="Email"
-            type="email"
-            value={formik.values.email || ''}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="bussinesName"
-            placeholder="Negocio"
-            type="text"
-            value={formik.values.bussinesName || ''}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.bussinesName && Boolean(formik.errors.bussinesName)
-            }
-            helperText={
-              formik.touched.bussinesName && formik.errors.bussinesName
-            }
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="bussinesAdress"
-            placeholder="Direcciòn del negocio"
-            value={formik.values.bussinesAdress || ''}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.bussinesAdress &&
-              Boolean(formik.errors.bussinesAdress)
-            }
-            helperText={
-              formik.touched.bussinesAdress && formik.errors.bussinesAdress
-            }
-            type="text"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <TextField
-            className={classes.widthnew}
-            id="bussinesRfc"
-            placeholder="RFC"
-            value={formik.values.bussinesRfc || ''}
-            onChange={formik.handleChange}
-            error={
-              formik.touched.bussinesRfc && Boolean(formik.errors.bussinesRfc)
-            }
-            helperText={formik.touched.bussinesRfc && formik.errors.bussinesRfc}
-            type="text"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              )
-            }}
-          />
-          <div className="button-login">
-            <Button
-              className={`${classes.widthbutton} `}
-              type="submit"
-              color="primary"
-            >
-              Registrar Negocio
-            </Button>
+      <div className="content">
+        <div className="foto-tom">
+          <div className="logo-content">
+            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
           </div>
-        </form>
-      </Grid>
+        </div>
+        <Grid className="content" direction="column">
+          <h4 className="modal-title">Registra un Negocio</h4>
+          <form className="content-form" onSubmit={formik.handleSubmit}>
+            <TextField
+              className={classes.widthnew}
+              id="email"
+              placeholder="Email"
+              type="email"
+              value={formik.values.email || ''}
+              onChange={formik.handleChange}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="bussinesName"
+              placeholder="Negocio"
+              type="text"
+              value={formik.values.bussinesName || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesName &&
+                Boolean(formik.errors.bussinesName)
+              }
+              helperText={
+                formik.touched.bussinesName && formik.errors.bussinesName
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="bussinesAdress"
+              placeholder="Direcciòn del negocio"
+              value={formik.values.bussinesAdress || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesAdress &&
+                Boolean(formik.errors.bussinesAdress)
+              }
+              helperText={
+                formik.touched.bussinesAdress && formik.errors.bussinesAdress
+              }
+              type="text"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <TextField
+              className={classes.widthnew}
+              id="bussinesRfc"
+              placeholder="RFC"
+              value={formik.values.bussinesRfc || ''}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.bussinesRfc && Boolean(formik.errors.bussinesRfc)
+              }
+              helperText={
+                formik.touched.bussinesRfc && formik.errors.bussinesRfc
+              }
+              type="text"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                )
+              }}
+            />
+            <div className="button-login">
+              <Button
+                className={`${classes.widthbutton} `}
+                type="submit"
+                color="primary"
+              >
+                Registrar Negocio
+              </Button>
+            </div>
+          </form>
+        </Grid>
+      </div>
     </div>
   )
 }
