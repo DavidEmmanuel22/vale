@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -8,6 +8,8 @@ import MuiDialogActions from '@material-ui/core/DialogActions'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
+import Alert from '@material-ui/lab/Alert'
+import './popup.css'
 
 const styles = (theme) => ({
   root: {
@@ -26,7 +28,9 @@ const DialogTitle = withStyles(styles)((props) => {
   const { children, classes, onClose, ...other } = props
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <Typography variant="h4" className="">
+        {children}
+      </Typography>
       {onClose ? (
         <IconButton
           aria-label="close"
@@ -53,7 +57,9 @@ const DialogActions = withStyles((theme) => ({
   }
 }))(MuiDialogActions)
 
-export default function CustomizedDialogs({
+export const AlertContext = createContext(null)
+
+export default function ResponsivePopUp({
   title,
   children,
   open,
@@ -67,25 +73,45 @@ export default function CustomizedDialogs({
     setOpen(false)
   }
 
+  const [alertText, setAlertText] = useState('')
+  const [alertColor, setAlertColor] = useState('success')
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAlertText('')
+      setAlertColor('success')
+    }, 8000)
+  }, [alertText])
+
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open dialog
-      </Button>
       <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        className="custom-dialog"
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle
+          className="custom-dialog-title"
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
           {title}
+          {alertText !== '' && <Alert severity={alertColor}>{alertText}</Alert>}
         </DialogTitle>
-        <DialogContent dividers>{children}</DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose} color="primary">
-            {confirmText}
-          </Button>
-        </DialogActions>
+
+        <DialogContent dividers>
+          <AlertContext.Provider
+            value={{
+              alertText,
+              setAlertText,
+              alertColor,
+              setAlertColor
+            }}
+          >
+            {children}
+          </AlertContext.Provider>
+        </DialogContent>
       </Dialog>
     </div>
   )

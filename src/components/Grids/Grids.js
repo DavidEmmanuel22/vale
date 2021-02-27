@@ -10,7 +10,7 @@ import FormPerfil from 'components/Forms/FormPerfil/FormPerfil'
 import Styles from './Styles'
 import RegisterValedor from '../valedor/register'
 import RegisterNegocio from 'components/negocio/register'
-import CustomizedDialogs from 'responsivePopUp'
+import ResponsivePopUp from 'components/popUp/responsivePopUp'
 
 const CenteredGrid = () => {
   const classes = Styles()
@@ -47,13 +47,26 @@ const CenteredGrid = () => {
           </Paper>
         </Grid>
       </Grid>
-      <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
-        {dialogName === 'valedor' ? (
+
+      {dialogName === 'valedor' ? (
+        <ResponsivePopUp
+          open={openDialog}
+          setOpen={setOpenDialog}
+          title={'Registra un valedor'}
+          confirmText={'Confirm Text'}
+        >
           <RegisterValedor></RegisterValedor>
-        ) : (
+        </ResponsivePopUp>
+      ) : (
+        <ResponsivePopUp
+          open={openDialog}
+          setOpen={setOpenDialog}
+          title={'Registra un negocio'}
+          confirmText={'Confirm Text'}
+        >
           <RegisterNegocio></RegisterNegocio>
-        )}
-      </PopUp>
+        </ResponsivePopUp>
+      )}
     </div>
   )
 }
