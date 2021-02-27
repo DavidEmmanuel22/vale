@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Axios from 'axios'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -9,6 +9,9 @@ import LockIcon from '@material-ui/icons/Lock'
 import logologin from '../../images/valedor-logo.png'
 import './registerValedor.css'
 import Styles from './Styles'
+import EmailIcon from '@material-ui/icons/Email'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import { AlertContext } from '../popUp/responsivePopUp'
 
 const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
 // const creditsExpression = /^[0-9]$/
@@ -36,7 +39,10 @@ const validationSchema = yup.object({
 
 const RegisterValedor = (props) => {
   const classes = Styles()
-  const [alert, setAlert] = useState()
+
+  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
+    AlertContext
+  )
 
   const formik = useFormik({
     initialValues: {
@@ -54,10 +60,12 @@ const RegisterValedor = (props) => {
           valedorUser
         )
         console.log(registerRes.data)
-
-        setAlert('El valedor ha sido creado satisfactoriamente')
+        setAlertColor('success')
+        setAlertText('El valedor ha sido creado satisfactoriamente')
       } catch (error) {
         console.log(error)
+        setAlertColor('error')
+        setAlertText('An error was ocurred, please try latter')
       }
       resetForm({ valedorUser: '' })
     },
@@ -66,18 +74,9 @@ const RegisterValedor = (props) => {
 
   return (
     <div className="register-valedor">
-      {alert && (
-        <Alert message={alert} clearError={() => setAlert(undefined)} />
-      )}
-      <Grid className="content" container>
-        <Grid className="foto-tom">
-          <div className="logo-content">
-            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
-          </div>
-        </Grid>
-        <Grid className="content" direction="column" maxWidth={false}>
-          <h4 className="modal-title">Registra un Valedor</h4>
-          <form className="content-form" onSubmit={formik.handleSubmit}>
+      <form className={classes.root} onSubmit={formik.handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="email"
@@ -90,11 +89,13 @@ const RegisterValedor = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <EmailIcon></EmailIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="firstName"
@@ -114,6 +115,8 @@ const RegisterValedor = (props) => {
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="lastName"
@@ -132,6 +135,8 @@ const RegisterValedor = (props) => {
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="credits"
@@ -147,11 +152,13 @@ const RegisterValedor = (props) => {
                     position="start"
                     className="MuiInputAdornment-root"
                   >
-                    <LockIcon />
+                    <MonetizationOnIcon></MonetizationOnIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12}>
             <div className="button-login">
               <Button
                 className={`${classes.widthbutton} `}
@@ -161,9 +168,9 @@ const RegisterValedor = (props) => {
                 Registrar Valedor{' '}
               </Button>
             </div>
-          </form>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
     </div>
   )
 }

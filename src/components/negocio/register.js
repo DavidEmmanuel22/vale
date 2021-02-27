@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Axios from 'axios'
 import Alert from 'components/Alert/Alert'
 import { useFormik } from 'formik'
@@ -8,6 +8,12 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import logologin from '../../images/valedor-logo.png'
 import './registerNegocio.css'
 import Styles from './Styles'
+import Paper from '@material-ui/core/Paper'
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
+import EmailIcon from '@material-ui/icons/Email'
+import DirectionsIcon from '@material-ui/icons/Directions'
+import AssignmentIcon from '@material-ui/icons/Assignment'
+import { AlertContext } from '../popUp/responsivePopUp'
 
 const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
 // const RfcExpression = /^[A-Z0-9]$/
@@ -39,8 +45,11 @@ const validationSchema = yup.object({
 
 const RegisterNegocio = (props) => {
   const classes = Styles()
-  const [alert, setAlert] = useState()
-
+  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
+    AlertContext
+  )
+  //setAlertColor("error")
+  //setAlertText("hello")
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -57,10 +66,14 @@ const RegisterNegocio = (props) => {
           values
         )
         console.log(registerRes.data)
-        setAlert('El Negocio ha sido creado satisfactoriamente')
+        setAlertText('El Negocio ha sido creado satisfactoriamente')
+        setAlertColor('success')
+        console.log('doneee')
         // console.log('El Negocio ha sido creado satisfactoriamente')
       } catch (error) {
         console.log(error)
+        setAlertText('An error was ocurred, please try latter')
+        setAlertColor('error')
       }
       resetForm({ values: '' })
     },
@@ -69,18 +82,9 @@ const RegisterNegocio = (props) => {
 
   return (
     <div className="register-valedor">
-      {alert && (
-        <Alert message={alert} clearError={() => setAlert(undefined)} />
-      )}
-      <div className="content">
-        <div className="foto-tom">
-          <div className="logo-content">
-            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
-          </div>
-        </div>
-        <Grid className="content" direction="column">
-          <h4 className="modal-title">Registra un Negocio</h4>
-          <form className="content-form" onSubmit={formik.handleSubmit}>
+      <form className={classes.root} onSubmit={formik.handleSubmit}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="email"
@@ -93,11 +97,13 @@ const RegisterNegocio = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <EmailIcon></EmailIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="bussinesName"
@@ -115,11 +121,13 @@ const RegisterNegocio = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <BusinessCenterIcon></BusinessCenterIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="bussinesAdress"
@@ -137,11 +145,13 @@ const RegisterNegocio = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <DirectionsIcon></DirectionsIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12} md={6}>
             <TextField
               className={classes.widthnew}
               id="bussinesRfc"
@@ -158,11 +168,13 @@ const RegisterNegocio = (props) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <AccountCircle />
+                    <AssignmentIcon></AssignmentIcon>
                   </InputAdornment>
                 )
               }}
             />
+          </Grid>
+          <Grid item xs={12}>
             <div className="button-login">
               <Button
                 className={`${classes.widthbutton} `}
@@ -172,9 +184,9 @@ const RegisterNegocio = (props) => {
                 Registrar Negocio
               </Button>
             </div>
-          </form>
+          </Grid>
         </Grid>
-      </div>
+      </form>
     </div>
   )
 }

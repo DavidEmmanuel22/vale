@@ -12,6 +12,7 @@ import TableRow from '@material-ui/core/TableRow'
 import { getValedores } from 'requests/allValedores'
 import RegisterValedor from 'components/valedor/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import ResponsivePopUp from 'components/popUp/responsivePopUp'
 
 const columns = [
   { id: 'name', label: 'Nombre' },
@@ -117,9 +118,14 @@ const Valedores = () => {
           </TableContainer>
         </Paper>
       </Grid>
-      <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
+      <ResponsivePopUp
+        open={openDialog}
+        setOpen={setOpenDialog}
+        title={'Registra un valedor'}
+        confirmText={'Confirm Text'}
+      >
         <RegisterValedor></RegisterValedor>
-      </PopUp>
+      </ResponsivePopUp>
     </Grid>
   )
 }
