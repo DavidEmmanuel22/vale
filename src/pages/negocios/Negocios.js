@@ -9,7 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
-import { getValedores } from 'requests/allValedores'
+import { getNegocios } from 'requests/allNegocios'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
@@ -17,7 +17,7 @@ import ResponsivePopUp from 'components/popUp/responsivePopUp'
 const columns = [
   { id: 'name', label: 'Nombre' },
   { id: 'email', label: 'Correo' },
-  { id: 'credit', label: 'Credito' },
+  { id: 'adress', label: 'Direccion' },
   { id: 'actions', label: 'Acciones' }
 ]
 
@@ -51,18 +51,17 @@ const Negocios = () => {
   const classes2 = useStyles2()
 
   const [openDialog, setOpenDialog] = useState(false)
-  const [valedores, setValedores] = useState([])
+  const [negocios, setNegocios] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    async function getAllValedores() {
+    async function getAllNegocios() {
       setIsLoading(true)
-      const allValedores = await getValedores()
-      setValedores(allValedores)
-      console.log(allValedores)
+      const allNegocios = await getNegocios()
+      setNegocios(allNegocios)
       setIsLoading(false)
     }
-    //getAllValedores()
+    !openDialog && getAllNegocios()
   }, [openDialog])
 
   return (
@@ -92,13 +91,13 @@ const Negocios = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {valedores.map((valedor, index) => (
+                {negocios.map((negocio, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">{negocio.bussinesName}</TableCell>
+                    <TableCell align="center">{negocio.email}</TableCell>
                     <TableCell align="center">
-                      {valedor.firstName} {valedor.lastName}
+                      {negocio.bussinesAdress}
                     </TableCell>
-                    <TableCell align="center">{valedor.email}</TableCell>
-                    <TableCell align="center">{valedor.credits}</TableCell>
                     <TableCell align="center">
                       <Button
                         color="primary"
@@ -108,7 +107,7 @@ const Negocios = () => {
                         Edit
                       </Button>
                       <Button color="secondary" variant="outlined">
-                        Delete
+                        Delete{' '}
                       </Button>
                     </TableCell>
                   </TableRow>
