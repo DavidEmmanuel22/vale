@@ -31,7 +31,7 @@ const ContextProvider = (props) => {
     if (token) {
       const decoded = jwt_decode(token)
       console.log(decoded)
-      setUser(decoded)
+      setUser(decoded.user)
     } else {
       setUser(false)
     }
