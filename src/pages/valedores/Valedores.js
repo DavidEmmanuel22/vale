@@ -58,9 +58,13 @@ const Valedores = () => {
     async function getAllValedores() {
       setIsLoading(true)
       const allValedores = await getValedores()
-      setValedores(allValedores)
-      console.log(allValedores)
-      setIsLoading(false)
+      if (!allValedores.msg) {
+        setValedores(allValedores)
+        console.log(allValedores)
+        setIsLoading(false)
+      } else {
+        console.log(allValedores.msg)
+      }
     }
     getAllValedores()
   }, [openDialog])

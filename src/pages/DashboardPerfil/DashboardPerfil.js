@@ -5,14 +5,16 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import { Button, Typography } from '@material-ui/core'
 import { UserContext } from '../../context/userContext'
+import BackgroundPaper from 'components/BackgroundPaper'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
   },
   paper: {
-    padding: theme.spacing(2),
+    padding: theme.spacing(3),
     textAlign: 'center',
+    borderRadius: '15px',
     color: theme.palette.text.secondary
   }
 }))
@@ -30,7 +32,7 @@ const DashboardPerfil = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={9} lg={9}>
           <Paper className={classes.paper}>
             <form noValidate autoComplete="off " className={classes.root}>
               <Grid container spacing={3}>
@@ -39,13 +41,13 @@ const DashboardPerfil = () => {
                     Perfil de Usuario
                   </Typography>
                 </Grid>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={2}>
                   <img
                     width="100"
                     src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
                   ></img>
                 </Grid>
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={5}>
                   <TextField
                     style={{ width: '100%' }}
                     id="standard-basic"
@@ -107,7 +109,8 @@ const DashboardPerfil = () => {
             </form>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={2}>
+        <Grid item xs={12} md={3} lg={3}>
+          <BackgroundPaper></BackgroundPaper>
           <Button
             variant="contained"
             color="secondary"
@@ -119,6 +122,7 @@ const DashboardPerfil = () => {
             Registrar Negocio
           </Button>
         </Grid>
+        <Grid item xs={12} md={2}></Grid>
       </Grid>
     </div>
   )

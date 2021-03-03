@@ -23,7 +23,7 @@ import { Container, Button } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
 import './Styles.css'
 
-const drawerWidth = 280
+const drawerWidth = 230
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
@@ -39,9 +39,9 @@ const Styles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    height: '100px',
+    height: '80px',
     backgroundColor: 'white',
-    position: 'absolute'
+    position: 'fixed'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -50,11 +50,12 @@ const Styles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     }),
-    height: '100px',
+    height: '80px',
     backgroundColor: 'white'
   },
   menuButton: {
-    margin: '-7px -9px -39px',
+    marginRight: 'auto',
+    paddingLeft: '25px',
     color: '#007772'
   },
   hide: {
@@ -88,6 +89,7 @@ const Styles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: theme.spacing(0, 1),
+    height: '80px',
     // necessary for content to be below app bar
     ...theme.mixins.toolbar
   },
@@ -104,13 +106,11 @@ const Styles = makeStyles((theme) => ({
   ButtonLogin: {
     marginLeft: 'auto',
     position: 'absolute',
-    top: '21px',
-    left: '84%',
     color: 'white',
-    padding: '5px 11px',
-    fontSize: '22px',
+    textAlign: 'center',
+    fontSize: '18px',
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
-    borderRadius: '20px',
+    borderRadius: '15px',
     textTransform: 'capitalize',
     backgroundColor: '#f9a02b'
   }
@@ -146,27 +146,25 @@ export default function GeneralLayout({ children }) {
           [classes.appBarShift]: open
         })}
       >
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={() => setOpen(!open)}
             edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open
-            })}
+            className={classes.menuButton}
           >
             <MenuIcon />
           </IconButton>
-          <div style={{ display: 'flex', width: '100%' }}>
-            <Typography variant="h6" noWrap></Typography>
-            <Button
-              className={classes.ButtonLogin}
-              variant="contained"
-              onClick={logout}
-            />
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={logout}
+            className={classes.ButtonLogin}
+            startIcon={<Person></Person>}
+          >
             Logout
-          </div>
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -183,14 +181,10 @@ export default function GeneralLayout({ children }) {
         }}
       >
         <div className={classes.toolbar}>
-          <img style={{ width: '80%' }} src="/logo-appbar.png"></img>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
+          <img
+            style={{ width: '100%', height: '100%' }}
+            src="/logo-appbar.png"
+          ></img>
         </div>
         <List style={{ marginTop: '62px', padding: '10px' }}>
           {/*     ADMIN ROUTES		*/}
@@ -285,6 +279,13 @@ export default function GeneralLayout({ children }) {
       </Drawer>
       <main className={classes.content}>
         <HeaderRoutes />
+        <IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'rtl' ? (
+            <ChevronRightIcon />
+          ) : (
+            <ChevronLeftIcon />
+          )}
+        </IconButton>
         <Container maxWidth={false}>{children}</Container>
       </main>
     </div>

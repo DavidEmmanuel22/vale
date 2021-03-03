@@ -58,8 +58,12 @@ const Negocios = () => {
     async function getAllNegocios() {
       setIsLoading(true)
       const allNegocios = await getNegocios()
-      setNegocios(allNegocios)
-      setIsLoading(false)
+      if (!allNegocios.msg) {
+        setNegocios(allNegocios)
+        setIsLoading(false)
+      } else {
+        console.log(allNegocios.msg)
+      }
     }
     !openDialog && getAllNegocios()
   }, [openDialog])
