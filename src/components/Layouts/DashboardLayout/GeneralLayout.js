@@ -95,10 +95,11 @@ const Styles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     backgroundColor: '#e5e5e5',
-    height: '1000px',
-    margin: '101px 0px 0px'
+    marginTop: '80px',
+    paddingTop: '30px',
+    minHeight: window.screen.height - 200
   },
   dividerLine: {
     margin: '30px 0px'
@@ -106,13 +107,11 @@ const Styles = makeStyles((theme) => ({
   ButtonLogin: {
     marginLeft: 'auto',
     position: 'absolute',
-    color: 'white',
     textAlign: 'center',
     fontSize: '18px',
     boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
     borderRadius: '15px',
-    textTransform: 'capitalize',
-    backgroundColor: '#f9a02b'
+    textTransform: 'capitalize'
   }
 }))
 
@@ -121,7 +120,7 @@ export default function GeneralLayout({ children }) {
   const classes = Styles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
-  const [selectedIndex, setSelectedIndex] = React.useState(1)
+  const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
   const { isAuthenticated, user, logout } = useContext(UserContext)
 
@@ -163,7 +162,7 @@ export default function GeneralLayout({ children }) {
             className={classes.ButtonLogin}
             startIcon={<Person></Person>}
           >
-            Logout
+            Logout{' '}
           </Button>
         </Toolbar>
       </AppBar>
@@ -278,14 +277,6 @@ export default function GeneralLayout({ children }) {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <HeaderRoutes />
-        <IconButton onClick={handleDrawerClose}>
-          {theme.direction === 'rtl' ? (
-            <ChevronRightIcon />
-          ) : (
-            <ChevronLeftIcon />
-          )}
-        </IconButton>
         <Container maxWidth={false}>{children}</Container>
       </main>
     </div>

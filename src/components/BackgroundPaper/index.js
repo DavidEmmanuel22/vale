@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Paper from '@material-ui/core/Paper'
-
 import Image from '../../images/valedor-green.png'
 import './index.css'
+import { Button } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 const styles = {
   paperContainer: {
@@ -24,7 +24,11 @@ const BackgroundPaper = () => {
         <div className="hero-text">
           <h3>Nuevos mensajes</h3>
           <h1>50</h1>
-          <button>Ver Más</button>
+          <Link to="/dashboard" style={{ width: '100%', display: 'flex' }}>
+            <Button variant="contained" color="secondary">
+              Ver Más
+            </Button>
+          </Link>
         </div>
       </div>
     </React.Fragment>

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
 .hero-image {
   /*background-color: #007772;*/
-  height: 120px;
+  height: 50%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -37,31 +37,15 @@
 }
 
 .hero-text button {
-  background-color: #f9a02b;
-  padding: 7px;
   border: 0;
   border-radius: 10px;
-  color: white;
-  margin-left: 50%;
-  width: 40%;
+  margin-left: auto;
+  margin-right: 10px;
 }
 
 .hero-text button:hover {
-  background-color: #ee8b09;
-  padding: 7px;
   border: 0;
   border-radius: 10px;
-  color: white;
-  margin-left: 50%;
-  width: 40%;
-}
-
-.hero-text button:active {
-  background-color: #f9a02b;
-  padding: 7px;
-  border: 0;
-  border-radius: 10px;
-  color: white;
-  margin-left: 50%;
-  width: 40%;
+  margin-left: auto;
+  margin-right: 10px;
 }
