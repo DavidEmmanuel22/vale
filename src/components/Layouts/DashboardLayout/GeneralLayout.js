@@ -182,7 +182,7 @@ export default function GeneralLayout({ children }) {
       >
         <div className={classes.toolbar}>
           <img
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '90%' }}
             src="/logo-appbar.png"
           ></img>
         </div>
