@@ -6,6 +6,12 @@ import TextField from '@material-ui/core/TextField'
 import { Button, Typography } from '@material-ui/core'
 import { UserContext } from '../../context/userContext'
 import BackgroundPaper from 'components/BackgroundPaper'
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
+import ResponsivePopUp from 'components/popUp/responsivePopUp'
+import RegisterNegocio from 'components/negocio/register'
+import RegisterValedor from 'components/valedor/register'
+import Hidden from '@material-ui/core/Hidden'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,13 +32,15 @@ const DashboardPerfil = () => {
   const [lastName, setLastName] = useState(user.lastName)
   const [email, setEmail] = useState(user.email)
   const [onEdit, setOnEdit] = useState(false)
+  const [showModal, setShowModal] = useState(false)
+  const [modalTitle, setModalTitle] = useState('valedor')
 
   console.log(user)
 
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={9} lg={9}>
+        <Grid item xs={12} md={9}>
           <Paper className={classes.paper}>
             <form noValidate autoComplete="off " className={classes.root}>
               <Grid container spacing={3}>
@@ -97,7 +105,7 @@ const DashboardPerfil = () => {
                   {onEdit && (
                     <Button
                       variant="contained"
-                      color="primary"
+                      color="secondary"
                       style={{}}
                       onClick={() => setOnEdit(false)}
                     >
@@ -109,21 +117,86 @@ const DashboardPerfil = () => {
             </form>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={3} lg={3}>
-          <BackgroundPaper></BackgroundPaper>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ width: '100%', marginTop: '10px', marginBottom: '10px' }}
-          >
-            Registrar Valedor
-          </Button>
-          <Button variant="contained" color="primary" style={{ width: '100%' }}>
-            Registrar Negocio
-          </Button>
+        <Grid item xs={12} md={3} lg={3} style={{}}>
+          <Hidden smDown>
+            <BackgroundPaper></BackgroundPaper>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                setModalTitle('valedor')
+                setShowModal(true)
+              }}
+              startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
+              style={{
+                width: '100%',
+                marginTop: '10px',
+                marginBottom: '10px',
+                borderRadius: '15px',
+                height: '21%'
+              }}
+            >
+              Registrar Valedor
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setModalTitle('negocio')
+                setShowModal(true)
+              }}
+              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
+              style={{ width: '100%', borderRadius: '15px', height: '21%' }}
+            >
+              Registrar Negocio
+            </Button>
+          </Hidden>
+          <Hidden mdUp>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                setModalTitle('valedor')
+                setShowModal(true)
+              }}
+              startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
+              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+            >
+              Registrar Valedor
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setModalTitle('negocio')
+                setShowModal(true)
+              }}
+              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
+              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+            >
+              Registrar Negocio
+            </Button>
+          </Hidden>
         </Grid>
         <Grid item xs={12} md={2}></Grid>
       </Grid>
+      {modalTitle === 'valedor' ? (
+        <ResponsivePopUp
+          open={showModal}
+          setOpen={setShowModal}
+          title="Registra un valedor"
+        >
+          <RegisterValedor></RegisterValedor>
+        </ResponsivePopUp>
+      ) : (
+        <ResponsivePopUp
+          open={showModal}
+          setOpen={setShowModal}
+          title={'Registra un negocio'}
+        >
+          <RegisterNegocio></RegisterNegocio>
+        </ResponsivePopUp>
+      )}
     </div>
   )
 }

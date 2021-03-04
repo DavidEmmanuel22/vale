@@ -46,7 +46,8 @@ export const PutRequest = async (path, body) => {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
-      }
+      },
+      mode: 'no-cors'
     }
     const response = await axios.put(
       `https://devbackend.valevaledor.com/${path}`,
