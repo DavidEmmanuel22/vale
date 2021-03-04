@@ -156,7 +156,7 @@ export default function GeneralLayout({ children }) {
             <MenuIcon />
           </IconButton>
           <Button
-            color="primary"
+            color="secondary"
             variant="contained"
             onClick={logout}
             className={classes.ButtonLogin}
@@ -185,7 +185,7 @@ export default function GeneralLayout({ children }) {
             src="/logo-appbar.png"
           ></img>
         </div>
-        <List style={{ marginTop: '62px', padding: '10px' }}>
+        <List style={{ marginTop: '22px', padding: '10px' }}>
           {/*     ADMIN ROUTES		*/}
           {
             <Link className="listLink" to="/dashboard">

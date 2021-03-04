@@ -57,7 +57,7 @@ const DialogActions = withStyles((theme) => ({
   }
 }))(MuiDialogActions)
 
-export const AlertContext = createContext(null)
+export const AlertContext = createContext()
 
 export default function ResponsivePopUp({
   title,
