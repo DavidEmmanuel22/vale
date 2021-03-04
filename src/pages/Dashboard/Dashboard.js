@@ -2,9 +2,19 @@ import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import { BusinessCenter } from '@material-ui/icons'
+import InsertCommentIcon from '@material-ui/icons/InsertComment'
+import { BusinessCenter, DirectionsBusSharp } from '@material-ui/icons'
 import moment from 'moment'
-import { Button, Hidden } from '@material-ui/core'
+import {
+  Button,
+  Hidden,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow
+} from '@material-ui/core'
 import { number } from 'yup/lib/locale'
 import './index.css'
 import AddIcon from '@material-ui/icons/Add'
@@ -45,6 +55,13 @@ const useStyles = makeStyles((theme) => ({
     color: 'white'
   }
 }))
+
+const columns = [
+  { id: 'name', label: 'Nombre' },
+  { id: 'email', label: 'Correo' },
+  { id: 'adress', label: 'Direccion' },
+  { id: 'actions', label: 'Acciones' }
+]
 
 export default function CenteredGrid() {
   const classes = useStyles()
@@ -90,7 +107,7 @@ export default function CenteredGrid() {
       <Grid container className="dashboard-container" spacing={2}>
         <Grid item xs={12}>
           <Hidden smDown>
-            <Paper className={classes.paperFlex}>
+            <Paper className={classes.paperFlex} elevation={0}>
               <p>
                 <span>50</span> Negocios Activos
               </p>
@@ -104,12 +121,12 @@ export default function CenteredGrid() {
           </Hidden>
           <Hidden mdUp>
             <h1 className="dashboard-title">Dashboard</h1>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} elevation={0}>
               <p>
                 <span>50</span> Negocios Activos
               </p>
             </Paper>
-            <Paper className={classes.paper}>
+            <Paper className={classes.paper} elevation={0}>
               <p>
                 <span>100</span> Valedores Activos
               </p>
@@ -167,11 +184,200 @@ export default function CenteredGrid() {
             <p>Agregar Vale</p>
           </a>
         </Grid>
-        <Grid item xs={4}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Grid item xs={12} md={4}>
+          <Paper className={classes.paper}>
+            <TableContainer>
+              <Table>
+                <TableHead className="table-messages-head">
+                  <TableRow>
+                    <TableCell align="center" style={{ color: 'white' }}>
+                      Nuevos Mensajes
+                    </TableCell>
+                    <TableCell align="center"></TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={2}>
+                          <InsertCommentIcon color="primary"></InsertCommentIcon>
+                        </Grid>
+                        <Grid item xs={6}>
+                          Nombre
+                        </Grid>
+                        <Grid item xs={4}>
+                          3/03/2021
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={2}>
+                          <InsertCommentIcon color="primary"></InsertCommentIcon>
+                        </Grid>
+                        <Grid item xs={6}>
+                          Nombre
+                        </Grid>
+                        <Grid item xs={4}>
+                          3/03/2021
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={2}>
+                          <InsertCommentIcon color="primary"></InsertCommentIcon>
+                        </Grid>
+                        <Grid item xs={6}>
+                          Nombre
+                        </Grid>
+                        <Grid item xs={4}>
+                          3/03/2021
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={2}>
+                          <InsertCommentIcon color="primary"></InsertCommentIcon>
+                        </Grid>
+                        <Grid item xs={6}>
+                          Nombre
+                        </Grid>
+                        <Grid item xs={4}>
+                          3/03/2021
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </Grid>
-        <Grid item xs={8}>
-          <Paper className={classes.paper}>xs=3</Paper>
+        <Grid item xs={12} md={8}>
+          <Paper className={classes.paper}>
+            <TableContainer>
+              <Table>
+                <TableHead className="table-messages-head">
+                  <TableRow>
+                    <TableCell align="center" style={{ color: 'white' }}>
+                      Vales Pendientes
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={3}>
+                          123456
+                        </Grid>
+                        <Grid item xs={3}>
+                          3/03/2021
+                        </Grid>
+                        <Grid item xs={3}>
+                          Negocio
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button variant="outlined" color="primary">
+                            Asignar
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={3}>
+                          123456
+                        </Grid>
+                        <Grid item xs={3}>
+                          3/03/2021
+                        </Grid>
+                        <Grid item xs={3}>
+                          Negocio
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button variant="outlined" color="primary">
+                            Asignar
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={3}>
+                          123456
+                        </Grid>
+                        <Grid item xs={3}>
+                          3/03/2021
+                        </Grid>
+                        <Grid item xs={3}>
+                          Negocio
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button variant="outlined" color="primary">
+                            Asignar
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={3}>
+                          123456
+                        </Grid>
+                        <Grid item xs={3}>
+                          3/03/2021
+                        </Grid>
+                        <Grid item xs={3}>
+                          Negocio
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button variant="outlined" color="primary">
+                            Asignar
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow role="checkbox" tabIndex={-1}>
+                    <TableCell align="center">
+                      <Grid container>
+                        <Grid item xs={3}>
+                          123456
+                        </Grid>
+                        <Grid item xs={3}>
+                          3/03/2021
+                        </Grid>
+                        <Grid item xs={3}>
+                          Negocio
+                        </Grid>
+                        <Grid item xs={3}>
+                          <Button variant="outlined" color="primary">
+                            Asignar
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
         </Grid>
       </Grid>
       {showDialog && handleDialog()}

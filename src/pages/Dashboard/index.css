@@ -9,6 +9,7 @@
   font-size: 18px;
   font-weight: 900;
   background-color: rgb(0, 119, 114);
+  background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
   border-radius: 6px;
   color: white;
   padding-inline-start: 10px;
@@ -19,11 +20,19 @@
   display: flex;
   border-radius: 10px;
   height: 70px;
-  box-shadow: 5px 8px 10px #888888;
+  box-shadow: 2px 4px 6px #888888;
+}
+
+.register-button:hover {
+  display: flex;
+  border-radius: 10px;
+  height: 70px;
+  box-shadow: 1px 2px 3px #6e6e6e;
 }
 
 .register-button div {
   background-color: #f9a02b;
+  background: linear-gradient(to right, #f9a02b, #fab153);
   border-radius: 10px 0 0 10px;
   width: 30%;
   display: flex;
@@ -77,4 +86,9 @@ h1.dashboard-title {
   text-align: center;
   margin-bottom: 25px;
   color: rgb(31, 29, 29);
+}
+
+.table-messages-head {
+  background: rgb(45, 106, 79);
+  background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
 }
