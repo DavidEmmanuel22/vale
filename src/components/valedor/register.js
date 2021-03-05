@@ -12,6 +12,7 @@ import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { AlertContext } from '../popUp/responsivePopUp'
+import { createValedor } from 'requests/allValedores'
 
 const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
 // const creditsExpression = /^[0-9]$/
@@ -52,22 +53,17 @@ const RegisterValedor = (props) => {
       credits: ''
     },
     onSubmit: async (valedorUser, { resetForm }) => {
-      console.log(JSON.stringify(valedorUser))
-      // event.preventDefault()
-      try {
-        const registerRes = await Axios.post(
-          'https://devbackend.valevaledor.com/register',
-          valedorUser
-        )
-        console.log(registerRes.data)
-        setAlertColor('success')
-        setAlertText('El valedor ha sido creado satisfactoriamente')
-      } catch (error) {
-        console.log(error)
-        setAlertColor('error')
-        setAlertText('An error was ocurred, please try latter')
+      const { success, response, error } = await createValedor(valedorUser)
+      if (success && response) {
+        if (response.msg) {
+          setAlertColor('error')
+          setAlertText(response.msg)
+        } else {
+          setAlertColor('success')
+          setAlertText('El valedor fue creado correctamente')
+          resetForm({ valedorUser: '' })
+        }
       }
-      resetForm({ valedorUser: '' })
     },
     validationSchema: validationSchema
   })

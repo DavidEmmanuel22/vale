@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import { Button, Typography } from '@material-ui/core'
+import { Button, Collapse, Typography } from '@material-ui/core'
 import { UserContext } from '../../context/userContext'
 import BackgroundPaper from 'components/BackgroundPaper'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
@@ -12,6 +12,8 @@ import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import RegisterNegocio from 'components/negocio/register'
 import RegisterValedor from 'components/valedor/register'
 import Hidden from '@material-ui/core/Hidden'
+import { updateUser } from 'requests/allValedores'
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,8 +36,46 @@ const DashboardPerfil = () => {
   const [onEdit, setOnEdit] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [modalTitle, setModalTitle] = useState('valedor')
+  const [alertText, setAlertText] = useState('')
+  const [alertColor, setAlertColor] = useState('success')
+  const [showAlert, setShowAlert] = useState(false)
 
-  console.log(user)
+  useEffect(() => {
+    console.log(firstName, lastName)
+  }, [firstName, lastName])
+
+  const handleEdit = () => {
+    if (onEdit) {
+      handleUpdate()
+    } else {
+      setOnEdit(true)
+    }
+  }
+
+  const handleUpdate = async () => {
+    const body = {
+      firstName,
+      lastName
+    }
+    const { success, response, error } = await updateUser(user._id, body)
+    if (success && response) {
+      console.log(response)
+      setAlertColor('success')
+      setAlertText('El usuario se actualizo correctamente')
+      setShowAlert(true)
+      setTimeout(() => {
+        setShowAlert(false)
+      }, 8000)
+    }
+    if (error) {
+      setAlertColor('error')
+      setAlertText('Un error ha ocurrido')
+      setShowAlert(true)
+      setTimeout(() => {
+        setShowAlert(false)
+      }, 8000)
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -48,6 +88,9 @@ const DashboardPerfil = () => {
                   <Typography variant="h5" component="h4" gutterBottom>
                     Perfil de Usuario
                   </Typography>
+                  <Collapse in={showAlert}>
+                    <Alert severity={alertColor}>{alertText}</Alert>
+                  </Collapse>
                 </Grid>
                 <Grid item xs={12} md={2}>
                   <img
@@ -61,6 +104,7 @@ const DashboardPerfil = () => {
                     id="standard-basic"
                     label="Nombre"
                     defaultValue={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
                     disabled={!onEdit}
                   />
                   <TextField
@@ -68,6 +112,7 @@ const DashboardPerfil = () => {
                     id="standard-basic"
                     label="Apellido"
                     defaultValue={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     disabled={!onEdit}
                   />
                 </Grid>
@@ -98,7 +143,7 @@ const DashboardPerfil = () => {
                     variant="contained"
                     color="primary"
                     style={{ marginLeft: '10px' }}
-                    onClick={() => setOnEdit(!onEdit)}
+                    onClick={() => handleEdit()}
                   >
                     {onEdit ? 'Save' : 'Edit'}
                   </Button>

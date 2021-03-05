@@ -14,6 +14,7 @@ import EmailIcon from '@material-ui/icons/Email'
 import DirectionsIcon from '@material-ui/icons/Directions'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import { AlertContext } from '../popUp/responsivePopUp'
+import { createNegocio } from 'requests/allNegocios'
 
 const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
 // const RfcExpression = /^[A-Z0-9]$/
@@ -57,25 +58,19 @@ const RegisterNegocio = (props) => {
       bussinesAdress: '',
       bussinesRfc: ''
     },
-    onSubmit: async (values, { resetForm }) => {
-      console.log(JSON.stringify(values))
-      // event.preventDefault()
-      try {
-        const registerRes = await Axios.post(
-          'https://devbackend.valevaledor.com/register',
-          values
-        )
-        console.log(registerRes.data)
-        setAlertText('El Negocio ha sido creado satisfactoriamente')
-        setAlertColor('success')
-        console.log('doneee')
-        // console.log('El Negocio ha sido creado satisfactoriamente')
-      } catch (error) {
-        console.log(error)
-        setAlertText('An error was ocurred, please try latter')
-        setAlertColor('error')
+    onSubmit: async (negocio, { resetForm }) => {
+      const { success, response, error } = await createNegocio(negocio)
+      console.log()
+      if (success && response) {
+        if (response.msg) {
+          setAlertColor('error')
+          setAlertText(response.msg)
+        } else {
+          setAlertText('El Negocio ha sido creado satisfactoriamente')
+          setAlertColor('success')
+          resetForm({ negocio: '' })
+        }
       }
-      resetForm({ values: '' })
     },
     validationSchema: validationSchema
   })

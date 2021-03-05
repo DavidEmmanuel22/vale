@@ -57,12 +57,12 @@ const Negocios = () => {
   useEffect(() => {
     async function getAllNegocios() {
       setIsLoading(true)
-      const allNegocios = await getNegocios()
-      if (!allNegocios.msg) {
-        setNegocios(allNegocios)
+      const { success, response, error } = await getNegocios()
+      if (success && response) {
+        setNegocios(response)
         setIsLoading(false)
       } else {
-        console.log(allNegocios.msg)
+        console.log(error)
       }
     }
     !openDialog && getAllNegocios()
