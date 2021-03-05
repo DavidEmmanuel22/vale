@@ -57,13 +57,12 @@ const Valedores = () => {
   useEffect(() => {
     async function getAllValedores() {
       setIsLoading(true)
-      const allValedores = await getValedores()
-      if (!allValedores.msg) {
-        setValedores(allValedores)
-        console.log(allValedores)
+      const { success, response, error } = await getValedores()
+      if (success && response) {
+        setValedores(response)
         setIsLoading(false)
       } else {
-        console.log(allValedores.msg)
+        console.log(error)
       }
     }
     getAllValedores()
