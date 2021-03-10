@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Paper, Button } from '@material-ui/core'
+import { Grid, Paper, Button, Hidden, Collapse } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
@@ -13,6 +13,11 @@ import { getNegocios } from 'requests/allNegocios'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
+import DeleteNegocio from 'components/negocio/delete'
+import { FilterList } from '@material-ui/icons'
+import { Alert } from '@material-ui/lab'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
 
 const columns = [
   { id: 'name', label: 'Nombre' },
@@ -41,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPaper: {
     padding: theme.spacing(2),
-    //textAlign: 'right',
     color: theme.palette.text.secondary
   }
 }))
@@ -53,6 +57,10 @@ const Negocios = () => {
   const [openDialog, setOpenDialog] = useState(false)
   const [negocios, setNegocios] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showFilters, setShowFilters] = useState(false)
+
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  const [selectedNegocio, setSelectedNegocio] = useState(false)
 
   useEffect(() => {
     async function getAllNegocios() {
@@ -65,43 +73,78 @@ const Negocios = () => {
         console.log(error)
       }
     }
-    !openDialog && getAllNegocios()
-  }, [openDialog])
+    if (!openDialog || !deleteDialog) {
+      getAllNegocios()
+    }
+  }, [openDialog, deleteDialog])
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper} style={{ display: 'flex' }}>
+        <Paper className={classes.buttonPaper}>
           {isLoading && <CircularProgress></CircularProgress>}
+          {!isLoading && (
+            <Button
+              color="secondary"
+              onClick={() => setShowFilters(!showFilters)}
+              variant="contained"
+            >
+              <FilterList></FilterList>
+            </Button>
+          )}
           <Button
             onClick={() => setOpenDialog(true)}
             color="primary"
             variant="contained"
-            style={{ marginLeft: 'auto' }}
+            style={{ float: 'right' }}
           >
-            Agregar Negocio
+            Agregar Negocio{' '}
           </Button>
+          {!isLoading && (
+            <div>
+              <Collapse in={showFilters}>
+                <Alert severity="info">
+                  This feature will be added soon :)
+                </Alert>
+              </Collapse>
+            </div>
+          )}
         </Paper>
         <Paper className={classes.paper}>
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  {columns.map((column, i) => (
-                    <TableCell key={i} align="center">
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="center">Nombre</TableCell>
+                  <Hidden xsDown>
+                    <TableCell align="center">Correo</TableCell>
+                  </Hidden>
+                  <Hidden smDown>
+                    <TableCell align="center">Direccion</TableCell>
+                  </Hidden>
+                  <TableCell align="center">Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {negocios.map((negocio, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
-                    <TableCell align="center">{negocio.bussinesName}</TableCell>
-                    <TableCell align="center">{negocio.email}</TableCell>
                     <TableCell align="center">
-                      {negocio.bussinesAdress}
+                      {negocio.estatus === 0 ? (
+                        <CheckCircleIcon color="primary"></CheckCircleIcon>
+                      ) : (
+                        <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                      )}
                     </TableCell>
+                    <TableCell align="center">{negocio.bussinesName}</TableCell>
+                    <Hidden xsDown>
+                      <TableCell align="center">{negocio.email}</TableCell>
+                    </Hidden>
+                    <Hidden smDown>
+                      <TableCell align="center">
+                        {negocio.bussinesAdress}
+                      </TableCell>
+                    </Hidden>
                     <TableCell align="center">
                       <Button
                         color="primary"
@@ -110,8 +153,16 @@ const Negocios = () => {
                       >
                         Edit
                       </Button>
-                      <Button color="secondary" variant="outlined">
-                        Delete{' '}
+                      <Button
+                        disabled={negocio.estatus !== 0}
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => {
+                          setSelectedNegocio(negocio)
+                          setDeleteDialog(true)
+                        }}
+                      >
+                        Delete
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -127,6 +178,13 @@ const Negocios = () => {
         title={'Registra un negocio'}
       >
         <RegisterNegocio></RegisterNegocio>
+      </ResponsivePopUp>
+      <ResponsivePopUp
+        open={deleteDialog}
+        setOpen={setDeleteDialog}
+        title={'Elimina un negocio'}
+      >
+        <DeleteNegocio negocio={selectedNegocio}></DeleteNegocio>
       </ResponsivePopUp>
     </Grid>
   )

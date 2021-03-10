@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+.delete-valedor-modal {
+  width: 100%;
+}
+
+.delete-valedor-modal p {
+  color: rgb(51, 51, 51);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.delete-valedor-modal p span {
+  color: rgb(51, 51, 51);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+}

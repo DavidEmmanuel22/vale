@@ -21,6 +21,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import RegisterValedor from 'components/valedor/register'
 import RegisterNegocio from 'components/negocio/register'
+import RegisterVale from 'components/vale/register'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,7 +98,7 @@ export default function CenteredGrid() {
         setOpen={setShowDialog}
         title={'Registra un vale'}
       >
-        <h1>Ya casi....</h1>
+        <RegisterVale></RegisterVale>
       </ResponsivePopUp>
     )
   }
