@@ -1,12 +1,8 @@
 import React, { useState, useContext } from 'react'
-import Axios from 'axios'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import Alert from 'components/Alert/Alert'
 import { TextField, Button, InputAdornment, Grid } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import LockIcon from '@material-ui/icons/Lock'
-import logologin from '../../images/valedor-logo.png'
 import './registerValedor.css'
 import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
@@ -14,27 +10,30 @@ import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { createValedor } from 'requests/allValedores'
 
-const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
-// const creditsExpression = /^[0-9]$/
+const NameExpression = /^\S/
+const creditsExpression = /^\d+$/
 
 const validationSchema = yup.object({
   email: yup
     .string()
-    .email('Correo Electronico Invalido')
+    .email('Correo electronico invalido')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Email es requerido'),
   firstName: yup
     .string()
-    .min(5, 'Mínimo 5 caracteres')
-    .max(25, 'Maxímo 25 caracteres')
-    .matches(NameExpression, 'Solo se permiten letras para este campo')
+    .min(3, 'Mínimo 3 caracteres')
+    .max(65, 'Maxímo 65 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Nombre es requerido'),
   lastName: yup
     .string()
-    .matches(NameExpression, 'Solo se permiten letras para este campo')
+    .min(3, 'Mínimo 3 caracteres')
+    .max(65, 'Maxímo 65 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Apellido es requerido'),
   credits: yup
-    .number()
-    // .matches( creditsExpression,"Solo se permiten letras para este campo")
+    .string()
+    .matches(creditsExpression, 'Solo nùmeros enteros positivos')
     .required('Credito es requerido')
 })
 
@@ -137,7 +136,7 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="credits"
               placeholder="Credito"
-              type="number"
+              type="text"
               value={formik.values.credits}
               onChange={formik.handleChange}
               error={formik.touched.credits && Boolean(formik.errors.credits)}

@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import InsertCommentIcon from '@material-ui/icons/InsertComment'
 import { BusinessCenter, DirectionsBusSharp } from '@material-ui/icons'
-import moment from 'moment'
+// import moment from 'moment'
 import {
   Button,
   Hidden,
@@ -114,9 +114,7 @@ export default function CenteredGrid() {
               <p style={{ marginLeft: '40px' }}>
                 <span>100</span> Valedores Activos
               </p>
-              <p style={{ marginLeft: 'auto' }}>
-                {moment().format('MMMM Do YYYY, h:mm:ss a')}
-              </p>
+              <p style={{ marginLeft: 'auto' }}></p>
             </Paper>
           </Hidden>
           <Hidden mdUp>

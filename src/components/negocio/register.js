@@ -1,14 +1,9 @@
 import React, { useState, useContext } from 'react'
-import Axios from 'axios'
-import Alert from 'components/Alert/Alert'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { TextField, Button, InputAdornment, Grid } from '@material-ui/core'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import logologin from '../../images/valedor-logo.png'
 import './registerNegocio.css'
 import Styles from './Styles'
-import Paper from '@material-ui/core/Paper'
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter'
 import EmailIcon from '@material-ui/icons/Email'
 import DirectionsIcon from '@material-ui/icons/Directions'
@@ -16,31 +11,30 @@ import AssignmentIcon from '@material-ui/icons/Assignment'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { createNegocio } from 'requests/allNegocios'
 
-const NameExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
-// const RfcExpression = /^[A-Z0-9]$/
-// const AdressExpression = /^[a-zA-ZÀ-ÿñÑ\s]*$/
+const NameExpression = /^\S/
+const RfcExpression = /^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})\d{2}((0[1-9]|1[012])(0[1-9]|1\d|2[0-8])|(0[13456789]|1[012])(29|30)|(0[13578]|1[02])31)(\w{2})([A|a|0-9]{1}))$|^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})([02468][048]|[13579][26])0229)(\w{2})([A|a|0-9]{1})$/
 const validationSchema = yup.object({
   email: yup
     .string()
     .email('Correo Electronico Invalido')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Email es requerido'),
   bussinesName: yup
     .string()
-    .matches(NameExpression, 'Solo se permiten letras para este campo')
-    .min(5, 'Mínimo 5 caracteres')
-    .max(25, 'Maxímo 25 caracteres')
+    .min(3, 'Mínimo 3 caracteres')
+    .max(30, 'Maxímo 30 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Negocio es requerido'),
   bussinesAdress: yup
     .string()
-    // .matches( AdressExpression,"Solo se permiten letras Y numeros para este campo")
-    .min(5, 'Mínimo 5 caracteres')
-    .max(25, 'Maxímo 25 caracteres')
+    .min(3, 'Mínimo 3 caracteres')
+    .max(30, 'Maxímo 30 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Dirección es requerida'),
   bussinesRfc: yup
     .string()
-    // .matches( RfcExpression,"Solo se permiten letras mayusculas y nùmeros enteros")
-    .min(7, 'Mínimo 5 caracteres')
-    .max(14, 'Maxímo 25 caracteres')
+    .min(13, 'Mínimo 13 caracteres')
+    .matches(RfcExpression, 'Ingrese un RFC valido')
     .required('RFC es requerido')
 })
 

@@ -9,7 +9,7 @@ const ActionAlerts = (props) => {
   return (
     <div className={classes.root}>
       <Alert
-        severity="success"
+        severity="error"
         action={
           <IconButton
             aria-label="close"

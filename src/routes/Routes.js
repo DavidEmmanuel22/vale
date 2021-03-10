@@ -1,7 +1,9 @@
-import React, { useContext, Fragment } from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Switch, Route } from 'react-router-dom'
 import Home from '../pages/Home/Home'
 import Dashboard from 'pages/Dashboard/Dashboard'
+import ForgotPassword from 'components/ForgotPasword/ForgotPassword'
+import UpdatePassword from 'components/ResetPassword/UpdatePassword'
 import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
 import { UserContext } from '../context/userContext'
@@ -37,6 +39,14 @@ const Routes = () => {
           <Dashboard></Dashboard>
         </GeneralLayout>
       </PrivateRoute>
+
+      <Route exact path="/forgot-password">
+        <ForgotPassword></ForgotPassword>
+      </Route>
+
+      <Route exact path="/update-password/:token">
+        <UpdatePassword></UpdatePassword>
+      </Route>
 
       <Route exact path="/">
         <Home></Home>
