@@ -41,3 +41,10 @@ export const updateUser = (userId, user) => {
     }
   )
 }
+
+export const deleteValedor = (email) => {
+  return fetchRequest(`/delete-user`, {
+    method: 'PUT',
+    body: JSON.stringify({ email })
+  })
+}

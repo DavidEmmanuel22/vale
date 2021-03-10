@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Paper, Button } from '@material-ui/core'
+import { Grid, Paper, Button, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
@@ -13,6 +13,9 @@ import { getValedores } from 'requests/allValedores'
 import RegisterValedor from 'components/valedor/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
+import DeleteValedor from 'components/valedor/delete'
 
 const columns = [
   { id: 'name', label: 'Nombre' },
@@ -51,6 +54,8 @@ const Valedores = () => {
   const classes2 = useStyles2()
 
   const [openDialog, setOpenDialog] = useState(false)
+  const [deleteDialog, setDeleteDialog] = useState(false)
+  const [selectedValedor, setSelectedValedor] = useState({})
   const [valedores, setValedores] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -65,8 +70,10 @@ const Valedores = () => {
         console.log(error)
       }
     }
-    getAllValedores()
-  }, [openDialog])
+    if (!openDialog || !deleteDialog) {
+      getAllValedores()
+    }
+  }, [openDialog, deleteDialog])
 
   return (
     <Grid container spacing={3}>
@@ -87,20 +94,31 @@ const Valedores = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  {columns.map((column, i) => (
-                    <TableCell key={i} align="center">
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  <TableCell align="center">Status</TableCell>
+                  <TableCell align="center">Nombre</TableCell>
+                  <Hidden smDown>
+                    <TableCell align="center">Correo</TableCell>
+                  </Hidden>
+                  <TableCell align="center">Credito</TableCell>
+                  <TableCell align="center">Acciones</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {valedores.map((valedor, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
                     <TableCell align="center">
+                      {valedor.estatus === 0 ? (
+                        <CheckCircleIcon color="primary"></CheckCircleIcon>
+                      ) : (
+                        <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
                       {valedor.firstName} {valedor.lastName}
                     </TableCell>
-                    <TableCell align="center">{valedor.email}</TableCell>
+                    <Hidden smDown>
+                      <TableCell align="center">{valedor.email}</TableCell>
+                    </Hidden>
                     <TableCell align="center">{valedor.credits}</TableCell>
                     <TableCell align="center">
                       <Button
@@ -110,7 +128,14 @@ const Valedores = () => {
                       >
                         Edit
                       </Button>
-                      <Button color="secondary" variant="outlined">
+                      <Button
+                        onClick={() => {
+                          setSelectedValedor(valedor)
+                          setDeleteDialog(true)
+                        }}
+                        color="secondary"
+                        variant="outlined"
+                      >
                         Delete
                       </Button>
                     </TableCell>
@@ -128,6 +153,14 @@ const Valedores = () => {
         confirmText={'Confirm Text'}
       >
         <RegisterValedor></RegisterValedor>
+      </ResponsivePopUp>
+      <ResponsivePopUp
+        open={deleteDialog}
+        setOpen={setDeleteDialog}
+        title={'Elimina un valedor'}
+        confirmText={'Confirm Text'}
+      >
+        <DeleteValedor valedor={selectedValedor}></DeleteValedor>
       </ResponsivePopUp>
     </Grid>
   )
