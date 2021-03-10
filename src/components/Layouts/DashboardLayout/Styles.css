@@ -2,3 +2,11 @@
   background-color: rgba(0, 0, 0, 0.08);
   border-left: 4px solid #007772 !important;
 }
+
+.MuiTypography-body1 {
+  font-size: 20px !important;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  line-height: 2.5 !important;
+  letter-spacing: 0.00938em;
+}

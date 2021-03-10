@@ -23,7 +23,7 @@ import { Container, Button } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
 import './Styles.css'
 
-const drawerWidth = 230
+const drawerWidth = 278
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
@@ -99,7 +99,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: '#e5e5e5',
     marginTop: '80px',
     paddingTop: '30px',
-    minHeight: window.screen.height - 200
+    minHeight: window.screen.height - 3000
   },
   dividerLine: {
     margin: '30px 0px'
