@@ -99,7 +99,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: '#e5e5e5',
     marginTop: '80px',
     paddingTop: '30px',
-    minHeight: window.screen.height - 3000
+    minHeight: '3000px'
   },
   dividerLine: {
     margin: '30px 0px'
