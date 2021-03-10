@@ -25,3 +25,10 @@ export const getNegocios = () => {
     }
   )
 }
+
+export const deleteNegocio = (email) => {
+  return fetchRequest(`/delete-user`, {
+    method: 'PUT',
+    body: JSON.stringify({ email })
+  })
+}

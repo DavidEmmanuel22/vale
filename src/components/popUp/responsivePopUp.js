@@ -106,7 +106,8 @@ export default function ResponsivePopUp({
               alertText,
               setAlertText,
               alertColor,
-              setAlertColor
+              setAlertColor,
+              handleClose
             }}
           >
             {children}
