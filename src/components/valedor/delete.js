@@ -19,9 +19,9 @@ const DeleteValedor = ({ valedor }) => {
   const removeNegocio = async () => {
     const { success, response, error } = await deleteValedor(valedor.email)
     if (success && response) {
-      if (response.msg) {
+      if (response.error) {
         setAlertColor('error')
-        setAlertText(response.msg)
+        setAlertText(response.error)
       } else {
         setAlertColor('success')
         setAlertText('El valedor fue borrado')

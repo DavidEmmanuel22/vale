@@ -55,7 +55,7 @@ const validationSchema = yup.object({
     .required('Credito es requerido')
 })
 
-const RegisterVale = (props) => {
+const RegisterCredit = (props) => {
   const classes = Styles()
 
   const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
@@ -173,4 +173,4 @@ const RegisterVale = (props) => {
   )
 }
 
-export default RegisterVale
+export default RegisterCredit

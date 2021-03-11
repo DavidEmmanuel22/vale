@@ -21,7 +21,7 @@ import AddIcon from '@material-ui/icons/Add'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import RegisterValedor from 'components/valedor/register'
 import RegisterNegocio from 'components/negocio/register'
-import RegisterVale from 'components/vale/register'
+import RegisterCredit from 'components/credito/register'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,9 +96,9 @@ export default function CenteredGrid() {
       <ResponsivePopUp
         open={showDialog}
         setOpen={setShowDialog}
-        title={'Registra un vale'}
+        title={'Agrega credito a valedor'}
       >
-        <RegisterVale></RegisterVale>
+        <RegisterCredit></RegisterCredit>
       </ResponsivePopUp>
     )
   }
@@ -172,7 +172,7 @@ export default function CenteredGrid() {
             href="#"
             onClick={() => {
               setShowDialog(true)
-              setDialogName('vale')
+              setDialogName('credit')
             }}
           >
             <div>
@@ -180,7 +180,7 @@ export default function CenteredGrid() {
                 style={{ color: 'white', width: '100%', textAlign: 'center' }}
               ></AddIcon>
             </div>
-            <p>Agregar Vale</p>
+            <p>Agregar Credito</p>
           </a>
         </Grid>
         <Grid item xs={12} md={4}>

@@ -56,9 +56,9 @@ const RegisterNegocio = (props) => {
       const { success, response, error } = await createNegocio(negocio)
       console.log()
       if (success && response) {
-        if (response.msg) {
+        if (response.error) {
           setAlertColor('error')
-          setAlertText(response.msg)
+          setAlertText(response.error)
         } else {
           setAlertText('El Negocio ha sido creado satisfactoriamente')
           setAlertColor('success')

@@ -64,7 +64,7 @@ const Valedores = () => {
       setIsLoading(true)
       const { success, response, error } = await getValedores()
       if (success && response) {
-        setValedores(response)
+        setValedores(response.data)
         setIsLoading(false)
       } else {
         console.log(error)

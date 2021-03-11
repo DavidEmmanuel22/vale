@@ -54,9 +54,9 @@ const RegisterValedor = (props) => {
     onSubmit: async (valedorUser, { resetForm }) => {
       const { success, response, error } = await createValedor(valedorUser)
       if (success && response) {
-        if (response.msg) {
+        if (response.error) {
           setAlertColor('error')
-          setAlertText(response.msg)
+          setAlertText(response.error)
         } else {
           setAlertColor('success')
           setAlertText('El valedor fue creado correctamente')

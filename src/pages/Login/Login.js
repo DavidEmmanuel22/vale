@@ -32,10 +32,10 @@ const Login = () => {
       )
       console.log(loginRes)
       /* setUserData({
-			  token: loginRes.token,
-			  user: loginRes.user
-			}) */
-      login(loginRes.data.token)
+					token: loginRes.token,
+					user: loginRes.user
+				  }) */
+      login(loginRes.data.data.token)
       history.push('/dashboard')
     } catch (error) {
       error.response.data.msg && setError(error.response.data.msg)
