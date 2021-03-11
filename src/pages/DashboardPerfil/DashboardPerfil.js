@@ -14,6 +14,7 @@ import RegisterValedor from 'components/valedor/register'
 import Hidden from '@material-ui/core/Hidden'
 import { updateUser } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -157,6 +158,9 @@ const DashboardPerfil = () => {
                       Cancel
                     </Button>
                   )}
+                  <Link to="/forgot-password" style={{ marginRight: 'auto' }}>
+                    Cambiar contraseña
+                  </Link>
                 </Grid>
               </Grid>
             </form>

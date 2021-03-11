@@ -106,6 +106,7 @@ export default function CenteredGrid() {
   return (
     <div className={classes.root}>
       <Grid container className="dashboard-container" spacing={2}>
+        <h1>Testing pipeline</h1>
         <Grid item xs={12}>
           <Hidden smDown>
             <Paper className={classes.paperFlex} elevation={0}>
