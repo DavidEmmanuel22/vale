@@ -53,10 +53,10 @@ const Home = () => {
           </Hidden>
           <Hidden smDown>
             <Tabs indicatorColor="primary">
-              <Tab label="Acerca de" />
-              <Tab label="Valedor" />
-              <Tab label="Negocios" />
-              <Tab label="Contáctanos" />
+              <Tab label="Acerca de" value="1" />
+              <Tab label="Valedor" value="2" />
+              <Tab label="Negocios" value="3" />
+              <Tab label="Contáctanos" value="4" />
             </Tabs>
           </Hidden>
         </AppBar>

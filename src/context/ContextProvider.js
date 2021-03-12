@@ -18,6 +18,8 @@ const ContextProvider = (props) => {
   const login = (token) => {
     localStorage.setItem('auth-token', token)
     const decoded = jwt_decode(token)
+    console.log(decoded)
+    console.log('logiiin')
     setUser(decoded)
   }
 

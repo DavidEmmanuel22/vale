@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { forgotPassword } from 'requests/forgotPassword'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -8,11 +8,13 @@ import {
   InputAdornment,
   Grid,
   Paper,
-  Typography
+  Typography,
+  Collapse
 } from '@material-ui/core'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
+import { Alert } from '@material-ui/lab'
 
 const validationSchema = yup.object({
   email: yup
@@ -23,21 +25,28 @@ const validationSchema = yup.object({
 
 const ForgotPassword = () => {
   const classes = Styles()
+  const [alertText, setAlertText] = useState('')
+  const [alertColor, setAlertColor] = useState('success')
+  const [showAlert, setShowAlert] = useState(false)
+
   const formik = useFormik({
     initialValues: {
       email: ''
     },
-    onSubmit: async (forgotpassword, { resetForm }) => {
-      const { success, response, error } = await forgotPassword(forgotpassword)
+    onSubmit: async (updatedPassword, { resetForm }) => {
+      console.log(updatedPassword.email)
+      const { success, response, error } = await forgotPassword(
+        updatedPassword.email
+      )
       if (success && response) {
-        if (response.msg) {
-          // setAlertColor('error')
-          console.log(response.msg)
+        if (response.error) {
+          setAlertColor('error')
+          setAlertText(response.error)
         } else {
-          // setAlertColor('success')
-          if (success.msg) console.log(success.msg)
+          setAlertColor('success')
+          setAlertText(response.data)
         }
-        resetForm({ forgotpassword: '' })
+        setShowAlert(true)
       }
     },
     validationSchema: validationSchema
@@ -47,6 +56,9 @@ const ForgotPassword = () => {
     <div>
       <Grid className={classes.GridContent} item md={12}>
         <Paper className={classes.PaperContent}>
+          <Collapse in={showAlert}>
+            <Alert severity={alertColor}>{alertText}</Alert>
+          </Collapse>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
             <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
             <h2 className={classes.H2Password}>Recuperar Contraseña</h2>

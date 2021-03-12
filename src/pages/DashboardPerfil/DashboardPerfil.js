@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardPerfil = () => {
   const classes = useStyles()
-  const { isAuthenticated, user } = useContext(UserContext)
+  const { isAuthenticated, user, login } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
   const [email, setEmail] = useState(user.email)
@@ -85,14 +85,14 @@ const DashboardPerfil = () => {
     const { success, response, error } = await updateUser(user._id, body)
     console.log(response)
     if (success && response) {
-      console.log(response)
-      if (response.error) {
+      if (response.data.error) {
         setAlertColor('error')
-        setAlertText(response.error)
+        setAlertText(response.data.error)
         setShowAlert(true)
+        login('hello')
       } else {
         setAlertColor('success')
-        setAlertText(response.data)
+        setAlertText(response.data.message)
         setShowAlert(true)
       }
       setTimeout(() => {

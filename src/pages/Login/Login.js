@@ -11,6 +11,7 @@ import logologin from 'images/valedor-logo.png'
 import './Login.css'
 import Styles from './Styles'
 import { UserContext } from '../../context/userContext'
+import { loginUser } from 'requests/login'
 
 const Login = () => {
   const classes = Styles()
@@ -23,23 +24,22 @@ const Login = () => {
 
   const submit = async (event) => {
     event.preventDefault()
-    try {
-      const loginUser = { email, password }
-      console.log(loginUser)
-      const loginRes = await Axios.post(
-        'https://devbackend.valevaledor.com/login',
-        loginUser
-      )
-      console.log(loginRes)
-      /* setUserData({
-					token: loginRes.token,
-					user: loginRes.user
-				  }) */
-      login(loginRes.data.data.token)
-      history.push('/dashboard')
-    } catch (error) {
-      error.response.data.msg && setError(error.response.data.msg)
+    const { success, response, error } = await loginUser(email, password)
+    if (success && response) {
+      if (response.error) {
+        setError(response.error)
+      } else {
+        console.log(response)
+        login(response.data.token)
+        history.push('/dashboard')
+      }
     }
+    if (error) {
+      setError(error)
+    }
+    setTimeout(() => {
+      setError(false)
+    }, 8000)
   }
 
   return (
@@ -102,7 +102,7 @@ const Login = () => {
               </Button>
             </div>
             <div className="forgot-password">
-              <a href="https://reactjs.org/">¿Olvidaste tu contraseña?</a>
+              <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
             </div>
           </form>
         </div>
