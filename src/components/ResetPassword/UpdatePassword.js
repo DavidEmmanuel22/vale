@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { resetPassword } from 'requests/forgotPassword'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -8,12 +8,14 @@ import {
   InputAdornment,
   Grid,
   Paper,
-  Typography
+  Typography,
+  Collapse
 } from '@material-ui/core'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 import VpnKeyIcon from '@material-ui/icons/VpnKey'
 import CheckIcon from '@material-ui/icons/Check'
+import { Alert } from '@material-ui/lab'
 
 const validationSchema = yup.object({
   password: yup.string().required('La contraseña es requerida'),
@@ -24,6 +26,11 @@ const validationSchema = yup.object({
 
 const UpdatePassword = () => {
   const classes = Styles()
+
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertText, setAlertText] = useState('')
+  const [alertColor, setAlertColor] = useState('success')
+
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -31,17 +38,21 @@ const UpdatePassword = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
-      console.log(data)
       const { success, response, error } = await resetPassword(data)
-      console.log(response)
-      console.log(error)
       if (response && success) {
         if (response.error) {
-          console.log(response.error)
+          setAlertColor('error')
+          setAlertText(response.error)
         } else {
-          if (success.msg) console.log(success.msg)
+          setAlertColor('success')
+          setAlertText('Tu contraseña se ha reestablecido')
         }
-        // resetForm({ resetpassword: '' })
+        setShowAlert(true)
+        setTimeout(() => {
+          setShowAlert(false)
+          window.location.href = '/'
+        }, 8000)
+        //resetForm({ resetpassword: '' })
       }
     }
   })
@@ -50,6 +61,9 @@ const UpdatePassword = () => {
     <div>
       <Grid className={classes.GridContent} item md={12}>
         <Paper className={classes.PaperContent}>
+          <Collapse in={showAlert}>
+            <Alert severity={alertColor}>{alertText}</Alert>
+          </Collapse>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
             <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
             <h2 className={classes.H2Password}>Cambiar Contraseña</h2>
