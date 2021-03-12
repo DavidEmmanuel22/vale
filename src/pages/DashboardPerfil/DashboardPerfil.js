@@ -15,6 +15,7 @@ import Hidden from '@material-ui/core/Hidden'
 import { updateUser } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
 import { Link } from 'react-router-dom'
+import { forgotPassword } from 'requests/forgotPassword'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,8 +43,10 @@ const DashboardPerfil = () => {
   const [showAlert, setShowAlert] = useState(false)
 
   useEffect(() => {
-    console.log(firstName, lastName)
-  }, [firstName, lastName])
+    setEmail(user.email)
+    setFirstName(user.firstName)
+    setLastName(user.lastName)
+  }, [user])
 
   const handleEdit = () => {
     if (onEdit) {
@@ -53,17 +56,45 @@ const DashboardPerfil = () => {
     }
   }
 
+  const handleChangePassword = async () => {
+    console.log(user.email)
+    const { success, response, error } = await forgotPassword(user.email)
+    if (response) {
+      if (response.error) {
+        setAlertColor('error')
+        setAlertText(response.error)
+      } else {
+        setAlertColor('success')
+        setAlertText(
+          `Se te ha enviado un correo a ${user.email}, sigue las instrucciones para cambiar contraseña`
+        )
+      }
+      setShowAlert(true)
+      setTimeout(() => {
+        setShowAlert(false)
+      }, 10000)
+    }
+  }
+
   const handleUpdate = async () => {
     const body = {
       firstName,
       lastName
     }
+    console.log(body)
     const { success, response, error } = await updateUser(user._id, body)
+    console.log(response)
     if (success && response) {
       console.log(response)
-      setAlertColor('success')
-      setAlertText('El usuario se actualizo correctamente')
-      setShowAlert(true)
+      if (response.error) {
+        setAlertColor('error')
+        setAlertText(response.error)
+        setShowAlert(true)
+      } else {
+        setAlertColor('success')
+        setAlertText(response.data)
+        setShowAlert(true)
+      }
       setTimeout(() => {
         setShowAlert(false)
       }, 8000)
@@ -104,7 +135,7 @@ const DashboardPerfil = () => {
                     style={{ width: '100%' }}
                     id="standard-basic"
                     label="Nombre"
-                    defaultValue={firstName}
+                    value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     disabled={!onEdit}
                   />
@@ -112,7 +143,7 @@ const DashboardPerfil = () => {
                     style={{ width: '100%', marginTop: '15px' }}
                     id="standard-basic"
                     label="Apellido"
-                    defaultValue={lastName}
+                    value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     disabled={!onEdit}
                   />
@@ -122,14 +153,14 @@ const DashboardPerfil = () => {
                     style={{ width: '100%' }}
                     id="standard-basic"
                     label="Email"
-                    defaultValue={email}
+                    value={email}
                     disabled
                   />
                   <TextField
                     style={{ width: '100%', marginTop: '15px' }}
                     id="standard-basic"
                     label="Rol"
-                    defaultValue={user.role}
+                    value={user.role}
                     disabled
                   />
                 </Grid>
@@ -158,9 +189,13 @@ const DashboardPerfil = () => {
                       Cancel
                     </Button>
                   )}
-                  <Link to="/forgot-password" style={{ marginRight: 'auto' }}>
+                  <a
+                    href="#"
+                    onClick={handleChangePassword}
+                    style={{ marginRight: 'auto' }}
+                  >
                     Cambiar contraseña
-                  </Link>
+                  </a>
                 </Grid>
               </Grid>
             </form>

@@ -1,16 +1,10 @@
 import fetchRequest, { initFetchInterceptors } from './fetchRequest'
 
 export const forgotPassword = (email) => {
-  return fetchRequest(
-    `/forgot-password`,
-    {
-      method: 'POST',
-      body: JSON.stringify(email)
-    },
-    {
-      Authorization: `Bearer ${localStorage.getItem('auth-token')}`
-    }
-  )
+  return fetchRequest(`/forgot-password`, {
+    method: 'POST',
+    body: JSON.stringify({ email })
+  })
 }
 
 export const resetPassword = (password, passwordCheck) => {
