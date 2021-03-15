@@ -122,7 +122,7 @@ export default function GeneralLayout({ children }) {
   const [open, setOpen] = React.useState(false)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
-  const { isAuthenticated, user, logout } = useContext(UserContext)
+  const { isAuthenticated, user, logout, hasLoad } = useContext(UserContext)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -277,7 +277,7 @@ export default function GeneralLayout({ children }) {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <Container maxWidth={false}>{children}</Container>
+        <Container maxWidth={false}>{hasLoad && children}</Container>
       </main>
     </div>
   )
