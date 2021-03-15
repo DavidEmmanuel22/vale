@@ -16,6 +16,8 @@ import { updateUser } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
 import { Link } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
+import { updateUserSelfSchema } from 'yupSchemas'
+import { useFormik } from 'formik'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 const DashboardPerfil = () => {
   const classes = useStyles()
-  const { isAuthenticated, user, login } = useContext(UserContext)
+  const { isAuthenticated, user, login, logout } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
   const [email, setEmail] = useState(user.email)
@@ -41,6 +43,17 @@ const DashboardPerfil = () => {
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
+
+  const formik = useFormik({
+    initialValues: {
+      firstName,
+      lastName
+    },
+    onSubmit: (userUpdated, { resetForm }) => {
+      console.log(userUpdated)
+    },
+    validationSchema: updateUserSelfSchema
+  })
 
   useEffect(() => {
     setEmail(user.email)
@@ -94,6 +107,8 @@ const DashboardPerfil = () => {
         setAlertColor('success')
         setAlertText(response.data.message)
         setShowAlert(true)
+        login(response.data.token)
+        setOnEdit(false)
       }
       setTimeout(() => {
         setShowAlert(false)
