@@ -23,7 +23,7 @@ import { Container, Button } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
 import './Styles.css'
 
-const drawerWidth = 278
+const drawerWidth = 250
 
 function ListItemLink(props) {
   return <ListItem button component="a" {...props} />
@@ -99,7 +99,7 @@ const Styles = makeStyles((theme) => ({
     backgroundColor: '#e5e5e5',
     marginTop: '80px',
     paddingTop: '30px',
-    minHeight: '3000px'
+    minHeight: '100vh'
   },
   dividerLine: {
     margin: '30px 0px'
@@ -122,7 +122,7 @@ export default function GeneralLayout({ children }) {
   const [open, setOpen] = React.useState(false)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
 
-  const { isAuthenticated, user, logout } = useContext(UserContext)
+  const { isAuthenticated, user, logout, hasLoad } = useContext(UserContext)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -277,7 +277,7 @@ export default function GeneralLayout({ children }) {
         </List>
       </Drawer>
       <main className={classes.content}>
-        <Container maxWidth={false}>{children}</Container>
+        <Container maxWidth={false}>{hasLoad && children}</Container>
       </main>
     </div>
   )

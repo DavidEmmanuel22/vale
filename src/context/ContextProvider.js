@@ -6,6 +6,7 @@ import jwt_decode from 'jwt-decode'
 const ContextProvider = (props) => {
   const [user, setUser] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [hasLoad, setHasLoad] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -18,9 +19,8 @@ const ContextProvider = (props) => {
   const login = (token) => {
     localStorage.setItem('auth-token', token)
     const decoded = jwt_decode(token)
-    console.log(decoded)
-    console.log('logiiin')
-    setUser(decoded)
+    setUser(decoded.user)
+    setHasLoad(true)
   }
 
   const logout = () => {
@@ -38,6 +38,7 @@ const ContextProvider = (props) => {
     } else {
       setUser(false)
     }
+    setHasLoad(true)
   }, [])
 
   return (
@@ -47,7 +48,8 @@ const ContextProvider = (props) => {
         setUser,
         isAuthenticated,
         login,
-        logout
+        logout,
+        hasLoad
       }}
     >
       {props.children}

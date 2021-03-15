@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import { Button, Collapse, Typography } from '@material-ui/core'
+import { Button, Collapse, InputAdornment, Typography } from '@material-ui/core'
 import { UserContext } from '../../context/userContext'
 import BackgroundPaper from 'components/BackgroundPaper'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
@@ -16,6 +16,10 @@ import { updateUser } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
 import { Link } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
+import { updateUserSelfSchema } from 'yupSchemas'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { AccountCircle } from '@material-ui/icons'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,9 +33,26 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+const NameExpression = /^\S/
+
+const validationSchema = yup.object({
+  firstName: yup
+    .string()
+    .min(3, 'Mínimo 3 caracteres')
+    .max(65, 'Maxímo 65 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
+    .required('Nombre es requerido'),
+  lastName: yup
+    .string()
+    .min(3, 'Mínimo 3 caracteres')
+    .max(65, 'Maxímo 65 caracteres')
+    .matches(NameExpression, 'No se permiten espacios vacios')
+    .required('Apellido es requerido')
+})
+
 const DashboardPerfil = () => {
   const classes = useStyles()
-  const { isAuthenticated, user, login } = useContext(UserContext)
+  const { isAuthenticated, user, login, logout } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
   const [email, setEmail] = useState(user.email)
@@ -42,6 +63,20 @@ const DashboardPerfil = () => {
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
 
+  const formik = useFormik({
+    initialValues: {
+      firstName,
+      lastName
+    },
+    onSubmit: (userUpdated) => {
+      handleUpdate(userUpdated.firstName, userUpdated.lastName)
+    },
+    handleChange: (u) => {
+      console.log(u)
+    },
+    validationSchema: updateUserSelfSchema
+  })
+
   useEffect(() => {
     setEmail(user.email)
     setFirstName(user.firstName)
@@ -50,7 +85,8 @@ const DashboardPerfil = () => {
 
   const handleEdit = () => {
     if (onEdit) {
-      handleUpdate()
+      //handleUpdate()
+      formik.handleSubmit()
     } else {
       setOnEdit(true)
     }
@@ -76,7 +112,7 @@ const DashboardPerfil = () => {
     }
   }
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (firstName, lastName) => {
     const body = {
       firstName,
       lastName
@@ -94,6 +130,8 @@ const DashboardPerfil = () => {
         setAlertColor('success')
         setAlertText(response.data.message)
         setShowAlert(true)
+        login(response.data.token)
+        setOnEdit(false)
       }
       setTimeout(() => {
         setShowAlert(false)
@@ -114,7 +152,7 @@ const DashboardPerfil = () => {
       <Grid container spacing={3}>
         <Grid item xs={12} md={9}>
           <Paper className={classes.paper}>
-            <form noValidate autoComplete="off " className={classes.root}>
+            <form onSubmit={formik.handleSubmit} className={classes.root}>
               <Grid container spacing={3}>
                 <Grid item xs={12}>
                   <Typography variant="h5" component="h4" gutterBottom>
@@ -132,20 +170,52 @@ const DashboardPerfil = () => {
                 </Grid>
                 <Grid item xs={12} sm={6} md={5}>
                   <TextField
-                    style={{ width: '100%' }}
-                    id="standard-basic"
+                    id="firstName"
+                    placeholder="Nombre"
+                    fullWidth
                     label="Nombre"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
                     disabled={!onEdit}
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName)
+                    }
+                    helperText={
+                      formik.touched.firstName && formik.errors.firstName
+                    }
+                    type="text"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      )
+                    }}
                   />
                   <TextField
-                    style={{ width: '100%', marginTop: '15px' }}
-                    id="standard-basic"
+                    id="lastName"
+                    placeholder="Apellido"
+                    fullWidth
                     label="Apellido"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    style={{ marginTop: '15px' }}
                     disabled={!onEdit}
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.lastName && Boolean(formik.errors.lastName)
+                    }
+                    helperText={
+                      formik.touched.lastName && formik.errors.lastName
+                    }
+                    type="text"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AccountCircle />
+                        </InputAdornment>
+                      )
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6} md={5}>
@@ -153,7 +223,7 @@ const DashboardPerfil = () => {
                     style={{ width: '100%' }}
                     id="standard-basic"
                     label="Email"
-                    value={email}
+                    value={user.email}
                     disabled
                   />
                   <TextField
@@ -171,22 +241,34 @@ const DashboardPerfil = () => {
                   xs={12}
                   style={{ display: 'flex', flexDirection: 'row-reverse' }}
                 >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginLeft: '10px' }}
-                    onClick={() => handleEdit()}
-                  >
-                    {onEdit ? 'Save' : 'Edit'}
-                  </Button>
                   {onEdit && (
+                    <>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginLeft: '10px' }}
+                        type="submit"
+                      >
+                        Guardar
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        style={{}}
+                        onClick={() => setOnEdit(false)}
+                      >
+                        Cancelar
+                      </Button>
+                    </>
+                  )}
+                  {!onEdit && (
                     <Button
                       variant="contained"
-                      color="secondary"
-                      style={{}}
-                      onClick={() => setOnEdit(false)}
+                      color="primary"
+                      style={{ marginLeft: '10px' }}
+                      onClick={(e) => handleEdit(e)}
                     >
-                      Cancel
+                      Edit
                     </Button>
                   )}
                   <a
