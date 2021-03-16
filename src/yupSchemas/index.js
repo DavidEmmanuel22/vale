@@ -9,6 +9,7 @@ const MAX_LAST_NAME = 35
 export const updateUserSelfSchema = yup.object({
   firstName: yup
     .string()
+    .trim('Sin espacios al principio')
     .required('El nombre es requerido')
     .min(
       MIN_FIRST_NAME,
@@ -17,9 +18,11 @@ export const updateUserSelfSchema = yup.object({
     .max(
       MAX_FIRST_NAME,
       `El nombre debe tener maximo ${MAX_FIRST_NAME} caracteres`
-    ),
+    )
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'Nombre invalido'),
   lastName: yup
     .string()
+    .trim()
     .required('El apellido es requerido')
     .min(
       MIN_LAST_NAME,
@@ -29,4 +32,13 @@ export const updateUserSelfSchema = yup.object({
       MAX_LAST_NAME,
       `El apellido debe tener maximo ${MAX_LAST_NAME} caracteres`
     )
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'Apellido invalido')
+})
+
+export const addCreditSchema = yup.object({
+  email: yup
+    .string()
+    .required('El correo electronico es requerido')
+    .email('El correo electronico es invalido'),
+  credits: yup.number().positive('El credito debe ser positivo')
 })
