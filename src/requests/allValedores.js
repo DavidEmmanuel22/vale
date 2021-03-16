@@ -48,3 +48,10 @@ export const deleteValedor = (email) => {
     body: JSON.stringify({ email })
   })
 }
+
+export const addCredit = (email, credits) => {
+  return fetchRequest('/update-credits', {
+    method: 'PUT',
+    body: JSON.stringify({ email, credits })
+  })
+}

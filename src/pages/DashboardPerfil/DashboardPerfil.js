@@ -114,8 +114,8 @@ const DashboardPerfil = () => {
 
   const handleUpdate = async (firstName, lastName) => {
     const body = {
-      firstName,
-      lastName
+      firstName: firstName.trim(),
+      lastName: lastName.trim()
     }
     console.log(body)
     const { success, response, error } = await updateUser(user._id, body)
