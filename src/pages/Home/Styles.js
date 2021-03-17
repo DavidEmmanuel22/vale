@@ -4,7 +4,6 @@ const Styles = makeStyles(() => ({
   AppBar: {
     position: 'fixed',
     zIndex: 100,
-    backgroundColor: 'transparent',
     boxShadow: '0 0 0 0'
   },
   ToolBar: {

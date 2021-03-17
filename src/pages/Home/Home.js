@@ -9,7 +9,8 @@ import {
   SvgIcon,
   IconButton,
   Toolbar,
-  Typography
+  Typography,
+  Grid
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
@@ -26,16 +27,26 @@ import { UserContext } from '../../context/userContext'
 import './home.css'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import { SliderData } from './slider/SliderData'
+import ValedorHero from './slider/valedor-hero.jpg'
 
 const Home = () => {
   const classes = Styles()
   const { isAuthenticated, logout } = useContext(UserContext)
+  const [showLogin, setShowLogin] = useState(false)
+
+  const handleLogin = () => {
+    if (!isAuthenticated) {
+      setShowLogin(true)
+    } else {
+      window.location.href = '/dashboard'
+    }
+  }
 
   return (
     <>
       <AppBar className={classes.AppBar} position="static">
         <Toolbar className={classes.ToolBar}>
-          <img height="100%" src="/logo-appbar.png"></img>
+          <img height="100%" src="/images/white-logo.png"></img>
           <Hidden smDown>
             <div className={classes.linksContainer}>
               <a className="nav-link-item" href="#">
@@ -44,38 +55,120 @@ const Home = () => {
               <a className="nav-link-item">Valedores</a>
               <a className="nav-link-item">Negocios</a>
               <a className="nav-link-item">Contactos</a>
-              <Button
-                className="nav-button-item"
-                style={{ marginLeft: '20px', backgroundColor: 'black' }}
-                startIcon={<AccountCircleIcon></AccountCircleIcon>}
-                variant="contained"
-                color="secondary"
-              >
-                Login
-              </Button>
+              <button className="login-button" onClick={handleLogin}>
+                <AccountCircleIcon></AccountCircleIcon>
+                {isAuthenticated ? 'Ir al escritorio' : 'Iniciar Sesion'}
+              </button>
             </div>
           </Hidden>
         </Toolbar>
       </AppBar>
-      <section className="hero-section">
-        <div className="hero-wraper">
-          {SliderData.map((slide, index) => (
-            <div className="hero-slide" key={index}>
-              <div className="hero-slider">
-                <img src={slide.image}></img>
-                <div className="hero-content">
-                  <h1>{slide.title}</h1>
-                  <p>{slide.text}</p>
-                  <Button variant="contained" color="primary">
-                    Ver más
-                  </Button>
+      <div className="main-content">
+        <Hidden smDown>
+          <Grid
+            container
+            spacing={0}
+            style={{ height: '100vh', width: '100vw' }}
+          >
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                height: '100%'
+              }}
+            >
+              <div className="hero-text-section">
+                <p>¿Necesitas presupuesto para emprender tu negocio?</p>
+                <h1>
+                  Únete a <span>Vale Valedor</span>
+                </h1>
+                <button>Conocer más</button>
+              </div>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                height: '100%'
+              }}
+            >
+              <img
+                style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                src={ValedorHero}
+              ></img>
+            </Grid>
+          </Grid>
+        </Hidden>
+        <Hidden mdUp>
+          <Grid
+            container
+            spacing={0}
+            style={{ height: '100vh', width: '100vw' }}
+          >
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                height: '100%'
+              }}
+            >
+              <div className="hero-section-movil">
+                <img
+                  style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                  src={ValedorHero}
+                ></img>
+                <div className="hero-text-section-movil">
+                  <p>¿Necesitas presupuesto para emprender tu negocio?</p>
+                  <h1>
+                    Únete a <span>Vale Valedor</span>
+                  </h1>
+                  <button>Conocer más</button>
                 </div>
               </div>
-            </div>
-          ))}
+            </Grid>
+          </Grid>
+        </Hidden>
+      </div>
+      <footer>
+        <div className="footer-logo">
+          <img width="70%" height="70%" src="/images/white-logo.png"></img>
         </div>
-      </section>
-      <h1>hello</h1>
+        <div className="footer-icons">
+          <a href="#">
+            <img src="/images/Elements email-07.png"></img>
+          </a>
+          <a href="#">
+            <img src="/images/Elements email-08.png"></img>
+          </a>
+          <a href="#">
+            <img src="/images/Elements email-10.png"></img>
+          </a>
+        </div>
+        <div className="footer-about">
+          <h4>Acerca De</h4>
+          <a href="#">¿Quienes somos?</a>
+          <a href="#">Aviso de Privacidad</a>
+          <a href="#">Terminos y condiciones</a>
+        </div>
+        <div className="footer-contact">
+          <h4>Contacto</h4>
+          <a href="#">844 123 45 67</a>
+          <a href="#">info@valevaledor.com</a>
+        </div>
+      </footer>
+      <PopUp openDialog={showLogin} setOpenDialog={setShowLogin}>
+        <Login />
+      </PopUp>
     </>
   )
 }
