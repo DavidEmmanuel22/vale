@@ -7,7 +7,10 @@ import {
   Button,
   Hidden,
   SvgIcon,
-  IconButton
+  IconButton,
+  Toolbar,
+  Typography,
+  Grid
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
@@ -21,62 +24,152 @@ import Inicio from 'pages/Inicio/Inicio'
 import Styles from './Styles'
 import StylesTheme from './StylesTheme'
 import { UserContext } from '../../context/userContext'
+import './home.css'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { SliderData } from './slider/SliderData'
+import ValedorHero from './slider/valedor-hero.jpg'
 
 const Home = () => {
   const classes = Styles()
-
-  const [openDialog, setOpenDialog] = useState(false)
-
   const { isAuthenticated, logout } = useContext(UserContext)
+  const [showLogin, setShowLogin] = useState(false)
 
-  const handleNavButton = () => {
-    if (isAuthenticated) {
-      logout()
+  const handleLogin = () => {
+    if (!isAuthenticated) {
+      setShowLogin(true)
     } else {
-      setOpenDialog(true)
+      window.location.href = '/dashboard'
     }
   }
 
   return (
-    <div>
-      <ThemeProvider theme={StylesTheme}>
-        <div className={classes.ContentLogo}>
-          <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
-        </div>
-        <AppBar position="static" color="transparent">
-          <Hidden lgUp>
-            <IconButton color="inherit">
-              <SvgIcon fontSize="large" className={classes.SvgIconHam}>
-                <Menu />
-              </SvgIcon>
-            </IconButton>
-          </Hidden>
+    <>
+      <AppBar className={classes.AppBar} position="static">
+        <Toolbar className={classes.ToolBar}>
+          <img height="100%" src="/images/white-logo.png"></img>
           <Hidden smDown>
-            <Tabs indicatorColor="primary">
-              <Tab label="Acerca de" value="1" />
-              <Tab label="Valedor" value="2" />
-              <Tab label="Negocios" value="3" />
-              <Tab label="Contáctanos" value="4" />
-            </Tabs>
+            <div className={classes.linksContainer}>
+              <a className="nav-link-item" href="#">
+                Acerca De
+              </a>
+              <a className="nav-link-item">Valedores</a>
+              <a className="nav-link-item">Negocios</a>
+              <a className="nav-link-item">Contactos</a>
+              <button className="login-button" onClick={handleLogin}>
+                <AccountCircleIcon></AccountCircleIcon>
+                {isAuthenticated ? 'Ir al escritorio' : 'Iniciar Sesion'}
+              </button>
+            </div>
           </Hidden>
-        </AppBar>
+        </Toolbar>
+      </AppBar>
+      <div className="main-content">
         <Hidden smDown>
-          <Button
-            className={classes.ButtonAppBar}
-            size="small"
-            onClick={() => handleNavButton()}
+          <Grid
+            container
+            spacing={0}
+            style={{ height: '100vh', width: '100vw' }}
           >
-            {isAuthenticated ? 'Cerrar Sesion' : 'Iniciar Sesion'}
-          </Button>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                height: '100%'
+              }}
+            >
+              <div className="hero-text-section">
+                <p>¿Necesitas presupuesto para emprender tu negocio?</p>
+                <h1>
+                  Únete a <span>Vale Valedor</span>
+                </h1>
+                <button>Conocer más</button>
+              </div>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                height: '100%'
+              }}
+            >
+              <img
+                style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                src={ValedorHero}
+              ></img>
+            </Grid>
+          </Grid>
         </Hidden>
-        <Inicio />
-      </ThemeProvider>
-      <div>
-        <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
-          <Login />
-        </PopUp>
+        <Hidden mdUp>
+          <Grid
+            container
+            spacing={0}
+            style={{ height: '100vh', width: '100vw' }}
+          >
+            <Grid
+              item
+              xs={12}
+              md={6}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                height: '100%'
+              }}
+            >
+              <div className="hero-section-movil">
+                <img
+                  style={{ height: '100%', width: '100%', objectFit: 'cover' }}
+                  src={ValedorHero}
+                ></img>
+                <div className="hero-text-section-movil">
+                  <p>¿Necesitas presupuesto para emprender tu negocio?</p>
+                  <h1>
+                    Únete a <span>Vale Valedor</span>
+                  </h1>
+                  <button>Conocer más</button>
+                </div>
+              </div>
+            </Grid>
+          </Grid>
+        </Hidden>
       </div>
-    </div>
+      <footer>
+        <div className="footer-logo">
+          <img width="70%" height="70%" src="/images/white-logo.png"></img>
+        </div>
+        <div className="footer-icons">
+          <a href="#">
+            <img src="/images/Elements email-07.png"></img>
+          </a>
+          <a href="#">
+            <img src="/images/Elements email-08.png"></img>
+          </a>
+          <a href="#">
+            <img src="/images/Elements email-10.png"></img>
+          </a>
+        </div>
+        <div className="footer-about">
+          <h4>Acerca De</h4>
+          <a href="#">¿Quienes somos?</a>
+          <a href="#">Aviso de Privacidad</a>
+          <a href="#">Terminos y condiciones</a>
+        </div>
+        <div className="footer-contact">
+          <h4>Contacto</h4>
+          <a href="#">844 123 45 67</a>
+          <a href="#">info@valevaledor.com</a>
+        </div>
+      </footer>
+      <PopUp openDialog={showLogin} setOpenDialog={setShowLogin}>
+        <Login />
+      </PopUp>
+    </>
   )
 }
 

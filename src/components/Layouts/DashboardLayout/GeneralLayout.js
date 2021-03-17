@@ -44,12 +44,6 @@ const Styles = makeStyles((theme) => ({
     position: 'fixed'
   },
   appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    }),
     height: '80px',
     backgroundColor: 'white'
   },
@@ -71,7 +65,8 @@ const Styles = makeStyles((theme) => ({
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
-    })
+    }),
+    top: '80px'
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -82,7 +77,8 @@ const Styles = makeStyles((theme) => ({
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(9) + 1
-    }
+    },
+    top: '80px'
   },
   toolbar: {
     display: 'flex',
@@ -146,6 +142,7 @@ export default function GeneralLayout({ children }) {
         })}
       >
         <Toolbar className={classes.toolbar}>
+          <img width="200px" src="/logo-appbar.png"></img>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -162,7 +159,7 @@ export default function GeneralLayout({ children }) {
             className={classes.ButtonLogin}
             startIcon={<Person></Person>}
           >
-            Logout{' '}
+            Cerrar Sesion{' '}
           </Button>
         </Toolbar>
       </AppBar>
@@ -179,12 +176,6 @@ export default function GeneralLayout({ children }) {
           })
         }}
       >
-        <div className={classes.toolbar}>
-          <img
-            style={{ width: '100%', height: '90%' }}
-            src="/logo-appbar.png"
-          ></img>
-        </div>
         <List style={{ marginTop: '22px', padding: '10px' }}>
           {/*     ADMIN ROUTES		*/}
           {
