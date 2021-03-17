@@ -7,7 +7,9 @@ import {
   Button,
   Hidden,
   SvgIcon,
-  IconButton
+  IconButton,
+  Toolbar,
+  Typography
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import Login from 'pages/Login/Login'
@@ -21,62 +23,60 @@ import Inicio from 'pages/Inicio/Inicio'
 import Styles from './Styles'
 import StylesTheme from './StylesTheme'
 import { UserContext } from '../../context/userContext'
+import './home.css'
+import AccountCircleIcon from '@material-ui/icons/AccountCircle'
+import { SliderData } from './slider/SliderData'
 
 const Home = () => {
   const classes = Styles()
-
-  const [openDialog, setOpenDialog] = useState(false)
-
   const { isAuthenticated, logout } = useContext(UserContext)
 
-  const handleNavButton = () => {
-    if (isAuthenticated) {
-      logout()
-    } else {
-      setOpenDialog(true)
-    }
-  }
-
   return (
-    <div>
-      <ThemeProvider theme={StylesTheme}>
-        <div className={classes.ContentLogo}>
-          <img className={classes.ImgLogo} src={Logo} alt="logo"></img>
-        </div>
-        <AppBar position="static" color="transparent">
-          <Hidden lgUp>
-            <IconButton color="inherit">
-              <SvgIcon fontSize="large" className={classes.SvgIconHam}>
-                <Menu />
-              </SvgIcon>
-            </IconButton>
-          </Hidden>
+    <>
+      <AppBar className={classes.AppBar} position="static">
+        <Toolbar className={classes.ToolBar}>
+          <img height="100%" src="/logo-appbar.png"></img>
           <Hidden smDown>
-            <Tabs indicatorColor="primary">
-              <Tab label="Acerca de" value="1" />
-              <Tab label="Valedor" value="2" />
-              <Tab label="Negocios" value="3" />
-              <Tab label="Contáctanos" value="4" />
-            </Tabs>
+            <div className={classes.linksContainer}>
+              <a className="nav-link-item" href="#">
+                Acerca De
+              </a>
+              <a className="nav-link-item">Valedores</a>
+              <a className="nav-link-item">Negocios</a>
+              <a className="nav-link-item">Contactos</a>
+              <Button
+                className="nav-button-item"
+                style={{ marginLeft: '20px', backgroundColor: 'black' }}
+                startIcon={<AccountCircleIcon></AccountCircleIcon>}
+                variant="contained"
+                color="secondary"
+              >
+                Login
+              </Button>
+            </div>
           </Hidden>
-        </AppBar>
-        <Hidden smDown>
-          <Button
-            className={classes.ButtonAppBar}
-            size="small"
-            onClick={() => handleNavButton()}
-          >
-            {isAuthenticated ? 'Cerrar Sesion' : 'Iniciar Sesion'}
-          </Button>
-        </Hidden>
-        <Inicio />
-      </ThemeProvider>
-      <div>
-        <PopUp openDialog={openDialog} setOpenDialog={setOpenDialog}>
-          <Login />
-        </PopUp>
-      </div>
-    </div>
+        </Toolbar>
+      </AppBar>
+      <section className="hero-section">
+        <div className="hero-wraper">
+          {SliderData.map((slide, index) => (
+            <div className="hero-slide" key={index}>
+              <div className="hero-slider">
+                <img src={slide.image}></img>
+                <div className="hero-content">
+                  <h1>{slide.title}</h1>
+                  <p>{slide.text}</p>
+                  <Button variant="contained" color="primary">
+                    Ver más
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+      <h1>hello</h1>
+    </>
   )
 }
 
