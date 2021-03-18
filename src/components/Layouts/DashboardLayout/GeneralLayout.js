@@ -162,7 +162,7 @@ export default function GeneralLayout({ children }) {
             className={classes.ButtonLogin}
             startIcon={<Person></Person>}
           >
-            Logout{' '}
+            Salir{' '}
           </Button>
         </Toolbar>
       </AppBar>

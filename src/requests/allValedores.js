@@ -49,6 +49,13 @@ export const deleteValedor = (email) => {
   })
 }
 
+export const enableValedor = (email) => {
+  return fetchRequest(`/enable-user`, {
+    method: 'PUT',
+    body: JSON.stringify({ email })
+  })
+}
+
 export const addCredit = (email, credits) => {
   return fetchRequest('/update-credits', {
     method: 'PUT',

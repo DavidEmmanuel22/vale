@@ -9,8 +9,10 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
-import { getValedores } from 'requests/allValedores'
+import InputBase from '@material-ui/core/InputBase'
+import { getValedores, enableValedor } from 'requests/allValedores'
 import RegisterValedor from 'components/valedor/register'
+import numeral from 'numeral'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
@@ -58,6 +60,23 @@ const Valedores = () => {
   const [selectedValedor, setSelectedValedor] = useState({})
   const [valedores, setValedores] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [searchValedor, setSearchValedor] = useState('')
+  const [statusValedor, setStatusValedor] = useState(false)
+  const [unableValedor, setUnableValedor] = useState(true)
+
+  const filteredValedores = valedores.filter((valedor) => {
+    if (
+      valedor.firstName.toLowerCase().includes(searchValedor.toLowerCase()) ||
+      valedor.lastName.toLowerCase().includes(searchValedor.toLowerCase())
+    ) {
+      return valedor
+    } else {
+      return null
+    }
+  })
+
+  //console.log(selectedValedor)
+  //console.log(unableValedor)
 
   useEffect(() => {
     async function getAllValedores() {
@@ -67,34 +86,86 @@ const Valedores = () => {
         setValedores(response.data)
         setIsLoading(false)
       } else {
-        console.log(error)
+        //console.log(error)
       }
     }
-    if (!openDialog || !deleteDialog) {
+    if (!openDialog || !deleteDialog || !statusValedor) {
       getAllValedores()
     }
-  }, [openDialog, deleteDialog])
+  }, [openDialog, deleteDialog, statusValedor])
+
+  const handleChange = (e) => {
+    e.preventDefault()
+    setSearchValedor(e.target.value)
+  }
+
+  const handleClick = async (e, valedor) => {
+    e.preventDefault()
+    if (valedor.estatus === 1) {
+      const { success, response, error } = await enableValedor(
+        selectedValedor.email
+      )
+      if (response.error) {
+        console.log(error)
+      } else {
+        setStatusValedor(true)
+      }
+      setStatusValedor(false)
+    } else {
+      setDeleteDialog(true)
+    }
+  }
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper} style={{ display: 'flex' }}>
-          {isLoading && <CircularProgress></CircularProgress>}
+        <Paper
+          className={classes.buttonPaper}
+          style={{
+            display: 'flex',
+            textAlign: 'center',
+            marginBottom: '1.2rem',
+            justifyContent: 'space-around',
+            flexDirection: 'row-reverse'
+          }}
+        >
           <Button
             onClick={() => setOpenDialog(true)}
             color="primary"
             variant="contained"
-            style={{ marginLeft: 'auto' }}
           >
             Agregar Valedor
           </Button>
+          <InputBase
+            placeholder="Buscar Valedor..."
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            value={searchValedor}
+            onChange={(e) => handleChange(e)}
+          />
         </Paper>
         <Paper className={classes.paper}>
           <TableContainer>
+            {isLoading && <CircularProgress></CircularProgress>}
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">Status</TableCell>
+                  <TableCell
+                    align="center"
+                    onClick={() => setUnableValedor(!unableValedor)}
+                    style={{
+                      background: `${
+                        unableValedor ? 'rgb(0, 119, 114)' : '#f44336'
+                      }`,
+                      color: 'white',
+                      borderRadius: '.3em'
+                    }}
+                  >
+                    Estatus
+                  </TableCell>
                   <TableCell align="center">Nombre</TableCell>
                   <Hidden smDown>
                     <TableCell align="center">Correo</TableCell>
@@ -104,41 +175,88 @@ const Valedores = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {valedores.map((valedor, index) => (
+                {filteredValedores.map((valedor, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
-                    <TableCell align="center">
-                      {valedor.estatus === 0 ? (
-                        <CheckCircleIcon color="primary"></CheckCircleIcon>
+                    <>
+                      {valedor.estatus === 0 && unableValedor ? (
+                        <>
+                          <TableCell align="center">
+                            <CheckCircleIcon color="primary"></CheckCircleIcon>
+                          </TableCell>
+                          <TableCell align="center">
+                            {valedor.firstName} {valedor.lastName}
+                          </TableCell>
+                          <Hidden smDown>
+                            <TableCell align="center">
+                              {valedor.email}
+                            </TableCell>
+                          </Hidden>
+                          <TableCell align="center">
+                            {numeral(valedor.credits).format('$0,0')}
+                          </TableCell>
+                          <TableCell align="center">
+                            <Button
+                              color="primary"
+                              style={{ marginRight: '10px' }}
+                              variant="outlined"
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                handleClick(e, valedor)
+                              }}
+                              onMouseEnter={() => setSelectedValedor(valedor)}
+                              color="secondary"
+                              variant={`${
+                                valedor.estatus === 1 ? 'outlined' : 'contained'
+                              }`}
+                            >
+                              Eliminar
+                            </Button>
+                          </TableCell>
+                        </>
                       ) : (
-                        <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                        <>
+                          {valedor.estatus === 1 && !unableValedor ? (
+                            <>
+                              <TableCell align="center">
+                                <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                              </TableCell>
+                              <TableCell align="center">
+                                {valedor.firstName} {valedor.lastName}
+                              </TableCell>
+                              <Hidden smDown>
+                                <TableCell align="center">
+                                  {valedor.email}
+                                </TableCell>
+                              </Hidden>
+                              <TableCell align="center">
+                                {numeral(valedor.credits).format('$0,0')}
+                              </TableCell>
+                              <TableCell align="center">
+                                <Button
+                                  onClick={(e) => {
+                                    handleClick(e, valedor)
+                                  }}
+                                  onMouseEnter={() =>
+                                    setSelectedValedor(valedor)
+                                  }
+                                  color="secondary"
+                                  variant={`${
+                                    valedor.estatus === 1
+                                      ? 'outlined'
+                                      : 'contained'
+                                  }`}
+                                >
+                                  Habilitar
+                                </Button>
+                              </TableCell>
+                            </>
+                          ) : null}
+                        </>
                       )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {valedor.firstName} {valedor.lastName}
-                    </TableCell>
-                    <Hidden smDown>
-                      <TableCell align="center">{valedor.email}</TableCell>
-                    </Hidden>
-                    <TableCell align="center">{valedor.credits}</TableCell>
-                    <TableCell align="center">
-                      <Button
-                        color="primary"
-                        style={{ marginRight: '10px' }}
-                        variant="outlined"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setSelectedValedor(valedor)
-                          setDeleteDialog(true)
-                        }}
-                        color="secondary"
-                        variant="outlined"
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+                    </>
                   </TableRow>
                 ))}
               </TableBody>
@@ -157,7 +275,7 @@ const Valedores = () => {
       <ResponsivePopUp
         open={deleteDialog}
         setOpen={setDeleteDialog}
-        title={'Elimina un valedor'}
+        title={'Eliminar un valedor'}
         confirmText={'Confirm Text'}
       >
         <DeleteValedor valedor={selectedValedor}></DeleteValedor>

@@ -10,15 +10,23 @@ import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import { getNegocios } from 'requests/allNegocios'
+import { updateUser } from 'requests/allValedores'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import DeleteNegocio from 'components/negocio/delete'
 import { FilterList } from '@material-ui/icons'
 import { Alert } from '@material-ui/lab'
+import InputBase from '@material-ui/core/InputBase'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
 
+/*.filter((negocio)=>{
+  if(negocio.bussinesName.toLowerCase().includes(searchBusiness.toLowerCase())) {
+    return negocio
+   } else return []
+  
+}).*/
 const columns = [
   { id: 'name', label: 'Nombre' },
   { id: 'email', label: 'Correo' },
@@ -61,6 +69,24 @@ const Negocios = () => {
 
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selectedNegocio, setSelectedNegocio] = useState(false)
+  const [searchBusiness, setSearchBusiness] = useState('')
+
+  //console.log(selectedNegocio)
+
+  const filteredBusiness = negocios.filter((negocio) => {
+    if (
+      negocio.bussinesName
+        .toLowerCase()
+        .includes(searchBusiness.toLowerCase()) ||
+      negocio.bussinesAdress
+        .toLowerCase()
+        .includes(searchBusiness.toLowerCase())
+    ) {
+      return negocio
+    } else {
+      return null
+    }
+  })
 
   useEffect(() => {
     async function getAllNegocios() {
@@ -70,7 +96,7 @@ const Negocios = () => {
         setNegocios(response.data)
         setIsLoading(false)
       } else {
-        console.log(error)
+        //console.log(error)
       }
     }
     if (!openDialog || !deleteDialog) {
@@ -78,39 +104,45 @@ const Negocios = () => {
     }
   }, [openDialog, deleteDialog])
 
+  const handleChange = (e) => {
+    e.preventDefault()
+    setSearchBusiness(e.target.value)
+  }
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper}>
-          {isLoading && <CircularProgress></CircularProgress>}
-          {!isLoading && (
-            <Button
-              color="secondary"
-              onClick={() => setShowFilters(!showFilters)}
-              variant="contained"
-            >
-              <FilterList></FilterList>
-            </Button>
-          )}
+        <Paper
+          className={classes.buttonPaper}
+          style={{
+            display: 'flex',
+            textAlign: 'center',
+            marginBottom: '1.2rem',
+            justifyContent: 'space-around',
+            flexDirection: 'row-reverse'
+          }}
+        >
           <Button
             onClick={() => setOpenDialog(true)}
             color="primary"
             variant="contained"
-            style={{ float: 'right' }}
           >
             Agregar Negocio{' '}
           </Button>
-          {!isLoading && (
-            <div>
-              <Collapse in={showFilters}>
-                <Alert severity="info">
-                  This feature will be added soon :)
-                </Alert>
-              </Collapse>
-            </div>
-          )}
+
+          <InputBase
+            placeholder="Buscar Negocio..."
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            value={searchBusiness}
+            onChange={(e) => handleChange(e)}
+          />
         </Paper>
         <Paper className={classes.paper}>
+          {isLoading && <CircularProgress></CircularProgress>}
           <TableContainer>
             <Table>
               <TableHead>
@@ -127,7 +159,7 @@ const Negocios = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {negocios.map((negocio, index) => (
+                {filteredBusiness.map((negocio, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
                     <TableCell align="center">
                       {negocio.estatus === 0 ? (
@@ -151,18 +183,24 @@ const Negocios = () => {
                         style={{ marginRight: '10px' }}
                         variant="outlined"
                       >
-                        Edit
+                        Editar
                       </Button>
                       <Button
-                        disabled={negocio.estatus !== 0}
-                        color="secondary"
-                        variant="outlined"
                         onClick={() => {
-                          setSelectedNegocio(negocio)
-                          setDeleteDialog(true)
+                          negocio.estatus === 1
+                            ? updateUser(selectedNegocio._id, {
+                                ...selectedNegocio,
+                                estatus: 0
+                              })
+                            : setDeleteDialog(true)
                         }}
+                        onMouseEnter={() => setSelectedNegocio(negocio)}
+                        color="secondary"
+                        variant={`${
+                          negocio.estatus === 1 ? 'outlined' : 'contained'
+                        }`}
                       >
-                        Delete
+                        {negocio.estatus === 1 ? 'Habilitar' : 'Eliminar'}
                       </Button>
                     </TableCell>
                   </TableRow>
