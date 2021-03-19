@@ -11,6 +11,7 @@ import {
   Typography,
   Collapse
 } from '@material-ui/core'
+import Zoom from '@material-ui/core/Zoom'
 import Logo from 'images/logo-appbar.png'
 import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
@@ -28,13 +29,18 @@ const ForgotPassword = () => {
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
+  const [checked, setChecked] = useState(false)
+
+  const handleCleanInput = () => {
+    formik.values.email = ''
+  }
 
   const formik = useFormik({
     initialValues: {
       email: ''
     },
-    onSubmit: async (updatedPassword, { resetForm }) => {
-      console.log(updatedPassword.email)
+    onSubmit: async (updatedPassword) => {
+      //console.log(updatedPassword.email)
       const { success, response, error } = await forgotPassword(
         updatedPassword.email
       )
@@ -42,11 +48,23 @@ const ForgotPassword = () => {
         if (response.error) {
           setAlertColor('error')
           setAlertText(response.error)
+          handleCleanInput()
+          setChecked(false)
         } else {
           setAlertColor('success')
           setAlertText(response.data)
+          setShowAlert(true)
+          setTimeout(() => {
+            handleCleanInput()
+            setShowAlert(false)
+            setChecked(true)
+          }, 3000)
         }
         setShowAlert(true)
+        setTimeout(() => {
+          handleCleanInput()
+          setShowAlert(false)
+        }, 3000)
       }
     },
     validationSchema: validationSchema
@@ -55,10 +73,22 @@ const ForgotPassword = () => {
   return (
     <div>
       <Grid className={classes.GridContent} item md={12}>
-        <Paper className={classes.PaperContent}>
+        <Paper
+          style={{ boxShadow: '0px 6px 21px 0px darkgrey' }}
+          className={classes.PaperContent}
+        >
           <Collapse in={showAlert}>
             <Alert severity={alertColor}>{alertText}</Alert>
           </Collapse>
+          <div>
+            <div style={{ top: '0' }} className={classes.FooterText}>
+              <Zoom in={checked}>
+                <Typography className={classes.TextInicia}>
+                  <a href="/">Inicia Sesión</a>
+                </Typography>
+              </Zoom>
+            </div>
+          </div>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
             <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
             <h2 className={classes.H2Password}>Recuperar Contraseña</h2>
@@ -92,13 +122,6 @@ const ForgotPassword = () => {
               </Button>
             </div>
           </form>
-          <div>
-            <div className={classes.FooterText}>
-              <Typography className={classes.TextInicia}>
-                <a href="/">Inicia Sesión</a>
-              </Typography>
-            </div>
-          </div>
         </Paper>
       </Grid>
     </div>

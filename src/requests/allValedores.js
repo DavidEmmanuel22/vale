@@ -43,17 +43,29 @@ export const updateUser = (userId, user) => {
 }
 
 export const deleteValedor = (email) => {
-  return fetchRequest(`/delete-user`, {
-    method: 'PUT',
-    body: JSON.stringify({ email })
-  })
+  return fetchRequest(
+    `/delete-user`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({ email })
+    },
+    {
+      Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+    }
+  )
 }
 
 export const enableValedor = (email) => {
-  return fetchRequest(`/enable-user`, {
-    method: 'PUT',
-    body: JSON.stringify({ email })
-  })
+  return fetchRequest(
+    `/enable-user`,
+    {
+      method: 'PUT',
+      body: JSON.stringify({ email })
+    },
+    {
+      Authorization: `Bearer ${localStorage.getItem('auth-token')}`
+    }
+  )
 }
 
 export const addCredit = (email, credits) => {

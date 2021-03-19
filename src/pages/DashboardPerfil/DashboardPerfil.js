@@ -108,7 +108,7 @@ const DashboardPerfil = () => {
       setShowAlert(true)
       setTimeout(() => {
         logout()
-      }, 5000)
+      }, 3000)
     }
   }
 

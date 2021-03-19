@@ -39,7 +39,7 @@ const ContextProvider = (props) => {
       setUser(false)
     }
     setHasLoad(true)
-  }, [])
+  }, [localStorage.getItem('auth-token')])
 
   return (
     <UserContext.Provider

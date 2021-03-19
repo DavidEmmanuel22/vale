@@ -31,6 +31,11 @@ const UpdatePassword = () => {
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
 
+  const handleCleanInput = () => {
+    formik.values.password = ''
+    formik.values.passwordCheck = ''
+  }
+
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -38,21 +43,34 @@ const UpdatePassword = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (data) => {
-      const { success, response, error } = await resetPassword(data)
-      if (response && success) {
-        if (response.error) {
-          setAlertColor('error')
-          setAlertText(response.error)
-        } else {
-          setAlertColor('success')
-          setAlertText('Tu contraseña se ha reestablecido')
+      if (
+        data.password &&
+        data.passwordCheck !== '' &&
+        data.password === data.passwordCheck
+      ) {
+        const { success, response, error } = await resetPassword(data)
+        if (response && success) {
+          if (response.error) {
+            setAlertColor('error')
+            setAlertText(response.error)
+          } else {
+            setAlertColor('success')
+            setAlertText('Tu contraseña se ha reestablecido')
+          }
+          setShowAlert(true)
+          setTimeout(() => {
+            setShowAlert(false)
+            window.location.href = '/'
+          }, 3000)
         }
+      } else if (data.password !== data.passwordCheck) {
+        setAlertColor('error')
+        setAlertText('Error, las contraseñas no coinciden, intente nuevamente.')
         setShowAlert(true)
         setTimeout(() => {
+          handleCleanInput()
           setShowAlert(false)
-          window.location.href = '/'
-        }, 8000)
-        //resetForm({ resetpassword: '' })
+        }, 4000)
       }
     }
   })
@@ -60,7 +78,10 @@ const UpdatePassword = () => {
   return (
     <div>
       <Grid className={classes.GridContent} item md={12}>
-        <Paper className={classes.PaperContent}>
+        <Paper
+          style={{ boxShadow: '0px 6px 21px 0px darkgrey' }}
+          className={classes.PaperContent}
+        >
           <Collapse in={showAlert}>
             <Alert severity={alertColor}>{alertText}</Alert>
           </Collapse>
@@ -75,7 +96,7 @@ const UpdatePassword = () => {
               id="password"
               placeholder="Contraseña"
               type="password"
-              value={formik.values.password}
+              value={formik.values.password.trim()}
               onChange={formik.handleChange}
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
@@ -92,7 +113,7 @@ const UpdatePassword = () => {
               id="passwordCheck"
               placeholder="Confirmar contraseña"
               type="password"
-              value={formik.values.passwordCheck}
+              value={formik.values.passwordCheck.trim()}
               onChange={formik.handleChange}
               error={
                 formik.touched.passwordCheck &&

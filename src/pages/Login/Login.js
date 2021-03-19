@@ -31,7 +31,9 @@ const Login = () => {
       } else {
         //console.log(response)
         login(response.data.token)
-        history.push('/dashboard')
+        setTimeout(() => {
+          history.push('/dashboard')
+        }, 7000)
       }
     }
     if (error) {
