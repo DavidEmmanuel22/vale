@@ -9,7 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
-import { getNegocios } from 'requests/allNegocios'
+import { getNegocios, enableNegocio } from 'requests/allNegocios'
 import { updateUser } from 'requests/allValedores'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -66,10 +66,12 @@ const Negocios = () => {
   const [negocios, setNegocios] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
-
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selectedNegocio, setSelectedNegocio] = useState(false)
   const [searchBusiness, setSearchBusiness] = useState('')
+  const [statusNegocio, setStatusNegocio] = useState(false)
+  const [unableNegocio, setUnableNegocio] = useState(true)
+  console.log(selectedNegocio)
 
   //console.log(selectedNegocio)
 
@@ -99,14 +101,31 @@ const Negocios = () => {
         //console.log(error)
       }
     }
-    if (!openDialog || !deleteDialog) {
+    if (!openDialog || !deleteDialog || !statusNegocio) {
       getAllNegocios()
     }
-  }, [openDialog, deleteDialog])
+  }, [openDialog, deleteDialog, statusNegocio])
 
   const handleChange = (e) => {
     e.preventDefault()
     setSearchBusiness(e.target.value)
+  }
+
+  const handleClick = async (e, negocio) => {
+    e.preventDefault()
+    if (negocio.estatus === 1) {
+      const { success, response, error } = await enableNegocio(
+        selectedNegocio.email
+      )
+      if (response.error) {
+        console.log(error)
+      } else {
+        setStatusNegocio(true)
+      }
+      setStatusNegocio(false)
+    } else {
+      setDeleteDialog(true)
+    }
   }
 
   return (
@@ -127,7 +146,7 @@ const Negocios = () => {
             color="primary"
             variant="contained"
           >
-            Agregar Negocio{' '}
+            Agregar Negocio
           </Button>
 
           <InputBase
@@ -147,7 +166,19 @@ const Negocios = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">Status</TableCell>
+                  <TableCell
+                    align="center"
+                    onClick={() => setUnableNegocio(!unableNegocio)}
+                    style={{
+                      background: `${
+                        unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
+                      }`,
+                      color: 'white',
+                      borderRadius: '.3em'
+                    }}
+                  >
+                    Estatus
+                  </TableCell>
                   <TableCell align="center">Nombre</TableCell>
                   <Hidden xsDown>
                     <TableCell align="center">Correo</TableCell>
@@ -161,48 +192,90 @@ const Negocios = () => {
               <TableBody>
                 {filteredBusiness.map((negocio, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
-                    <TableCell align="center">
-                      {negocio.estatus === 0 ? (
-                        <CheckCircleIcon color="primary"></CheckCircleIcon>
+                    <>
+                      {negocio.estatus === 0 && unableNegocio ? (
+                        <>
+                          <TableCell align="center">
+                            <CheckCircleIcon color="primary"></CheckCircleIcon>
+                          </TableCell>
+                          <TableCell align="center">
+                            {negocio.bussinesName}
+                          </TableCell>
+                          <Hidden xsDown>
+                            <TableCell align="center">
+                              {negocio.email}
+                            </TableCell>
+                          </Hidden>
+                          <Hidden smDown>
+                            <TableCell align="center">
+                              {negocio.bussinesAdress}
+                            </TableCell>
+                          </Hidden>
+                          <TableCell align="center">
+                            <Button
+                              color="primary"
+                              style={{ marginRight: '10px' }}
+                              variant="outlined"
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                handleClick(e, negocio)
+                              }}
+                              onMouseEnter={() => setSelectedNegocio(negocio)}
+                              color="secondary"
+                              variant={`${
+                                negocio.estatus === 1 ? 'outlined' : 'contained'
+                              }`}
+                            >
+                              Eliminar
+                            </Button>
+                          </TableCell>
+                        </>
                       ) : (
-                        <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                        <>
+                          {negocio.estatus === 1 && !unableNegocio ? (
+                            <>
+                              <TableCell align="center">
+                                <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                              </TableCell>
+                              <TableCell align="center">
+                                {negocio.bussinesName}
+                              </TableCell>
+                              <Hidden xsDown>
+                                <TableCell align="center">
+                                  {negocio.email}
+                                </TableCell>
+                              </Hidden>
+                              <Hidden smDown>
+                                <TableCell align="center">
+                                  {negocio.bussinesAdress}
+                                </TableCell>
+                              </Hidden>
+                              <TableCell align="center">
+                                <Button
+                                  onClick={(e) => {
+                                    handleClick(e, negocio)
+                                  }}
+                                  onMouseEnter={() =>
+                                    setSelectedNegocio(negocio)
+                                  }
+                                  color="secondary"
+                                  variant={`${
+                                    negocio.estatus === 1
+                                      ? 'outlined'
+                                      : 'contained'
+                                  }`}
+                                >
+                                  Habilitar
+                                </Button>
+                              </TableCell>
+                            </>
+                          ) : null}
+                        </>
                       )}
-                    </TableCell>
-                    <TableCell align="center">{negocio.bussinesName}</TableCell>
-                    <Hidden xsDown>
-                      <TableCell align="center">{negocio.email}</TableCell>
-                    </Hidden>
-                    <Hidden smDown>
-                      <TableCell align="center">
-                        {negocio.bussinesAdress}
-                      </TableCell>
-                    </Hidden>
-                    <TableCell align="center">
-                      <Button
-                        color="primary"
-                        style={{ marginRight: '10px' }}
-                        variant="outlined"
-                      >
-                        Editar
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          negocio.estatus === 1
-                            ? updateUser(selectedNegocio._id, {
-                                ...selectedNegocio,
-                                estatus: 0
-                              })
-                            : setDeleteDialog(true)
-                        }}
-                        onMouseEnter={() => setSelectedNegocio(negocio)}
-                        color="secondary"
-                        variant={`${
-                          negocio.estatus === 1 ? 'outlined' : 'contained'
-                        }`}
-                      >
-                        {negocio.estatus === 1 ? 'Habilitar' : 'Eliminar'}
-                      </Button>
-                    </TableCell>
+                    </>
                   </TableRow>
                 ))}
               </TableBody>

@@ -13,10 +13,10 @@ const DeleteValedor = ({ valedor }) => {
   const { handleClose } = useContext(AlertContext)
 
   const handleAcept = () => {
-    removeNegocio()
+    removeValedor()
   }
 
-  const removeNegocio = async () => {
+  const removeValedor = async () => {
     const { success, response, error } = await deleteValedor(valedor.email)
     if (success && response) {
       if (response.error) {

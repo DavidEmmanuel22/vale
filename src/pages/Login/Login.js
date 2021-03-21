@@ -33,7 +33,7 @@ const Login = () => {
         login(response.data.token)
         setTimeout(() => {
           history.push('/dashboard')
-        }, 7000)
+        }, 1000)
       }
     }
     if (error) {
