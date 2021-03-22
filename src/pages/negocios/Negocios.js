@@ -184,7 +184,7 @@ const Negocios = () => {
                     <TableCell align="center">Correo</TableCell>
                   </Hidden>
                   <Hidden smDown>
-                    <TableCell align="center">Direccion</TableCell>
+                    <TableCell align="center">Dirección</TableCell>
                   </Hidden>
                   <TableCell align="center">Acciones</TableCell>
                 </TableRow>

@@ -6,7 +6,7 @@ import './deleteValedor.css'
 import { AlertContext } from '../popUp/responsivePopUp'
 
 const DeleteValedor = ({ valedor }) => {
-  const [alertText, setAlertText] = useState('This feature will be added soon')
+  const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
 
