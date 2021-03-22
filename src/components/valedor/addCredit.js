@@ -20,7 +20,7 @@ const validationSchema = yup.object({
     .required('Credito es requerido')
 })
 
-const addCredits = ({ email }) => {
+const AddCredits = ({ email }) => {
   const {
     alertText,
     alertColor,
@@ -117,4 +117,4 @@ const addCredits = ({ email }) => {
   )
 }
 
-export default addCredits
+export default AddCredits
