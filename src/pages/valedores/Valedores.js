@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Grid, Paper, Button, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import AddCredit from 'components/valedor/addCredit'
 import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -56,6 +57,7 @@ const Valedores = () => {
   const classes2 = useStyles2()
 
   const [openDialog, setOpenDialog] = useState(false)
+  const [openAddCredits, setOpenAddCredits] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selectedValedor, setSelectedValedor] = useState({})
   const [valedores, setValedores] = useState([])
@@ -92,7 +94,7 @@ const Valedores = () => {
     if (!openDialog || !deleteDialog || !statusValedor) {
       getAllValedores()
     }
-  }, [openDialog, deleteDialog, statusValedor])
+  }, [openDialog, deleteDialog, statusValedor, openAddCredits])
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -170,7 +172,7 @@ const Valedores = () => {
                   <Hidden smDown>
                     <TableCell align="center">Correo</TableCell>
                   </Hidden>
-                  <TableCell align="center">Credito</TableCell>
+                  <TableCell align="center">Crédito</TableCell>
                   <TableCell align="center">Acciones</TableCell>
                 </TableRow>
               </TableHead>
@@ -199,8 +201,10 @@ const Valedores = () => {
                               color="primary"
                               style={{ marginRight: '10px' }}
                               variant="outlined"
+                              onClick={() => setOpenAddCredits(true)}
+                              onMouseEnter={() => setSelectedValedor(valedor)}
                             >
-                              Editar
+                              Agregar Credito
                             </Button>
                             <Button
                               onClick={(e) => {
@@ -208,9 +212,7 @@ const Valedores = () => {
                               }}
                               onMouseEnter={() => setSelectedValedor(valedor)}
                               color="secondary"
-                              variant={`${
-                                valedor.estatus === 1 ? 'outlined' : 'contained'
-                              }`}
+                              variant="contained"
                             >
                               Eliminar
                             </Button>
@@ -279,6 +281,15 @@ const Valedores = () => {
         confirmText={'Confirm Text'}
       >
         <DeleteValedor valedor={selectedValedor}></DeleteValedor>
+      </ResponsivePopUp>
+
+      <ResponsivePopUp
+        open={openAddCredits}
+        setOpen={setOpenAddCredits}
+        title={'Agregar Crédito'}
+        confirmText={'Confirm Text'}
+      >
+        <AddCredit email={selectedValedor.email}></AddCredit>
       </ResponsivePopUp>
     </Grid>
   )
