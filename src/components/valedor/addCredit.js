@@ -21,8 +21,6 @@ const validationSchema = yup.object({
 })
 
 const addCredits = ({ email }) => {
-  const classes = Styles()
-
   const {
     alertText,
     alertColor,
@@ -30,6 +28,7 @@ const addCredits = ({ email }) => {
     setAlertColor,
     handleClose
   } = useContext(AlertContext)
+  const classes = Styles()
 
   const formik = useFormik({
     initialValues: {
