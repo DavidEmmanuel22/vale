@@ -30,7 +30,7 @@ const DeleteNegocio = ({ negocio }) => {
       setTimeout(() => {
         setShowAlert(false)
         handleClose()
-      }, 5000)
+      }, 2000)
     }
   }
 
@@ -41,7 +41,7 @@ const DeleteNegocio = ({ negocio }) => {
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
         <p>
-          Deseas borrar el negocio <span>{negocio.bussinesName}</span> ?
+          Deseas borrar el negocio: <span>{negocio.bussinesName}</span> ?
         </p>
         <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel

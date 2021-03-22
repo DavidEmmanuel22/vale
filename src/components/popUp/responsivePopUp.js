@@ -80,7 +80,7 @@ export default function ResponsivePopUp({
     setTimeout(() => {
       setAlertText('')
       setAlertColor('success')
-    }, 8000)
+    }, 4000)
   }, [alertText])
 
   return (

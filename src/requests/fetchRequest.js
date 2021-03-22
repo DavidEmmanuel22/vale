@@ -1,5 +1,4 @@
 export const BASE_API_URL = 'https://devbackend.valevaledor.com'
-const token = localStorage.getItem('auth-token')
 
 const fetchRequest = async (requestPath, requestParams = {}, headers = {}) => {
   try {
@@ -7,7 +6,7 @@ const fetchRequest = async (requestPath, requestParams = {}, headers = {}) => {
       mode: 'cors', // no-cors, *cors, same-origin
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem('auth-token')}`,
         ...headers
       },
       ...requestParams

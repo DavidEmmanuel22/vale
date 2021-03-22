@@ -32,14 +32,14 @@ const ContextProvider = (props) => {
     const token = localStorage.getItem('auth-token')
     if (token) {
       const decoded = jwt_decode(token)
-      console.log(decoded)
+      //console.log(decoded)
       setUser(decoded.user)
-      console.log(decoded.user)
+      //console.log(decoded.user)
     } else {
       setUser(false)
     }
     setHasLoad(true)
-  }, [])
+  }, [localStorage.getItem('auth-token')])
 
   return (
     <UserContext.Provider

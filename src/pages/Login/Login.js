@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
@@ -29,9 +29,11 @@ const Login = () => {
       if (response.error) {
         setError(response.error)
       } else {
-        console.log(response)
+        //console.log(response)
         login(response.data.token)
-        history.push('/dashboard')
+        setTimeout(() => {
+          history.push('/dashboard')
+        }, 1000)
       }
     }
     if (error) {
@@ -39,7 +41,7 @@ const Login = () => {
     }
     setTimeout(() => {
       setError(false)
-    }, 8000)
+    }, 5000)
   }
 
   return (

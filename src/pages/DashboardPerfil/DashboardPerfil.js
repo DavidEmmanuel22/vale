@@ -93,7 +93,7 @@ const DashboardPerfil = () => {
   }
 
   const handleChangePassword = async () => {
-    console.log(user.email)
+    //console.log(user.email)
     const { success, response, error } = await forgotPassword(user.email)
     if (response) {
       if (response.error) {
@@ -107,8 +107,8 @@ const DashboardPerfil = () => {
       }
       setShowAlert(true)
       setTimeout(() => {
-        setShowAlert(false)
-      }, 10000)
+        logout()
+      }, 3000)
     }
   }
 

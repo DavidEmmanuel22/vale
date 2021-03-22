@@ -9,16 +9,24 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
-import { getNegocios } from 'requests/allNegocios'
+import { getNegocios, enableNegocio } from 'requests/allNegocios'
+import { updateUser } from 'requests/allValedores'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import DeleteNegocio from 'components/negocio/delete'
 import { FilterList } from '@material-ui/icons'
 import { Alert } from '@material-ui/lab'
+import InputBase from '@material-ui/core/InputBase'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
 
+/*.filter((negocio)=>{
+  if(negocio.bussinesName.toLowerCase().includes(searchBusiness.toLowerCase())) {
+    return negocio
+   } else return []
+  
+}).*/
 const columns = [
   { id: 'name', label: 'Nombre' },
   { id: 'email', label: 'Correo' },
@@ -58,9 +66,29 @@ const Negocios = () => {
   const [negocios, setNegocios] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [showFilters, setShowFilters] = useState(false)
-
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selectedNegocio, setSelectedNegocio] = useState(false)
+  const [searchBusiness, setSearchBusiness] = useState('')
+  const [statusNegocio, setStatusNegocio] = useState(false)
+  const [unableNegocio, setUnableNegocio] = useState(true)
+  console.log(selectedNegocio)
+
+  //console.log(selectedNegocio)
+
+  const filteredBusiness = negocios.filter((negocio) => {
+    if (
+      negocio.bussinesName
+        .toLowerCase()
+        .includes(searchBusiness.toLowerCase()) ||
+      negocio.bussinesAdress
+        .toLowerCase()
+        .includes(searchBusiness.toLowerCase())
+    ) {
+      return negocio
+    } else {
+      return null
+    }
+  })
 
   useEffect(() => {
     async function getAllNegocios() {
@@ -70,52 +98,87 @@ const Negocios = () => {
         setNegocios(response.data)
         setIsLoading(false)
       } else {
-        console.log(error)
+        //console.log(error)
       }
     }
-    if (!openDialog || !deleteDialog) {
+    if (!openDialog || !deleteDialog || !statusNegocio) {
       getAllNegocios()
     }
-  }, [openDialog, deleteDialog])
+  }, [openDialog, deleteDialog, statusNegocio])
+
+  const handleChange = (e) => {
+    e.preventDefault()
+    setSearchBusiness(e.target.value)
+  }
+
+  const handleClick = async (e, negocio) => {
+    e.preventDefault()
+    if (negocio.estatus === 1) {
+      const { success, response, error } = await enableNegocio(
+        selectedNegocio.email
+      )
+      if (response.error) {
+        console.log(error)
+      } else {
+        setStatusNegocio(true)
+      }
+      setStatusNegocio(false)
+    } else {
+      setDeleteDialog(true)
+    }
+  }
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper}>
-          {isLoading && <CircularProgress></CircularProgress>}
-          {!isLoading && (
-            <Button
-              color="secondary"
-              onClick={() => setShowFilters(!showFilters)}
-              variant="contained"
-            >
-              <FilterList></FilterList>
-            </Button>
-          )}
+        <Paper
+          className={classes.buttonPaper}
+          style={{
+            display: 'flex',
+            textAlign: 'center',
+            marginBottom: '1.2rem',
+            justifyContent: 'space-around',
+            flexDirection: 'row-reverse'
+          }}
+        >
           <Button
             onClick={() => setOpenDialog(true)}
             color="primary"
             variant="contained"
-            style={{ float: 'right' }}
           >
-            Agregar Negocio{' '}
+            Agregar Negocio
           </Button>
-          {!isLoading && (
-            <div>
-              <Collapse in={showFilters}>
-                <Alert severity="info">
-                  This feature will be added soon :)
-                </Alert>
-              </Collapse>
-            </div>
-          )}
+
+          <InputBase
+            placeholder="Buscar Negocio..."
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+            value={searchBusiness}
+            onChange={(e) => handleChange(e)}
+          />
         </Paper>
         <Paper className={classes.paper}>
+          {isLoading && <CircularProgress></CircularProgress>}
           <TableContainer>
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">Status</TableCell>
+                  <TableCell
+                    align="center"
+                    onClick={() => setUnableNegocio(!unableNegocio)}
+                    style={{
+                      background: `${
+                        unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
+                      }`,
+                      color: 'white',
+                      borderRadius: '.3em'
+                    }}
+                  >
+                    Estatus
+                  </TableCell>
                   <TableCell align="center">Nombre</TableCell>
                   <Hidden xsDown>
                     <TableCell align="center">Correo</TableCell>
@@ -127,44 +190,92 @@ const Negocios = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {negocios.map((negocio, index) => (
+                {filteredBusiness.map((negocio, index) => (
                   <TableRow key={index} role="checkbox" tabIndex={-1}>
-                    <TableCell align="center">
-                      {negocio.estatus === 0 ? (
-                        <CheckCircleIcon color="primary"></CheckCircleIcon>
+                    <>
+                      {negocio.estatus === 0 && unableNegocio ? (
+                        <>
+                          <TableCell align="center">
+                            <CheckCircleIcon color="primary"></CheckCircleIcon>
+                          </TableCell>
+                          <TableCell align="center">
+                            {negocio.bussinesName}
+                          </TableCell>
+                          <Hidden xsDown>
+                            <TableCell align="center">
+                              {negocio.email}
+                            </TableCell>
+                          </Hidden>
+                          <Hidden smDown>
+                            <TableCell align="center">
+                              {negocio.bussinesAdress}
+                            </TableCell>
+                          </Hidden>
+                          <TableCell align="center">
+                            <Button
+                              color="primary"
+                              style={{ marginRight: '10px' }}
+                              variant="outlined"
+                            >
+                              Editar
+                            </Button>
+                            <Button
+                              onClick={(e) => {
+                                handleClick(e, negocio)
+                              }}
+                              onMouseEnter={() => setSelectedNegocio(negocio)}
+                              color="secondary"
+                              variant={`${
+                                negocio.estatus === 1 ? 'outlined' : 'contained'
+                              }`}
+                            >
+                              Eliminar
+                            </Button>
+                          </TableCell>
+                        </>
                       ) : (
-                        <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                        <>
+                          {negocio.estatus === 1 && !unableNegocio ? (
+                            <>
+                              <TableCell align="center">
+                                <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                              </TableCell>
+                              <TableCell align="center">
+                                {negocio.bussinesName}
+                              </TableCell>
+                              <Hidden xsDown>
+                                <TableCell align="center">
+                                  {negocio.email}
+                                </TableCell>
+                              </Hidden>
+                              <Hidden smDown>
+                                <TableCell align="center">
+                                  {negocio.bussinesAdress}
+                                </TableCell>
+                              </Hidden>
+                              <TableCell align="center">
+                                <Button
+                                  onClick={(e) => {
+                                    handleClick(e, negocio)
+                                  }}
+                                  onMouseEnter={() =>
+                                    setSelectedNegocio(negocio)
+                                  }
+                                  color="secondary"
+                                  variant={`${
+                                    negocio.estatus === 1
+                                      ? 'outlined'
+                                      : 'contained'
+                                  }`}
+                                >
+                                  Habilitar
+                                </Button>
+                              </TableCell>
+                            </>
+                          ) : null}
+                        </>
                       )}
-                    </TableCell>
-                    <TableCell align="center">{negocio.bussinesName}</TableCell>
-                    <Hidden xsDown>
-                      <TableCell align="center">{negocio.email}</TableCell>
-                    </Hidden>
-                    <Hidden smDown>
-                      <TableCell align="center">
-                        {negocio.bussinesAdress}
-                      </TableCell>
-                    </Hidden>
-                    <TableCell align="center">
-                      <Button
-                        color="primary"
-                        style={{ marginRight: '10px' }}
-                        variant="outlined"
-                      >
-                        Edit
-                      </Button>
-                      <Button
-                        disabled={negocio.estatus !== 0}
-                        color="secondary"
-                        variant="outlined"
-                        onClick={() => {
-                          setSelectedNegocio(negocio)
-                          setDeleteDialog(true)
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </TableCell>
+                    </>
                   </TableRow>
                 ))}
               </TableBody>

@@ -13,10 +13,10 @@ const DeleteValedor = ({ valedor }) => {
   const { handleClose } = useContext(AlertContext)
 
   const handleAcept = () => {
-    removeNegocio()
+    removeValedor()
   }
 
-  const removeNegocio = async () => {
+  const removeValedor = async () => {
     const { success, response, error } = await deleteValedor(valedor.email)
     if (success && response) {
       if (response.error) {
@@ -30,7 +30,7 @@ const DeleteValedor = ({ valedor }) => {
       setTimeout(() => {
         setShowAlert(false)
         handleClose()
-      }, 5000)
+      }, 2000)
     }
   }
 
@@ -41,7 +41,7 @@ const DeleteValedor = ({ valedor }) => {
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
         <p>
-          Deseas borrar el valedor <span>{valedor.firstName}</span> ?
+          Deseas borrar el valedor: <span>{valedor.firstName}</span> ?
         </p>
         <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel
