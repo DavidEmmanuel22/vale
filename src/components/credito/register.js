@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Axios from 'axios'
+import numeral from 'numeral'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import Alert from 'components/Alert/Alert'
@@ -8,9 +9,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { AlertContext } from '../popUp/responsivePopUp'
-import { addCredit, createValedor } from 'requests/allValedores'
+import { addCredit, createValedor, getValedores } from 'requests/allValedores'
 import { makeStyles } from '@material-ui/core/styles'
-import { createVale } from 'requests/allVales'
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import { addCreditSchema } from 'yupSchemas'
 
 const Styles = makeStyles(() => ({
@@ -39,47 +40,91 @@ const Styles = makeStyles(() => ({
 
 const RegisterCredit = (props) => {
   const classes = Styles()
+  const [searchValedor, setSearchValedor] = useState('')
+  const [valedores, setValedores] = useState([])
+  const [credits, setCredits] = useState('')
+  const [selectedValedor, setSelectedValedor] = useState(false)
+  const {
+    alertText,
+    alertColor,
+    setAlertText,
+    setAlertColor,
+    handleClose
+  } = useContext(AlertContext)
 
-  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
-    AlertContext
-  )
-
-  const formik = useFormik({
-    initialValues: {
-      email: '',
-      credits: ''
-    },
-    onSubmit: async (values, { resetForm }) => {
-      const { success, response, error } = await addCredit(
-        values.email,
-        values.credits
-      )
+  useEffect(() => {
+    async function getAllValedores() {
+      const { success, response, error } = await getValedores()
       if (success && response) {
-        if (response.error) {
-          setAlertColor('error')
-          setAlertText(response.error)
-        } else {
-          setAlertColor('success')
-          setAlertText('Se ha añadido el credito correctamente')
-        }
+        setValedores(response.data)
+      } else {
+        //console.log(error)
       }
-    },
-    validationSchema: addCreditSchema
-  })
+    }
+    getAllValedores()
+  }, [])
+
+  const handleChange = (e) => {
+    e.preventDefault()
+    if (!/^[0-9]+$/i.test(e.target.value)) {
+      setCredits('')
+    } else {
+      setCredits(e.target.value)
+    }
+  }
+
+  const handleClick = async (e, email) => {
+    e.preventDefault()
+    const { success, response, error } = await addCredit(
+      email,
+      parseInt(credits)
+    )
+    if (success && response) {
+      if (response.error) {
+        setAlertColor('error')
+        setAlertText(response.error)
+      } else {
+        setAlertColor('success')
+        setAlertText('Se ha añadido el credito correctamente')
+        setTimeout(() => {
+          handleClose()
+        }, 2000)
+      }
+    }
+  }
 
   return (
     <div className="register-vale">
-      <form className={classes.root} onSubmit={formik.handleSubmit}>
+      <form className={classes.root}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
+            <Autocomplete
+              onChange={(event, value) => setSelectedValedor(value)}
+              className={classes.widthnew}
+              id="combo-box-demo"
+              options={valedores.filter((valedor) => valedor.estatus !== 1)}
+              getOptionLabel={(valedor) =>
+                valedor.firstName +
+                ' ' +
+                valedor.lastName +
+                ': ' +
+                numeral(valedor.credits).format('$0,0')
+              }
+              style={{ width: 300, height: '6em' }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Buscar Valedor..."
+                  variant="outlined"
+                />
+              )}
+            />
             <TextField
+              disabled
               className={classes.widthnew}
               id="email"
               placeholder="Correo electronico"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              value={selectedValedor ? selectedValedor.email : ''}
               type="text"
               InputProps={{
                 startAdornment: (
@@ -96,10 +141,15 @@ const RegisterCredit = (props) => {
               id="credits"
               placeholder="Credito"
               type="number"
-              value={formik.values.credits}
-              onChange={formik.handleChange}
-              error={formik.touched.credits && Boolean(formik.errors.credits)}
-              helperText={formik.touched.credits && formik.errors.credits}
+              value={credits}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
+              }}
+              onChange={(e) => handleChange(e)}
+              //error={formik.touched.credits && Boolean(formik.errors.credits)}
+              //helperText={formik.touched.credits && formik.errors.credits}
               InputProps={{
                 startAdornment: (
                   <InputAdornment
@@ -116,10 +166,10 @@ const RegisterCredit = (props) => {
             <div className="button-login">
               <Button
                 className={`${classes.widthbutton} `}
-                type="submit"
+                onClick={(e) => handleClick(e, selectedValedor.email)}
                 color="primary"
               >
-                Agregar Credito{' '}
+                Agregar Credito
               </Button>
             </div>
           </Grid>

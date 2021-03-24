@@ -67,10 +67,9 @@ const UpdatePassword = () => {
         setAlertColor('error')
         setAlertText('Error, las contraseñas no coinciden, intente nuevamente.')
         setShowAlert(true)
-        setTimeout(() => {
-          handleCleanInput()
-          setShowAlert(false)
-        }, 4000)
+        // setTimeout(() => {
+        //   setShowAlert(false)
+        // }, 4000)
       }
     }
   })
@@ -82,9 +81,6 @@ const UpdatePassword = () => {
           style={{ boxShadow: '0px 6px 21px 0px darkgrey' }}
           className={classes.PaperContent}
         >
-          <Collapse in={showAlert}>
-            <Alert severity={alertColor}>{alertText}</Alert>
-          </Collapse>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
             <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
             <h2 className={classes.H2Password}>Cambiar Contraseña</h2>
@@ -130,6 +126,9 @@ const UpdatePassword = () => {
                 )
               }}
             />
+            <Collapse in={showAlert}>
+              <Alert severity={alertColor}>{alertText}</Alert>
+            </Collapse>
             <div>
               <Button
                 className={classes.ButtonPassword}

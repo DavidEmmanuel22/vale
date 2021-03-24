@@ -54,7 +54,6 @@ const RegisterNegocio = (props) => {
     },
     onSubmit: async (negocio, { resetForm }) => {
       const { success, response, error } = await createNegocio(negocio)
-      console.log()
       if (success && response) {
         if (response.error) {
           setAlertColor('error')
