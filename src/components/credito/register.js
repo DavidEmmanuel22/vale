@@ -75,10 +75,10 @@ const RegisterCredit = (props) => {
 
   const handleClick = async (e, email) => {
     e.preventDefault()
-    const { success, response, error } = await addCredit({
-      email: email,
-      credits: parseInt(credits)
-    })
+    const { success, response, error } = await addCredit(
+      email,
+      parseInt(credits)
+    )
     if (success && response) {
       if (response.error) {
         setAlertColor('error')

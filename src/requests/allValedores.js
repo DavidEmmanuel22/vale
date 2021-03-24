@@ -41,6 +41,6 @@ export const enableValedor = (email) => {
 export const addCredit = (email, credits) => {
   return fetchRequest('/update-credits', {
     method: 'PUT',
-    body: JSON.stringify(email, credits)
+    body: JSON.stringify({ email, credits })
   })
 }
