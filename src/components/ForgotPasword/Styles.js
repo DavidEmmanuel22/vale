@@ -16,7 +16,7 @@ const Styles = makeStyles(() => ({
     justifyContent: 'center'
   },
   PaperContent: {
-    height: '580px',
+    height: '600px',
     width: '500px',
     margin: '40px 0px 0px'
   },

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { forgotPassword } from 'requests/forgotPassword'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useHistory } from 'react-router-dom'
 import {
   TextField,
   Button,
@@ -21,10 +22,11 @@ const validationSchema = yup.object({
   email: yup
     .string()
     .email('Correo Electronico Invalido')
-    .required('Email es requerido')
+    .required('Correo Electronico es requerido')
 })
 
 const ForgotPassword = () => {
+  const history = useHistory()
   const classes = Styles()
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
@@ -48,23 +50,20 @@ const ForgotPassword = () => {
         if (response.error) {
           setAlertColor('error')
           setAlertText(response.error)
-          handleCleanInput()
           setChecked(false)
         } else {
           setAlertColor('success')
           setAlertText(response.data)
           setShowAlert(true)
           setTimeout(() => {
-            handleCleanInput()
-            setShowAlert(false)
             setChecked(true)
+            history.push('/')
           }, 3000)
         }
         setShowAlert(true)
-        setTimeout(() => {
-          handleCleanInput()
-          setShowAlert(false)
-        }, 3000)
+        // setTimeout(() => {
+        //   setShowAlert(false)
+        // }, 3000)
       }
     },
     validationSchema: validationSchema
@@ -77,9 +76,6 @@ const ForgotPassword = () => {
           style={{ boxShadow: '0px 6px 21px 0px darkgrey' }}
           className={classes.PaperContent}
         >
-          <Collapse in={showAlert}>
-            <Alert severity={alertColor}>{alertText}</Alert>
-          </Collapse>
           <div>
             <div style={{ top: '0' }} className={classes.FooterText}>
               <Zoom in={checked}>
@@ -112,6 +108,9 @@ const ForgotPassword = () => {
                 )
               }}
             />
+            <Collapse in={showAlert}>
+              <Alert severity={alertColor}>{alertText}</Alert>
+            </Collapse>
             <div>
               <Button
                 className={classes.ButtonPassword}

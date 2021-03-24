@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import InsertCommentIcon from '@material-ui/icons/InsertComment'
 import { BusinessCenter, DirectionsBusSharp } from '@material-ui/icons'
+
 // import moment from 'moment'
 import {
   Button,
@@ -96,7 +97,7 @@ export default function CenteredGrid() {
       <ResponsivePopUp
         open={showDialog}
         setOpen={setShowDialog}
-        title={'Agrega credito a valedor'}
+        title={'Agrega crédito  a valedor'}
       >
         <RegisterCredit></RegisterCredit>
       </ResponsivePopUp>
@@ -180,7 +181,7 @@ export default function CenteredGrid() {
                 style={{ color: 'white', width: '100%', textAlign: 'center' }}
               ></AddIcon>
             </div>
-            <p>Agregar Credito</p>
+            <p>Agregar Crédito</p>
           </a>
         </Grid>
         <Grid item xs={12} md={4}>

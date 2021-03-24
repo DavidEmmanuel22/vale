@@ -20,13 +20,6 @@ import { Alert } from '@material-ui/lab'
 import InputBase from '@material-ui/core/InputBase'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
-
-/*.filter((negocio)=>{
-  if(negocio.bussinesName.toLowerCase().includes(searchBusiness.toLowerCase())) {
-    return negocio
-   } else return []
-  
-}).*/
 const columns = [
   { id: 'name', label: 'Nombre' },
   { id: 'email', label: 'Correo' },
@@ -71,7 +64,6 @@ const Negocios = () => {
   const [searchBusiness, setSearchBusiness] = useState('')
   const [statusNegocio, setStatusNegocio] = useState(false)
   const [unableNegocio, setUnableNegocio] = useState(true)
-  console.log(selectedNegocio)
 
   //console.log(selectedNegocio)
 
