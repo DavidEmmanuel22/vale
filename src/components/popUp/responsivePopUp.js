@@ -10,6 +10,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import Typography from '@material-ui/core/Typography'
 import Alert from '@material-ui/lab/Alert'
 import './popup.css'
+import AlertPopUp from 'components/Alert/AlertPopUp'
 
 const styles = (theme) => ({
   root: {
@@ -70,17 +71,20 @@ export default function ResponsivePopUp({
     setOpen(true)
   }
   const handleClose = () => {
+    setAlertText('')
     setOpen(false)
   }
 
+  const [showAlert, setShowAlert] = useState(false)
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
 
   useEffect(() => {
-    setTimeout(() => {
-      setAlertText('')
-      setAlertColor('success')
-    }, 4000)
+    if (alertText !== '') {
+      setShowAlert(true)
+    } else {
+      setShowAlert(false)
+    }
   }, [alertText])
 
   return (
@@ -97,7 +101,15 @@ export default function ResponsivePopUp({
           onClose={handleClose}
         >
           {title}
-          {alertText !== '' && <Alert severity={alertColor}>{alertText}</Alert>}
+          {/*alertText !== '' && <Alert severity={alertColor}>{alertText}</Alert>*/}
+          {showAlert && (
+            <AlertPopUp
+              type={alertColor}
+              description={alertText}
+              open={showAlert}
+              setOpen={setShowAlert}
+            ></AlertPopUp>
+          )}
         </DialogTitle>
 
         <DialogContent dividers>
