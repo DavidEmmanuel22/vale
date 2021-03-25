@@ -6,6 +6,7 @@ import ForgotPassword from 'components/ForgotPasword/ForgotPassword'
 import UpdatePassword from 'components/ResetPassword/UpdatePassword'
 import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
+import Historial from 'pages/valedores/Historial'
 import { UserContext } from '../context/userContext'
 import PrivateRoute from './PrivateRoute'
 import Valedores from 'pages/valedores/Valedores'
@@ -25,6 +26,12 @@ const Routes = () => {
       <PrivateRoute exact path="/dashboard/valedores">
         <GeneralLayout>
           <Valedores></Valedores>
+        </GeneralLayout>
+      </PrivateRoute>
+
+      <PrivateRoute exact path="/valedores/history">
+        <GeneralLayout>
+          <Historial></Historial>
         </GeneralLayout>
       </PrivateRoute>
 

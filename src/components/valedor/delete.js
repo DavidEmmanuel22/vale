@@ -30,7 +30,7 @@ const DeleteValedor = ({ valedor }) => {
       setTimeout(() => {
         setShowAlert(false)
         handleClose()
-      }, 2000)
+      }, 6000)
     }
   }
 

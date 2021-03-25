@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Grid, Paper, Button, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddCredit from 'components/valedor/addCredit'
+import { useHistory } from 'react-router-dom'
 import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme) => ({
 const Valedores = () => {
   const classes = useStyles()
   const classes2 = useStyles2()
+  const history = useHistory()
 
   const [openDialog, setOpenDialog] = useState(false)
   const [openAddCredits, setOpenAddCredits] = useState(false)
@@ -196,16 +198,27 @@ const Valedores = () => {
                           <TableCell align="center">
                             {numeral(valedor.credits).format('$0,0')}
                           </TableCell>
-                          <TableCell align="center">
+                          <TableCell
+                            style={{ display: 'flex', flexDirection: 'column' }}
+                            align="center"
+                          >
                             <Button
                               color="primary"
                               style={{ marginRight: '10px' }}
-                              variant="outlined"
                               onClick={() => setOpenAddCredits(true)}
                               onMouseEnter={() => setSelectedValedor(valedor)}
+                              variant="contained"
                             >
                               Agregar Credito
                             </Button>
+                            <Button
+                              color="primary"
+                              style={{ marginRight: '10px' }}
+                              onClick={() => history.push('/valedores/history')}
+                            >
+                              Historial
+                            </Button>
+
                             <Button
                               onClick={(e) => {
                                 handleClick(e, valedor)
