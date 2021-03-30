@@ -40,8 +40,12 @@ const DeleteNegocio = ({ negocio }) => {
         <Collapse in={showAlert}>
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
-        <p>
-          Deseas borrar el negocio: <span>{negocio.bussinesName}</span> ?
+        <p style={{ textAlign: 'center', marginBottom: '3em' }}>
+          Deseas borrar el negocio:{' '}
+          <span style={{ textTransform: 'uppercase' }}>
+            {negocio.bussinesName}
+          </span>{' '}
+          ?
         </p>
         <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel

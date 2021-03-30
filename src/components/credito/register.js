@@ -43,6 +43,8 @@ const RegisterCredit = (props) => {
   const [valedores, setValedores] = useState([])
   const [credits, setCredits] = useState('')
   const [selectedValedor, setSelectedValedor] = useState(false)
+  const [disableBtn, setDisabledBtn] = useState(false)
+
   const {
     alertText,
     alertColor,
@@ -85,9 +87,10 @@ const RegisterCredit = (props) => {
       } else {
         setAlertColor('success')
         setAlertText('Se ha añadido el credito correctamente')
+        setDisabledBtn(true)
         setTimeout(() => {
           handleClose()
-        }, 2000)
+        }, 6000)
       }
     }
   }
@@ -109,7 +112,7 @@ const RegisterCredit = (props) => {
                 ': ' +
                 numeral(valedor.credits).format('$0,0')
               }
-              style={{ width: 300, height: '6em' }}
+              style={{ padding: '2em' }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -164,6 +167,7 @@ const RegisterCredit = (props) => {
           <Grid item xs={12}>
             <div className="button-login">
               <Button
+                disabled={disableBtn}
                 className={`${classes.widthbutton} `}
                 onClick={(e) => handleClick(e, selectedValedor.email)}
                 color="primary"

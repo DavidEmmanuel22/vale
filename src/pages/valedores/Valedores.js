@@ -2,43 +2,42 @@ import React, { useState, useEffect } from 'react'
 import { Grid, Paper, Button, Hidden } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import AddCredit from 'components/valedor/addCredit'
-import PopUp from 'components/Dialog/PopUp'
+import { useHistory } from 'react-router-dom'
+import Tooltip from '@material-ui/core/Tooltip'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
+import Fab from '@material-ui/core/Fab'
 import TableRow from '@material-ui/core/TableRow'
 import InputBase from '@material-ui/core/InputBase'
 import { getValedores, enableValedor } from 'requests/allValedores'
 import RegisterValedor from 'components/valedor/register'
 import numeral from 'numeral'
+import HistoryIcon from '@material-ui/icons/History'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
+import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined'
 import DeleteValedor from 'components/valedor/delete'
-
-const columns = [
-  { id: 'name', label: 'Nombre' },
-  { id: 'email', label: 'Correo' },
-  { id: 'credit', label: 'Credito' },
-  { id: 'actions', label: 'Acciones' }
-]
-
-const useStyles2 = makeStyles({
-  root: {
-    width: '100%'
-  },
-  container: {
-    maxHeight: 440
-  }
-})
+import DeleteIcon from '@material-ui/icons/Delete'
+import AttachMoneySharpIcon from '@material-ui/icons/AttachMoneySharp'
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
+  },
+  fab: {
+    margin: theme.spacing(2)
+  },
+  danger: {
+    background: 'red',
+    margin: theme.spacing(2),
+    '&:hover': {
+      background: '#9e0e0e'
+    }
   },
   paper: {
     padding: theme.spacing(2),
@@ -47,14 +46,13 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPaper: {
     padding: theme.spacing(2),
-    //textAlign: 'right',
     color: theme.palette.text.secondary
   }
 }))
 
 const Valedores = () => {
   const classes = useStyles()
-  const classes2 = useStyles2()
+  const history = useHistory()
 
   const [openDialog, setOpenDialog] = useState(false)
   const [openAddCredits, setOpenAddCredits] = useState(false)
@@ -77,9 +75,6 @@ const Valedores = () => {
     }
   })
 
-  //console.log(selectedValedor)
-  //console.log(unableValedor)
-
   useEffect(() => {
     async function getAllValedores() {
       setIsLoading(true)
@@ -88,7 +83,7 @@ const Valedores = () => {
         setValedores(response.data)
         setIsLoading(false)
       } else {
-        //console.log(error)
+        setIsLoading(false)
       }
     }
     if (!openDialog || !deleteDialog || !statusValedor) {
@@ -104,11 +99,9 @@ const Valedores = () => {
   const handleClick = async (e, valedor) => {
     e.preventDefault()
     if (valedor.estatus === 1) {
-      const { success, response, error } = await enableValedor(
-        selectedValedor.email
-      )
+      const { success, response, error } = await enableValedor(valedor.email)
       if (response.error) {
-        console.log(error)
+        //console.log(error)
       } else {
         setStatusValedor(true)
       }
@@ -183,7 +176,10 @@ const Valedores = () => {
                       {valedor.estatus === 0 && unableValedor ? (
                         <>
                           <TableCell align="center">
-                            <CheckCircleIcon color="primary"></CheckCircleIcon>
+                            <CheckCircleIcon
+                              fontSize="large"
+                              color="primary"
+                            ></CheckCircleIcon>
                           </TableCell>
                           <TableCell align="center">
                             {valedor.firstName} {valedor.lastName}
@@ -196,26 +192,61 @@ const Valedores = () => {
                           <TableCell align="center">
                             {numeral(valedor.credits).format('$0,0')}
                           </TableCell>
-                          <TableCell align="center">
-                            <Button
-                              color="primary"
-                              style={{ marginRight: '10px' }}
-                              variant="outlined"
-                              onClick={() => setOpenAddCredits(true)}
+                          <TableCell
+                            style={{
+                              justifyContent: 'center'
+                            }}
+                            align="center"
+                          >
+                            <Tooltip
+                              title="Agregar Crédito"
+                              aria-label="agregar"
                               onMouseEnter={() => setSelectedValedor(valedor)}
                             >
-                              Agregar Credito
-                            </Button>
-                            <Button
-                              onClick={(e) => {
-                                handleClick(e, valedor)
-                              }}
+                              <Fab
+                                onClick={() => setOpenAddCredits(true)}
+                                color="primary"
+                                className={classes.fab}
+                              >
+                                <AttachMoneySharpIcon
+                                  variant="outlined"
+                                  fontSize="large"
+                                />
+                              </Fab>
+                            </Tooltip>
+
+                            <Tooltip title="Historial" aria-label="historial">
+                              <Fab
+                                onClick={() =>
+                                  history.push({
+                                    pathname: '/valedores/history',
+                                    state: {
+                                      valedor
+                                    }
+                                  })
+                                }
+                                color="secondary"
+                                className={classes.fab}
+                              >
+                                <HistoryIcon fontSize="large" />
+                              </Fab>
+                            </Tooltip>
+
+                            <Tooltip
+                              title="Eliminar"
+                              aria-label="eliminar"
                               onMouseEnter={() => setSelectedValedor(valedor)}
-                              color="secondary"
-                              variant="contained"
                             >
-                              Eliminar
-                            </Button>
+                              <Fab
+                                onClick={(e) => {
+                                  handleClick(e, valedor)
+                                }}
+                                color="secondary"
+                                className={classes.danger}
+                              >
+                                <DeleteIcon />
+                              </Fab>
+                            </Tooltip>
                           </TableCell>
                         </>
                       ) : (
@@ -223,7 +254,10 @@ const Valedores = () => {
                           {valedor.estatus === 1 && !unableValedor ? (
                             <>
                               <TableCell align="center">
-                                <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                                <HighlightOffRoundedIcon
+                                  fontSize="large"
+                                  color="error"
+                                ></HighlightOffRoundedIcon>
                               </TableCell>
                               <TableCell align="center">
                                 {valedor.firstName} {valedor.lastName}

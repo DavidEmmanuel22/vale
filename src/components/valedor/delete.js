@@ -30,7 +30,7 @@ const DeleteValedor = ({ valedor }) => {
       setTimeout(() => {
         setShowAlert(false)
         handleClose()
-      }, 2000)
+      }, 6000)
     }
   }
 
@@ -40,8 +40,12 @@ const DeleteValedor = ({ valedor }) => {
         <Collapse in={showAlert}>
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
-        <p>
-          Deseas borrar el valedor: <span>{valedor.firstName}</span> ?
+        <p style={{ textAlign: 'center', marginBottom: '3em' }}>
+          Deseas borrar el valedor:{' '}
+          <span style={{ textTransform: 'uppercase' }}>
+            {valedor.firstName}
+          </span>{' '}
+          ?
         </p>
         <Button variant="contained" color="secondary" onClick={handleClose}>
           Cancel
