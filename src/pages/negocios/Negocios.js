@@ -15,17 +15,14 @@ import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import DeleteNegocio from 'components/negocio/delete'
-import { FilterList } from '@material-ui/icons'
+import RefreshIcon from '@material-ui/icons/Refresh'
 import { Alert } from '@material-ui/lab'
 import InputBase from '@material-ui/core/InputBase'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
-const columns = [
-  { id: 'name', label: 'Nombre' },
-  { id: 'email', label: 'Correo' },
-  { id: 'adress', label: 'Direccion' },
-  { id: 'actions', label: 'Acciones' }
-]
+import Fab from '@material-ui/core/Fab'
+import Tooltip from '@material-ui/core/Tooltip'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const useStyles2 = makeStyles({
   root: {
@@ -45,6 +42,16 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary
   },
+  fab: {
+    margin: theme.spacing(2)
+  },
+  danger: {
+    background: 'red',
+    margin: theme.spacing(2),
+    '&:hover': {
+      background: '#9e0e0e'
+    }
+  },
   buttonPaper: {
     padding: theme.spacing(2),
     color: theme.palette.text.secondary
@@ -58,14 +65,11 @@ const Negocios = () => {
   const [openDialog, setOpenDialog] = useState(false)
   const [negocios, setNegocios] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [showFilters, setShowFilters] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
   const [selectedNegocio, setSelectedNegocio] = useState(false)
   const [searchBusiness, setSearchBusiness] = useState('')
   const [statusNegocio, setStatusNegocio] = useState(false)
   const [unableNegocio, setUnableNegocio] = useState(true)
-
-  //console.log(selectedNegocio)
 
   const filteredBusiness = negocios.filter((negocio) => {
     if (
@@ -153,8 +157,8 @@ const Negocios = () => {
           />
         </Paper>
         <Paper className={classes.paper}>
-          {isLoading && <CircularProgress></CircularProgress>}
           <TableContainer>
+            {isLoading && <CircularProgress></CircularProgress>}
             <Table>
               <TableHead>
                 <TableRow>
@@ -188,7 +192,10 @@ const Negocios = () => {
                       {negocio.estatus === 0 && unableNegocio ? (
                         <>
                           <TableCell align="center">
-                            <CheckCircleIcon color="primary"></CheckCircleIcon>
+                            <CheckCircleIcon
+                              fontSize="large"
+                              color="primary"
+                            ></CheckCircleIcon>
                           </TableCell>
                           <TableCell align="center">
                             {negocio.bussinesName}
@@ -204,25 +211,29 @@ const Negocios = () => {
                             </TableCell>
                           </Hidden>
                           <TableCell align="center">
-                            <Button
-                              color="primary"
-                              style={{ marginRight: '10px' }}
-                              variant="outlined"
-                            >
-                              Editar
-                            </Button>
-                            <Button
-                              onClick={(e) => {
-                                handleClick(e, negocio)
-                              }}
+                            <Tooltip title="Editar" aria-label="Editar">
+                              <Fab color="secondary" className={classes.fab}>
+                                <RefreshIcon variant="outlined">
+                                  Editar
+                                </RefreshIcon>
+                              </Fab>
+                            </Tooltip>
+
+                            <Tooltip
+                              title="Eliminar"
+                              aria-label="Eliminar"
                               onMouseEnter={() => setSelectedNegocio(negocio)}
-                              color="secondary"
-                              variant={`${
-                                negocio.estatus === 1 ? 'outlined' : 'contained'
-                              }`}
                             >
-                              Eliminar
-                            </Button>
+                              <Fab
+                                onClick={(e) => {
+                                  handleClick(e, negocio)
+                                }}
+                                color="primary"
+                                className={classes.danger}
+                              >
+                                <DeleteIcon />
+                              </Fab>
+                            </Tooltip>
                           </TableCell>
                         </>
                       ) : (
@@ -230,7 +241,10 @@ const Negocios = () => {
                           {negocio.estatus === 1 && !unableNegocio ? (
                             <>
                               <TableCell align="center">
-                                <HighlightOffRoundedIcon color="error"></HighlightOffRoundedIcon>
+                                <HighlightOffRoundedIcon
+                                  fontSize="large"
+                                  color="error"
+                                ></HighlightOffRoundedIcon>
                               </TableCell>
                               <TableCell align="center">
                                 {negocio.bussinesName}

@@ -44,3 +44,9 @@ export const addCredit = (email, credits) => {
     body: JSON.stringify({ email, credits })
   })
 }
+
+export const valesHistory = (emailUser) => {
+  return fetchRequest(`/vales?emailUser=${emailUser}`, {
+    method: 'GET'
+  })
+}

@@ -97,7 +97,7 @@ export default function CenteredGrid() {
       <ResponsivePopUp
         open={showDialog}
         setOpen={setShowDialog}
-        title={'Agrega crédito  a valedor'}
+        title={'Agrega crédito'}
       >
         <RegisterCredit></RegisterCredit>
       </ResponsivePopUp>

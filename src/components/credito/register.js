@@ -112,7 +112,7 @@ const RegisterCredit = (props) => {
                 ': ' +
                 numeral(valedor.credits).format('$0,0')
               }
-              style={{ width: 300, height: '6em' }}
+              style={{ padding: '2em' }}
               renderInput={(params) => (
                 <TextField
                   {...params}
