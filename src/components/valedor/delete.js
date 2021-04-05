@@ -40,7 +40,7 @@ const DeleteValedor = ({ valedor }) => {
         <Collapse in={showAlert}>
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
-        <p style={{ textAlign: 'center', marginBottom: '3em' }}>
+        <p style={{ textAlign: 'center', marginBottom: '1.5em' }}>
           Deseas borrar el valedor:{' '}
           <span style={{ textTransform: 'uppercase' }}>
             {valedor.firstName}
