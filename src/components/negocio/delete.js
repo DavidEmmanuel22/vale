@@ -40,7 +40,7 @@ const DeleteNegocio = ({ negocio }) => {
         <Collapse in={showAlert}>
           <Alert severity={alertColor}>{alertText}</Alert>
         </Collapse>
-        <p style={{ textAlign: 'center', marginBottom: '3em' }}>
+        <p style={{ textAlign: 'center', marginBottom: '1.5em' }}>
           Deseas borrar el negocio:{' '}
           <span style={{ textTransform: 'uppercase' }}>
             {negocio.bussinesName}

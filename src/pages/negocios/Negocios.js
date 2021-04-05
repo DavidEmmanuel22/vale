@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Paper, Button, Hidden, Collapse } from '@material-ui/core'
+import {
+  Grid,
+  Paper,
+  Button,
+  Hidden,
+  TextField,
+  InputAdornment
+} from '@material-ui/core'
+import SearchIcon from '@material-ui/icons/Search'
 import { makeStyles } from '@material-ui/core/styles'
 import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
@@ -17,7 +25,6 @@ import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import DeleteNegocio from 'components/negocio/delete'
 import RefreshIcon from '@material-ui/icons/Refresh'
 import { Alert } from '@material-ui/lab'
-import InputBase from '@material-ui/core/InputBase'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
 import Fab from '@material-ui/core/Fab'
@@ -46,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(2)
   },
   danger: {
-    background: 'red',
+    background: '#cf1c24',
     margin: theme.spacing(2),
     '&:hover': {
       background: '#9e0e0e'
@@ -78,7 +85,8 @@ const Negocios = () => {
         .includes(searchBusiness.toLowerCase()) ||
       negocio.bussinesAdress
         .toLowerCase()
-        .includes(searchBusiness.toLowerCase())
+        .includes(searchBusiness.toLowerCase()) ||
+      negocio.email.toLowerCase().includes(searchBusiness.toLowerCase())
     ) {
       return negocio
     } else {
@@ -145,149 +153,172 @@ const Negocios = () => {
             Agregar Negocio
           </Button>
 
-          <InputBase
+          <TextField
             placeholder="Buscar Negocio..."
+            style={{ width: '33vw' }}
+            inputProps={{
+              maxLength: 25
+            }}
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput
             }}
-            inputProps={{ 'aria-label': 'search' }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  position="start"
+                  className="MuiInputAdornment-root"
+                >
+                  <SearchIcon fontSize="large" />
+                </InputAdornment>
+              )
+            }}
             value={searchBusiness}
             onChange={(e) => handleChange(e)}
           />
         </Paper>
-        <Paper className={classes.paper}>
-          <TableContainer>
-            {isLoading && <CircularProgress></CircularProgress>}
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    align="center"
-                    onClick={() => setUnableNegocio(!unableNegocio)}
-                    style={{
-                      background: `${
-                        unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
-                      }`,
-                      color: 'white',
-                      borderRadius: '.3em'
-                    }}
-                  >
-                    Estatus
-                  </TableCell>
-                  <TableCell align="center">Nombre</TableCell>
-                  <Hidden xsDown>
-                    <TableCell align="center">Correo</TableCell>
-                  </Hidden>
-                  <Hidden smDown>
-                    <TableCell align="center">Dirección</TableCell>
-                  </Hidden>
-                  <TableCell align="center">Acciones</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredBusiness.map((negocio, index) => (
-                  <TableRow key={index} role="checkbox" tabIndex={-1}>
-                    <>
-                      {negocio.estatus === 0 && unableNegocio ? (
-                        <>
-                          <TableCell align="center">
-                            <CheckCircleIcon
-                              fontSize="large"
-                              color="primary"
-                            ></CheckCircleIcon>
-                          </TableCell>
-                          <TableCell align="center">
-                            {negocio.bussinesName}
-                          </TableCell>
-                          <Hidden xsDown>
+        {filteredBusiness.length > 0 ? (
+          <Paper className={classes.paper}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      align="center"
+                      onClick={() => setUnableNegocio(!unableNegocio)}
+                      style={{
+                        background: `${
+                          unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
+                        }`,
+                        color: 'white',
+                        borderRadius: '.3em',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      Estado
+                    </TableCell>
+                    <TableCell align="center">Nombre</TableCell>
+                    <Hidden xsDown>
+                      <TableCell align="center">Correo</TableCell>
+                    </Hidden>
+                    <Hidden smDown>
+                      <TableCell align="center">Dirección</TableCell>
+                    </Hidden>
+                    <TableCell align="center">Acciones</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredBusiness.map((negocio, index) => (
+                    <TableRow key={index} role="checkbox" tabIndex={-1}>
+                      <>
+                        {negocio.estatus === 0 && unableNegocio ? (
+                          <>
                             <TableCell align="center">
-                              {negocio.email}
-                            </TableCell>
-                          </Hidden>
-                          <Hidden smDown>
-                            <TableCell align="center">
-                              {negocio.bussinesAdress}
-                            </TableCell>
-                          </Hidden>
-                          <TableCell align="center">
-                            <Tooltip title="Editar" aria-label="Editar">
-                              <Fab color="secondary" className={classes.fab}>
-                                <RefreshIcon variant="outlined">
-                                  Editar
-                                </RefreshIcon>
-                              </Fab>
-                            </Tooltip>
-
-                            <Tooltip
-                              title="Eliminar"
-                              aria-label="Eliminar"
-                              onMouseEnter={() => setSelectedNegocio(negocio)}
-                            >
-                              <Fab
-                                onClick={(e) => {
-                                  handleClick(e, negocio)
-                                }}
+                              <CheckCircleIcon
+                                fontSize="large"
                                 color="primary"
-                                className={classes.danger}
+                              ></CheckCircleIcon>
+                            </TableCell>
+                            <TableCell align="center">
+                              {negocio.bussinesName}
+                            </TableCell>
+                            <Hidden xsDown>
+                              <TableCell align="center">
+                                {negocio.email}
+                              </TableCell>
+                            </Hidden>
+                            <Hidden smDown>
+                              <TableCell align="center">
+                                {negocio.bussinesAdress}
+                              </TableCell>
+                            </Hidden>
+                            <TableCell align="center">
+                              <Tooltip title="Editar" aria-label="Editar">
+                                <Fab color="secondary" className={classes.fab}>
+                                  <RefreshIcon variant="outlined">
+                                    Editar
+                                  </RefreshIcon>
+                                </Fab>
+                              </Tooltip>
+
+                              <Tooltip
+                                title="Eliminar"
+                                aria-label="Eliminar"
+                                onMouseEnter={() => setSelectedNegocio(negocio)}
                               >
-                                <DeleteIcon />
-                              </Fab>
-                            </Tooltip>
-                          </TableCell>
-                        </>
-                      ) : (
-                        <>
-                          {negocio.estatus === 1 && !unableNegocio ? (
-                            <>
-                              <TableCell align="center">
-                                <HighlightOffRoundedIcon
-                                  fontSize="large"
-                                  color="error"
-                                ></HighlightOffRoundedIcon>
-                              </TableCell>
-                              <TableCell align="center">
-                                {negocio.bussinesName}
-                              </TableCell>
-                              <Hidden xsDown>
-                                <TableCell align="center">
-                                  {negocio.email}
-                                </TableCell>
-                              </Hidden>
-                              <Hidden smDown>
-                                <TableCell align="center">
-                                  {negocio.bussinesAdress}
-                                </TableCell>
-                              </Hidden>
-                              <TableCell align="center">
-                                <Button
+                                <Fab
                                   onClick={(e) => {
                                     handleClick(e, negocio)
                                   }}
-                                  onMouseEnter={() =>
-                                    setSelectedNegocio(negocio)
-                                  }
-                                  color="secondary"
-                                  variant={`${
-                                    negocio.estatus === 1
-                                      ? 'outlined'
-                                      : 'contained'
-                                  }`}
+                                  color="primary"
+                                  className={classes.danger}
                                 >
-                                  Habilitar
-                                </Button>
-                              </TableCell>
-                            </>
-                          ) : null}
-                        </>
-                      )}
-                    </>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+                                  <DeleteIcon />
+                                </Fab>
+                              </Tooltip>
+                            </TableCell>
+                          </>
+                        ) : (
+                          <>
+                            {negocio.estatus === 1 && !unableNegocio ? (
+                              <>
+                                <TableCell align="center">
+                                  <HighlightOffRoundedIcon
+                                    fontSize="large"
+                                    color="error"
+                                  ></HighlightOffRoundedIcon>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {negocio.bussinesName}
+                                </TableCell>
+                                <Hidden xsDown>
+                                  <TableCell align="center">
+                                    {negocio.email}
+                                  </TableCell>
+                                </Hidden>
+                                <Hidden smDown>
+                                  <TableCell align="center">
+                                    {negocio.bussinesAdress}
+                                  </TableCell>
+                                </Hidden>
+                                <TableCell align="center">
+                                  <Button
+                                    onClick={(e) => {
+                                      handleClick(e, negocio)
+                                    }}
+                                    onMouseEnter={() =>
+                                      setSelectedNegocio(negocio)
+                                    }
+                                    color="secondary"
+                                    variant={`${
+                                      negocio.estatus === 1
+                                        ? 'outlined'
+                                        : 'contained'
+                                    }`}
+                                  >
+                                    Habilitar
+                                  </Button>
+                                </TableCell>
+                              </>
+                            ) : null}
+                          </>
+                        )}
+                      </>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            {isLoading ? (
+              <CircularProgress></CircularProgress>
+            ) : (
+              <h2>{`El negocio: ${searchBusiness} no está registrado.`}</h2>
+            )}
+          </div>
+        )}
       </Grid>
       <ResponsivePopUp
         open={openDialog}

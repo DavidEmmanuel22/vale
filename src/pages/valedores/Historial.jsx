@@ -49,25 +49,25 @@ const Historial = () => {
     {
       field: 'credits',
       headerName: 'Crédito',
-      valueFormatter: (estatus) => numeral(estatus.row.credits).format('$0,0'),
+      valueFormatter: (valedor) => numeral(valedor.row.credits).format('$0,0'),
       width: 150
     },
     {
       field: `estatus`,
       headerName: 'Usado',
-      valueFormatter: (estatus) => (estatus.row.estatus === 0 ? 'No' : 'Si'),
-      cellClassName: (estatus) =>
+      valueFormatter: (valedor) => (valedor.row.estatus === 0 ? 'No' : 'Si'),
+      cellClassName: (valedor) =>
         clsx('super-app', {
-          negative: estatus.row.estatus === 0,
-          positive: estatus.row.estatus === 1
+          negative: valedor.row.estatus === 0,
+          positive: valedor.row.estatus === 1
         }),
       width: 150
     },
     {
       field: 'placeSpent',
       headerName: 'Negocio',
-      valueFormatter: (estatus) =>
-        estatus.row.placeSpent ? estatus.row.placeSpent : 'Vale sin utilizar',
+      valueFormatter: (valedor) =>
+        valedor.row.placeSpent ? valedor.row.placeSpent : 'Vale sin utilizar',
       width: 150
     }
   ]
@@ -79,17 +79,19 @@ const Historial = () => {
       {isLoading ? (
         <CircularProgress></CircularProgress>
       ) : (
-        <Paper style={{ height: 540, width: '100%' }} className={classes.root}>
+        <Paper style={{ height: 570, width: '100%' }} className={classes.root}>
           <DataGrid
             pageSize={9}
-            components={{
-              Toolbar: GridToolbar
-            }}
+            components={
+              history.length > 0
+                ? {
+                    Toolbar: GridToolbar
+                  }
+                : null
+            }
             localeText={GRID_DEFAULT_LOCALE_TEXT}
-            checkboxSelection
             getRowId={(row) => row._id}
             rows={history}
-            icons
             columns={columns}
           />
         </Paper>
