@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Home from '../pages/Home/Home'
-import Dashboard from 'pages/Dashboard/Dashboard'
+import { Home } from '../pages/Home/Home'
+import { Dashboard } from 'pages/Dashboard/Dashboard'
 import ForgotPassword from 'components/ForgotPasword/ForgotPassword'
 import UpdatePassword from 'components/ResetPassword/UpdatePassword'
-import DashboardPerfil from 'pages/DashboardPerfil/DashboardPerfil'
+import { DashboardPerfil } from 'pages/DashboardPerfil/DashboardPerfil'
 import GeneralLayout from 'components/Layouts/DashboardLayout/GeneralLayout'
 import Historial from 'pages/valedores/Historial'
 import { UserContext } from '../context/userContext'
@@ -17,46 +17,62 @@ const Routes = () => {
 
   return (
     <Switch>
-      <PrivateRoute exact path="/dashboard/profile">
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        exact
+        path="/dashboard/profile"
+      >
         <GeneralLayout>
-          <DashboardPerfil></DashboardPerfil>
+          <DashboardPerfil />
         </GeneralLayout>
       </PrivateRoute>
 
-      <PrivateRoute exact path="/dashboard/valedores">
+      <PrivateRoute
+        exact
+        isAuthenticated={isAuthenticated}
+        path="/dashboard/valedores"
+      >
         <GeneralLayout>
-          <Valedores></Valedores>
+          <Valedores />
         </GeneralLayout>
       </PrivateRoute>
 
-      <PrivateRoute exact path="/valedores/history">
+      <PrivateRoute
+        exact
+        isAuthenticated={isAuthenticated}
+        path="/valedores/history"
+      >
         <GeneralLayout>
-          <Historial></Historial>
+          <Historial />
         </GeneralLayout>
       </PrivateRoute>
 
-      <PrivateRoute exact path="/dashboard/negocios">
+      <PrivateRoute
+        isAuthenticated={isAuthenticated}
+        exact
+        path="/dashboard/negocios"
+      >
         <GeneralLayout>
-          <Negocios></Negocios>
+          <Negocios />
         </GeneralLayout>
       </PrivateRoute>
 
-      <PrivateRoute path="/dashboard">
+      <PrivateRoute isAuthenticated={isAuthenticated} path="/dashboard">
         <GeneralLayout>
-          <Dashboard></Dashboard>
+          <Dashboard />
         </GeneralLayout>
       </PrivateRoute>
 
       <Route exact path="/forgot-password">
-        <ForgotPassword></ForgotPassword>
+        <ForgotPassword />
       </Route>
 
       <Route exact path="/update-password/:token">
-        <UpdatePassword></UpdatePassword>
+        <UpdatePassword />
       </Route>
 
       <Route exact path="/">
-        <Home></Home>
+        <Home />
       </Route>
     </Switch>
   )

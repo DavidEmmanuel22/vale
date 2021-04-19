@@ -22,6 +22,22 @@ const Login = () => {
   const { isAuthenticated, user, login } = useContext(UserContext)
   const history = useHistory()
 
+  const passwordInputProps = {
+    startAdornment: (
+      <InputAdornment position="start" className="MuiInputAdornment-root">
+        <LockIcon />
+      </InputAdornment>
+    )
+  }
+
+  const emailInputProps = {
+    startAdornment: (
+      <InputAdornment position="start">
+        <AccountCircle />
+      </InputAdornment>
+    )
+  }
+
   const submit = async (event) => {
     event.preventDefault()
     const { success, response, error } = await loginUser(email, password)
@@ -51,13 +67,9 @@ const Login = () => {
       )}
       <div className="content">
         <div className="foto-tom">
-          <img
-            className="decoration"
-            src={decorationimg}
-            alt="Logo-Login"
-          ></img>
+          <img className="decoration" src={decorationimg} alt="Logo-Login" />
           <div className="logo-content">
-            <img className="logo-login" src={logologin} alt="Logo-Login"></img>
+            <img className="logo-login" src={logologin} alt="Logo-Login" />
           </div>
         </div>
         <div>
@@ -68,13 +80,7 @@ const Login = () => {
               placeholder="Correo"
               type="email"
               onChange={(event) => setEmail(event.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AccountCircle />
-                  </InputAdornment>
-                )
-              }}
+              InputProps={emailInputProps}
             />
             <TextField
               className={classes.widthnew}
@@ -83,20 +89,11 @@ const Login = () => {
               type="password"
               autoComplete="current-password"
               onChange={(event) => setPassword(event.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment
-                    position="start"
-                    className="MuiInputAdornment-root"
-                  >
-                    <LockIcon />
-                  </InputAdornment>
-                )
-              }}
+              InputProps={passwordInputProps}
             />
             <div className="button-login">
               <Button
-                className={`${classes.widthbutton} `}
+                className={classes.widthbutton}
                 type="submit"
                 color="primary"
               >

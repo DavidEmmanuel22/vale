@@ -3,10 +3,15 @@ import { UserContext } from './userContext'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
 
-const ContextProvider = (props) => {
+const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [hasLoad, setHasLoad] = useState(false)
+  const [drawOpen, setDrawOpen] = useState(false)
+
+  const handleDrawerOpen = () => {
+    setDrawOpen(!drawOpen)
+  }
 
   useEffect(() => {
     if (user) {
@@ -49,10 +54,12 @@ const ContextProvider = (props) => {
         isAuthenticated,
         login,
         logout,
-        hasLoad
+        hasLoad,
+        handleDrawerOpen,
+        drawOpen
       }}
     >
-      {props.children}
+      {children}
     </UserContext.Provider>
   )
 }
