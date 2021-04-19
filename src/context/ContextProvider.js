@@ -7,6 +7,11 @@ const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [hasLoad, setHasLoad] = useState(false)
+  const [drawOpen, setDrawOpen] = useState(false)
+
+  const handleDrawerOpen = () => {
+    setDrawOpen(!drawOpen)
+  }
 
   useEffect(() => {
     if (user) {
@@ -49,7 +54,9 @@ const ContextProvider = ({ children }) => {
         isAuthenticated,
         login,
         logout,
-        hasLoad
+        hasLoad,
+        handleDrawerOpen,
+        drawOpen
       }}
     >
       {children}

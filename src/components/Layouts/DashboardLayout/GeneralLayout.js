@@ -1,13 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import clsx from 'clsx'
 import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import IconButton from '@material-ui/core/IconButton'
-import MenuIcon from '@material-ui/icons/Menu'
+
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -19,24 +16,23 @@ import { Container, Button } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
 import './Styles.css'
 import { GeneralLayoutStyle } from './GeneralLayoutStyle'
+import NavBar from 'components/NavBar/NavBar'
 
 // eslint-disable-next-line react/prop-types
 export default function GeneralLayout({ children }) {
   const classes = GeneralLayoutStyle()
   const theme = useTheme()
-  const [open, setOpen] = React.useState(false)
-  const [selectedIndex, setSelectedIndex] = React.useState(-1)
+  const [open, setOpen] = useState(false)
+  const [selectedIndex, setSelectedIndex] = useState(-1)
 
-  const { isAuthenticated, user, logout, hasLoad } = useContext(UserContext)
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
-
+  const {
+    isAuthenticated,
+    user,
+    logout,
+    hasLoad,
+    drawOpen,
+    handleDrawerOpen
+  } = useContext(UserContext)
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
   }
@@ -44,51 +40,28 @@ export default function GeneralLayout({ children }) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open
-        })}
-      >
-        <Toolbar className={classes.toolbar}>
-          <img width="200px" src="/logo-appbar.png"></img>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => setOpen(!open)}
-            edge="start"
-            className={classes.menuButton}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Button
-            color="secondary"
-            variant="contained"
-            onClick={logout}
-            className={classes.ButtonLogin}
-            startIcon={<Person />}
-          >
-            Cerrar Sesion{' '}
-          </Button>
-        </Toolbar>
-      </AppBar>
+      <NavBar />
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open
+          [classes.drawerOpen]: drawOpen,
+          [classes.drawerClose]: !drawOpen
         })}
         classes={{
           paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open
+            [classes.drawerOpen]: drawOpen,
+            [classes.drawerClose]: !drawOpen
           })
         }}
       >
         <List style={{ marginTop: '22px', padding: '10px' }}>
           {/*     ADMIN ROUTES		*/}
           {
-            <Link className="listLink" to="/dashboard">
+            <Link
+              className="listLink"
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              to="/dashboard"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 0}
@@ -102,7 +75,11 @@ export default function GeneralLayout({ children }) {
             </Link>
           }
           {
-            <Link className="listLink" to="/dashboard/profile">
+            <Link
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              className="listLink"
+              to="/dashboard/profile"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 1}
@@ -116,7 +93,11 @@ export default function GeneralLayout({ children }) {
             </Link>
           }
           {
-            <Link className="listLink" to="/dashboard/valedores">
+            <Link
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              className="listLink"
+              to="/dashboard/valedores"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 2}
@@ -130,7 +111,11 @@ export default function GeneralLayout({ children }) {
             </Link>
           }
           {
-            <Link className="listLink" to="/dashboard/negocios">
+            <Link
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              className="listLink"
+              to="/dashboard/negocios"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 3}
@@ -144,7 +129,11 @@ export default function GeneralLayout({ children }) {
             </Link>
           }
           {
-            <Link className="listLink" to="/dashboard/compras">
+            <Link
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              className="listLink"
+              to="/dashboard/compras"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 4}
@@ -161,7 +150,11 @@ export default function GeneralLayout({ children }) {
             </Link>
           }
           {
-            <Link className="listLink" to="/dashboard/contactos">
+            <Link
+              onClick={drawOpen ? () => handleDrawerOpen(!drawOpen) : null}
+              className="listLink"
+              to="/dashboard/contactos"
+            >
               <ListItem
                 button
                 selected={selectedIndex === 5}

@@ -23,7 +23,7 @@ const Routes = () => {
         path="/dashboard/profile"
       >
         <GeneralLayout>
-          <DashboardPerfil></DashboardPerfil>
+          <DashboardPerfil />
         </GeneralLayout>
       </PrivateRoute>
 
@@ -33,7 +33,7 @@ const Routes = () => {
         path="/dashboard/valedores"
       >
         <GeneralLayout>
-          <Valedores></Valedores>
+          <Valedores />
         </GeneralLayout>
       </PrivateRoute>
 
@@ -43,7 +43,7 @@ const Routes = () => {
         path="/valedores/history"
       >
         <GeneralLayout>
-          <Historial></Historial>
+          <Historial />
         </GeneralLayout>
       </PrivateRoute>
 
@@ -53,26 +53,26 @@ const Routes = () => {
         path="/dashboard/negocios"
       >
         <GeneralLayout>
-          <Negocios></Negocios>
+          <Negocios />
         </GeneralLayout>
       </PrivateRoute>
 
       <PrivateRoute isAuthenticated={isAuthenticated} path="/dashboard">
         <GeneralLayout>
-          <Dashboard></Dashboard>
+          <Dashboard />
         </GeneralLayout>
       </PrivateRoute>
 
       <Route exact path="/forgot-password">
-        <ForgotPassword></ForgotPassword>
+        <ForgotPassword />
       </Route>
 
       <Route exact path="/update-password/:token">
-        <UpdatePassword></UpdatePassword>
+        <UpdatePassword />
       </Route>
 
       <Route exact path="/">
-        <Home></Home>
+        <Home />
       </Route>
     </Switch>
   )

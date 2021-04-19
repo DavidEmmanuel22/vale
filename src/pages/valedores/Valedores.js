@@ -79,7 +79,7 @@ const Valedores = () => {
     ) {
       return valedor
     } else {
-      return null
+      return []
     }
   })
 
