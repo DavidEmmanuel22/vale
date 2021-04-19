@@ -3,7 +3,7 @@ import { UserContext } from './userContext'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
 
-const ContextProvider = (props) => {
+const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [hasLoad, setHasLoad] = useState(false)
@@ -52,7 +52,7 @@ const ContextProvider = (props) => {
         hasLoad
       }}
     >
-      {props.children}
+      {children}
     </UserContext.Provider>
   )
 }

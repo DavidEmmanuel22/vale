@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import { ThemeProvider } from '@material-ui/core/styles'
 import {
   Tabs,
   Tab,
@@ -12,27 +11,25 @@ import {
   Typography,
   Grid
 } from '@material-ui/core'
-import { Menu } from '@material-ui/icons'
+import Tooltip from '@material-ui/core/Tooltip'
+import Fab from '@material-ui/core/Fab'
 import Login from 'pages/Login/Login'
 import PopUp from 'components/Dialog/PopUp'
-import Logo from 'images/logo-appbar.png'
-// import ContactUs from 'pages/ContactUs/Contact'
-// import AboutUs from 'pages/AboutUs/AboutUs'
-// import Business from 'pages/Business/Business'
-// import Valedor from 'pages/Valedor/Valedor'
-import Inicio from 'pages/Inicio/Inicio'
+import Popover from '@material-ui/core/Popover'
+import Box from '@material-ui/core/Box'
+import ChatIcon from '@material-ui/icons/Chat'
 import Styles from './Styles'
-import StylesTheme from './StylesTheme'
 import { UserContext } from '../../context/userContext'
 import './home.css'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
-import { SliderData } from './slider/SliderData'
 import ValedorHero from './slider/valedor-hero.jpg'
+import { HomeChat } from 'pages/HomeChat/HomeChat'
 
-const Home = () => {
+export const Home = () => {
   const classes = Styles()
   const { isAuthenticated, logout } = useContext(UserContext)
   const [showLogin, setShowLogin] = useState(false)
+  const [anchorEl, setanchorEl] = useState(false)
 
   const handleLogin = () => {
     if (!isAuthenticated) {
@@ -41,6 +38,15 @@ const Home = () => {
       window.location.href = '/dashboard'
     }
   }
+
+  const openChat = (event) => {
+    setanchorEl(event.currentTarget)
+  }
+
+  const closeChat = () => {
+    setanchorEl(null)
+  }
+  const open = Boolean(anchorEl)
 
   return (
     <>
@@ -88,6 +94,21 @@ const Home = () => {
                 </h1>
                 <button>Conocer más</button>
               </div>
+              {
+                <Tooltip title="Chat" arrow>
+                  <Fab
+                    style={{
+                      position: 'absolute',
+                      right: '6%',
+                      bottom: '3%'
+                    }}
+                    color="primary"
+                    onClick={openChat}
+                  >
+                    <ChatIcon fontSize="large" />
+                  </Fab>
+                </Tooltip>
+              }
             </Grid>
             <Grid
               item
@@ -134,6 +155,22 @@ const Home = () => {
                   </h1>
                   <button>Conocer más</button>
                 </div>
+                {
+                  <Tooltip title="Chat">
+                    <Fab
+                      style={{
+                        position: 'absolute',
+                        right: '6%',
+
+                        bottom: '3%'
+                      }}
+                      color="primary"
+                      onClick={openChat}
+                    >
+                      <ChatIcon fontSize="large" />
+                    </Fab>
+                  </Tooltip>
+                }
               </div>
             </Grid>
           </Grid>
@@ -169,8 +206,24 @@ const Home = () => {
       <PopUp openDialog={showLogin} setOpenDialog={setShowLogin}>
         <Login />
       </PopUp>
+      <Popover
+        anchorEl={anchorEl}
+        open={open}
+        onClose={closeChat}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center'
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center'
+        }}
+      >
+        <Box p={2}>
+          <Typography style={{ textAlign: 'center' }}>Ingresar</Typography>
+          <HomeChat />
+        </Box>
+      </Popover>
     </>
   )
 }
-
-export default Home

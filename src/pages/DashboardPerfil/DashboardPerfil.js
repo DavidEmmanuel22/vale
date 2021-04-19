@@ -50,7 +50,7 @@ const validationSchema = yup.object({
     .required('Apellido es requerido')
 })
 
-const DashboardPerfil = () => {
+export const DashboardPerfil = () => {
   const classes = useStyles()
   const { isAuthenticated, user, login, logout } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
@@ -283,6 +283,7 @@ const DashboardPerfil = () => {
             </form>
           </Paper>
         </Grid>
+
         <Grid item xs={12} md={3} lg={3} style={{}}>
           <Hidden smDown>
             <BackgroundPaper></BackgroundPaper>
@@ -344,7 +345,6 @@ const DashboardPerfil = () => {
             </Button>
           </Hidden>
         </Grid>
-        <Grid item xs={12} md={2}></Grid>
       </Grid>
       {modalTitle === 'valedor' ? (
         <ResponsivePopUp
@@ -366,5 +366,3 @@ const DashboardPerfil = () => {
     </div>
   )
 }
-
-export default DashboardPerfil

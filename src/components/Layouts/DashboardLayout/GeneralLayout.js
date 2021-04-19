@@ -1,16 +1,13 @@
 import React, { useContext } from 'react'
 import clsx from 'clsx'
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import List from '@material-ui/core/List'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
-import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -18,102 +15,14 @@ import { Dashboard, Person, People, Store } from '@material-ui/icons'
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import ContactsIcon from '@material-ui/icons/Contacts'
 import { Link } from 'react-router-dom'
-import HeaderRoutes from 'components/HeaderRoutes/HeaderRoutes'
 import { Container, Button } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
 import './Styles.css'
-
-const drawerWidth = 250
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />
-}
-
-const Styles = makeStyles((theme) => ({
-  root: {
-    display: 'flex'
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    height: '80px',
-    backgroundColor: 'white',
-    position: 'fixed'
-  },
-  appBarShift: {
-    height: '80px',
-    backgroundColor: 'white'
-  },
-  menuButton: {
-    marginRight: 'auto',
-    paddingLeft: '25px',
-    color: '#007772'
-  },
-  hide: {
-    display: 'none'
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap'
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    top: '80px'
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1
-    },
-    top: '80px'
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    height: '80px',
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-    backgroundColor: '#e5e5e5',
-    marginTop: '80px',
-    paddingTop: '30px',
-    minHeight: '100vh'
-  },
-  dividerLine: {
-    margin: '30px 0px'
-  },
-  ButtonLogin: {
-    marginLeft: 'auto',
-    position: 'absolute',
-    textAlign: 'center',
-    fontSize: '18px',
-    boxShadow: '0 7px 3px rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 24%)',
-    borderRadius: '15px',
-    textTransform: 'capitalize'
-  }
-}))
+import { GeneralLayoutStyle } from './GeneralLayoutStyle'
 
 // eslint-disable-next-line react/prop-types
 export default function GeneralLayout({ children }) {
-  const classes = Styles()
+  const classes = GeneralLayoutStyle()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
@@ -157,7 +66,7 @@ export default function GeneralLayout({ children }) {
             variant="contained"
             onClick={logout}
             className={classes.ButtonLogin}
-            startIcon={<Person></Person>}
+            startIcon={<Person />}
           >
             Cerrar Sesion{' '}
           </Button>
