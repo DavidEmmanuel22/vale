@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
-import Axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { TextField, Button, InputAdornment } from '@material-ui/core'
-// import UserContext from 'hooks/UserContext'
 import Alert from 'components/Alert/Alert'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
@@ -15,12 +13,19 @@ import { loginUser } from 'requests/login'
 
 const Login = () => {
   const classes = Styles()
-  const [email, setEmail] = useState()
-  const [password, setPassword] = useState()
-  const [error, setError] = useState()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isDone, setDone] = useState(false)
 
-  const { isAuthenticated, user, login } = useContext(UserContext)
+  const { login } = useContext(UserContext)
   const history = useHistory()
+
+  useEffect(() => {
+    if (isDone) {
+      history.push('/dashboard')
+    }
+  }, [isDone])
 
   const passwordInputProps = {
     startAdornment: (
@@ -47,9 +52,7 @@ const Login = () => {
       } else {
         //console.log(response)
         login(response.data.token)
-        setTimeout(() => {
-          history.push('/dashboard')
-        }, 1000)
+        setDone(true)
       }
     }
     if (error) {

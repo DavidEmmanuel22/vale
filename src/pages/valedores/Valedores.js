@@ -328,7 +328,7 @@ const Valedores = () => {
             {isLoading ? (
               <CircularProgress></CircularProgress>
             ) : (
-              <h2>{`El valedor: ${searchValedor} no está registrado.`}</h2>
+              <h2>{`El valedor: "${searchValedor}" no está registrado.`}</h2>
             )}
           </div>
         )}

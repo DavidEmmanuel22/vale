@@ -12,7 +12,7 @@
 //       autoConnect: true,
 //       forceNew: true,
 //       query: {
-//         'x-token': token
+//         token: token
 //       }
 //     })
 //     setSocket(socketTemp)
@@ -28,6 +28,7 @@
 
 //   useEffect(() => {
 //     socket?.on('connect', () => setOnline(true))
+//     console.log('connected to socket')
 //   }, [socket])
 
 //   useEffect(() => {
