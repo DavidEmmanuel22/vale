@@ -1,0 +1,45 @@
+.contact__section {
+  background-image: linear-gradient(to top, #027772 0%, #deecdd 100%);
+  box-shadow: 0px -11.1px 21px 5px dimgrey;
+}
+
+.contact__img {
+  width: 100vw;
+  height: 39rem;
+  object-fit: contain;
+  position: relative;
+  right: 6.9em;
+}
+
+.contact__form {
+  text-align: center;
+  padding: 0.6em 6em;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact__input {
+  margin: 0.9em !important;
+}
+
+.contact__img-shadow {
+  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+}
+
+@media only screen and (max-width: 600px) {
+  .contact__img {
+    position: inherit;
+    height: 30em;
+  }
+
+  .contact__form {
+    padding: 3.6em 1.2em;
+  }
+
+  .contact__section {
+    height: 27em;
+    border-radius: 0px 0px 0px 8em;
+    margin-bottom: 3em;
+    filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+  }
+}

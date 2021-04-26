@@ -6,6 +6,7 @@ import { Person } from '@material-ui/icons'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import { Button } from '@material-ui/core'
+import NavLogo from '../../assets/NavBar/logo-appbar.png'
 import { GeneralLayoutStyle } from 'components/Layouts/DashboardLayout/GeneralLayoutStyle'
 import { UserContext } from '../../context/userContext'
 
@@ -19,7 +20,7 @@ const NavBar = () => {
     handleDrawerOpen
   } = useContext(UserContext)
 
-  return (
+  const adminNavBar = (
     <AppBar
       position="sticky"
       className={clsx(classes.appBar, {
@@ -27,11 +28,7 @@ const NavBar = () => {
       })}
     >
       <Toolbar className={classes.toolbar}>
-        <img
-          width="200px"
-          style={{ objectFit: 'contain' }}
-          src="/logo-appbar.png"
-        ></img>
+        <img width="200px" style={{ objectFit: 'contain' }} src={NavLogo} />
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -53,6 +50,8 @@ const NavBar = () => {
       </Toolbar>
     </AppBar>
   )
+
+  return <>{adminNavBar}</>
 }
 
 export default NavBar

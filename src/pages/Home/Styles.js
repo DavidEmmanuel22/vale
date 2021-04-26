@@ -2,22 +2,30 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const Styles = makeStyles(() => ({
   AppBar: {
-    position: 'fixed',
+    position: 'sticky',
     zIndex: 100,
-    boxShadow: '0 0 0 0'
+    top: 0
   },
   ToolBar: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '80px'
+    height: '3.9em'
   },
   linksContainer: {
     height: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  nav__img: {
+    padding: '1em',
+    objectFit: 'contain',
+    width: '15em'
+  },
+  home__img: {
+    objectFit: 'contain',
+    width: '100%'
   }
 }))
 

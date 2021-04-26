@@ -9,7 +9,7 @@ h1.inicia-sesion {
 
 .foto-tom {
   background-color: #efc64f;
-  width: 350px;
+  width: 100%;
 }
 
 .logincontainer {
@@ -61,8 +61,7 @@ a {
   border-bottom: 2px solid #007772 !important;
 }
 img.decoration {
-  width: 358px;
-  height: 440px;
+  object-fit: contain;
 }
 
 img.logo-login {
@@ -70,4 +69,10 @@ img.logo-login {
   right: 52%;
   top: 28%;
   width: 41%;
+}
+
+@media only screen and (max-width: 600px) {
+  .content {
+    display: block !important;
+  }
 }

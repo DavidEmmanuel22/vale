@@ -16,6 +16,7 @@
     "formik": "^2.2.6",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
+    "notistack": "^1.0.6",
     "numeral": "^2.0.6",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",

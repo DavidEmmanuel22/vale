@@ -4,6 +4,7 @@ import Routes from 'routes/Routes'
 import ContextProvider from './context/ContextProvider'
 import { ThemeProvider } from '@material-ui/styles'
 import { blueTheme } from 'themes'
+import { SocketProvider } from 'context/SocketContext'
 
 export default function App() {
   return (
