@@ -12,32 +12,86 @@ import PrivateRoute from './PrivateRoute'
 import Valedores from 'pages/valedores/Valedores'
 import Negocios from 'pages/negocios/Negocios'
 import Contact from 'pages/Contact/Contact'
+import dashboardRoutes from './dashboardRoutes'
 
 const Routes = () => {
   const { isAuthenticated } = useContext(UserContext)
 
   return (
     <Switch>
-      <PrivateRoute
-        isAuthenticated={isAuthenticated}
-        exact
-        path="/dashboard/profile"
-      >
-        <GeneralLayout>
-          <DashboardPerfil />
-        </GeneralLayout>
-      </PrivateRoute>
+      {dashboardRoutes.map((route, index) => (
+        <PrivateRoute
+          key={index}
+          isAuthenticated={isAuthenticated}
+          exact
+          path={route.path}
+        >
+          <GeneralLayout routes={dashboardRoutes}>
+            <route.component></route.component>
+          </GeneralLayout>
+        </PrivateRoute>
+      ))}
+      {/*
+			<PrivateRoute isAuthenticated={isAuthenticated} exact path="/dashboard">
+				<GeneralLayout>
+					<Dashboard />
+				</GeneralLayout>
+			</PrivateRoute>
 
-      <PrivateRoute
-        exact
-        isAuthenticated={isAuthenticated}
-        path="/dashboard/valedores"
-      >
-        <GeneralLayout>
-          <Valedores />
-        </GeneralLayout>
-      </PrivateRoute>
+			<PrivateRoute
+				isAuthenticated={isAuthenticated}
+				exact
+				path="/dashboard/profile"
+			>
+				<GeneralLayout>
+					<DashboardPerfil />
+				</GeneralLayout>
+			</PrivateRoute>
 
+			<PrivateRoute
+				exact
+				isAuthenticated={isAuthenticated}
+				path="/dashboard/valedores"
+			>
+				<GeneralLayout>
+					<Valedores />
+				</GeneralLayout>
+			</PrivateRoute>
+
+			<PrivateRoute
+				exact
+				isAuthenticated={isAuthenticated}
+				path="/valedores/history"
+			>
+				<GeneralLayout>
+					<Historial />
+				</GeneralLayout>
+			</PrivateRoute>
+
+			<PrivateRoute
+				isAuthenticated={isAuthenticated}
+				exact
+				path="/dashboard/negocios"
+			>
+				<GeneralLayout>
+					<Negocios />
+				</GeneralLayout>
+			</PrivateRoute>
+
+
+
+			<Route exact path="/forgot-password">
+				<ForgotPassword />
+			</Route>
+
+			<Route exact path="/update-password/:token">
+				<UpdatePassword />
+			</Route>
+
+			<Route exact path="/">
+				<Home />
+			</Route>
+			*/}
       <PrivateRoute
         exact
         isAuthenticated={isAuthenticated}
@@ -47,23 +101,6 @@ const Routes = () => {
           <Historial />
         </GeneralLayout>
       </PrivateRoute>
-
-      <PrivateRoute
-        isAuthenticated={isAuthenticated}
-        exact
-        path="/dashboard/negocios"
-      >
-        <GeneralLayout>
-          <Negocios />
-        </GeneralLayout>
-      </PrivateRoute>
-
-      <PrivateRoute isAuthenticated={isAuthenticated} path="/dashboard">
-        <GeneralLayout>
-          <Dashboard />
-        </GeneralLayout>
-      </PrivateRoute>
-
       <Route exact path="/forgot-password">
         <ForgotPassword />
       </Route>

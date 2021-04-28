@@ -4,9 +4,5 @@
 }
 
 .MuiTypography-body1 {
-  font-size: 20px !important;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  font-weight: 400;
   line-height: 2 !important;
-  letter-spacing: 0.00938em;
 }
