@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
 * {
   background-repeat: no-repeat;
   padding: 0;
@@ -6,7 +7,7 @@
 
 body {
   background-color: #ffffff;
-  font-family: 'Avenir Next W01', Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   color: #1c242b;
   overflow-x: hidden;

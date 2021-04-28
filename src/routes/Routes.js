@@ -12,6 +12,7 @@ import PrivateRoute from './PrivateRoute'
 import Valedores from 'pages/valedores/Valedores'
 import Negocios from 'pages/negocios/Negocios'
 import Contact from 'pages/Contact/Contact'
+import Mail from 'pages/Mail/Mail'
 
 const Routes = () => {
   const { isAuthenticated } = useContext(UserContext)
@@ -70,6 +71,10 @@ const Routes = () => {
 
       <Route exact path="/update-password/:token">
         <UpdatePassword />
+      </Route>
+
+      <Route exact path="/mail">
+        <Mail />
       </Route>
 
       <Route exact path="/contact">

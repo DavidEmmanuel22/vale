@@ -3,7 +3,9 @@ import {
   TextField,
   Slide,
   Button,
-  InputAdornment
+  InputAdornment,
+  Hidden,
+  Zoom
 } from '@material-ui/core'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
@@ -16,34 +18,60 @@ import PersonIcon from '@material-ui/icons/Person'
 import { useFormik } from 'formik'
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid'
 import MessageIcon from '@material-ui/icons/Message'
-import { contactValidation } from './ContactValidation'
+import { contactValidation, loginValidation } from './ContactValidation'
 import './Contact.css'
-import { ClientNavBar } from 'pages/Home/Home'
+import { ClientNavBar, Footer } from 'pages/Home/Home'
+import { Link, useHistory } from 'react-router-dom'
+import { createMail } from 'requests/createMail'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const Contact = () => {
-  const [form, setForm] = useState({
+  const [contactForm, setContactForm] = useState({
     name: '',
     email: '',
     phoneNumber: '',
     message: ''
   })
-  const [openAlert, setOpenAlert] = useState(false)
 
+  const history = useHistory()
+  const [loginForm, setLoginForm] = useState({
+    email: '',
+    phoneNumber: ''
+  })
+  const [openAlert, setOpenAlert] = useState(false)
+  const [loginHistoryMessages, setLoginHistoryMessages] = useState(false)
+  const [loading, setLoading] = useState(false)
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
 
   const contactFormikValidation = useFormik({
-    initialValues: form,
+    initialValues: loginHistoryMessages ? loginForm : contactForm,
     onSubmit: async (formValue) => {
-      // console.log(
-      //   formValue.name,
-      //   formValue.email,
-      //   formValue.phoneNumber,
-      //   formValue.message
-      // )
-
-      setOpenAlert(true)
+      setLoading(true)
+      const { success, response, error } = await createMail({
+        name: formValue.name,
+        emailUser: formValue.email,
+        telUser: formValue.phoneNumber,
+        messageData: formValue.message
+      })
+      if (success && response) {
+        if (response.error) {
+          console.log(response.error)
+        } else {
+          //console.log(response)
+          setOpenAlert(true)
+          setLoading(false)
+          console.log(response.data)
+          setTimeout(() => {
+            history.push({
+              pathname: '/mail',
+              state: response.data
+            })
+            localStorage.setItem('idChat', response.data.message.idChat)
+          }, 3000)
+        }
+      }
       contactFormikValidation.resetForm({
         values: {
           name: '',
@@ -53,52 +81,92 @@ const Contact = () => {
         }
       })
     },
-    validationSchema: contactValidation
+    validationSchema: loginHistoryMessages ? loginValidation : contactValidation
   })
 
   const contactContent = (
     <>
       <ClientNavBar />
+
       <Grid container>
-        <Grid className="contact__section" item xs={12} sm={6} md={6}>
-          <Slide timeout={1230} in direction="right" mountOnEnter unmountOnExit>
+        <Hidden xsDown>
+          <Grid
+            className="contact__section"
+            style={loginHistoryMessages ? { backgroundColor: '#003634' } : null}
+            item
+            xs={12}
+            sm={6}
+            md={6}
+          >
             <div className="contact__img-shadow">
-              <img className="contact__img" src={valeThor} />
+              <Hidden lgDown={loginHistoryMessages}>
+                <Zoom
+                  timeout={600}
+                  in
+                  direction="down"
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <div className="contact__welcome-message">
+                    <h2>
+                      Lorem ipsum dolor sit,
+                      <span
+                        className="contact__welcome-login"
+                        onClick={() => setLoginHistoryMessages(true)}
+                      >
+                        {' '}
+                        Historial{' '}
+                      </span>
+                      amet consectetur adipisicing elit. Deserunt recusandae
+                      quae vel sit obcaecati mollitia similique consequatur
+                      libero adipisci, incidunt harum perspiciatis doloremque
+                      repudiandae optio quis facilis officiis qui cupiditate.
+                    </h2>
+                  </div>
+                </Zoom>
+
+                <img className="contact__img" src={valeThor} />
+              </Hidden>
             </div>
-          </Slide>
-        </Grid>
+          </Grid>
+        </Hidden>
 
         <Grid item xs={12} sm={6} md={6}>
           <form
             onSubmit={contactFormikValidation.handleSubmit}
-            className="contact__form"
+            className={`contact__form ${
+              loginHistoryMessages ? 'contact__form-login' : ''
+            }`}
           >
             <Typography className="contact__input" variant="h4">
-              Contáctanos
+              {`${loginHistoryMessages ? 'Historial Mensajes' : 'Contáctanos'}`}
             </Typography>
-            <TextField
-              className="contact__input"
-              label="Nombre"
-              variant="filled"
-              name="name"
-              value={contactFormikValidation.values.name}
-              onChange={contactFormikValidation.handleChange}
-              error={
-                contactFormikValidation.touched.name &&
-                Boolean(contactFormikValidation.errors.name)
-              }
-              helperText={
-                contactFormikValidation.touched.name &&
-                contactFormikValidation.errors.name
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <PersonIcon color="primary" />
-                  </InputAdornment>
-                )
-              }}
-            />
+            <Hidden lgDown={loginHistoryMessages}>
+              <TextField
+                className="contact__input"
+                label="Nombre"
+                variant="filled"
+                name="name"
+                value={contactFormikValidation.values.name}
+                onChange={contactFormikValidation.handleChange}
+                error={
+                  contactFormikValidation.touched.name &&
+                  Boolean(contactFormikValidation.errors.name)
+                }
+                helperText={
+                  contactFormikValidation.touched.name &&
+                  contactFormikValidation.errors.name
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <PersonIcon color="primary" />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Hidden>
+
             <TextField
               className="contact__input"
               label="Correo Electrónico"
@@ -152,59 +220,81 @@ const Contact = () => {
                   .slice(0, 10)
               }}
             />
-            <TextField
-              className="contact__input"
-              label="Mensaje"
-              multiline
-              rows={3}
-              variant="filled"
-              name="message"
-              value={contactFormikValidation.values.message}
-              onChange={contactFormikValidation.handleChange}
-              error={
-                contactFormikValidation.touched.message &&
-                Boolean(contactFormikValidation.errors.message)
-              }
-              helperText={
-                contactFormikValidation.touched.message &&
-                contactFormikValidation.errors.message
-              }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MessageIcon color="primary" />
-                  </InputAdornment>
-                )
-              }}
-            />
-            <div>
+            <Hidden lgDown={loginHistoryMessages}>
+              <TextField
+                className="contact__input"
+                label="Mensaje"
+                multiline
+                rows={3}
+                variant="filled"
+                name="message"
+                value={contactFormikValidation.values.message}
+                onChange={contactFormikValidation.handleChange}
+                error={
+                  contactFormikValidation.touched.message &&
+                  Boolean(contactFormikValidation.errors.message)
+                }
+                helperText={
+                  contactFormikValidation.touched.message &&
+                  contactFormikValidation.errors.message
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <MessageIcon color="primary" />
+                    </InputAdornment>
+                  )
+                }}
+              />
+            </Hidden>
+
+            <div style={{ position: 'relative' }}>
               <Button
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={loading}
                 endIcon={<SendIcon />}
               >
-                Enviar
+                {`${loginHistoryMessages ? 'Entrar' : 'Enviar'}`}
               </Button>
+              {loading && (
+                <CircularProgress
+                  style={{
+                    position: 'absolute',
+                    top: '18%',
+                    left: '46%'
+                  }}
+                  size={24}
+                />
+              )}
             </div>
           </form>
         </Grid>
       </Grid>
+      <Footer />
     </>
   )
   return (
     <>
       {contactContent}
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        open={openAlert}
-        onClose={() => {
-          setOpenAlert(false)
-        }}
-        autoHideDuration={6000}
-      >
-        <Alert severity="success">Mensaje enviado</Alert>
-      </Snackbar>
+
+      {!loginHistoryMessages && (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={openAlert}
+          onClose={() => {
+            setOpenAlert(false)
+          }}
+          autoHideDuration={6000}
+        >
+          <Slide timeout={600} in mountOnEnter unmountOnExit>
+            <div>
+              <Alert severity="success">Mensaje enviado correctamente</Alert>
+            </div>
+          </Slide>
+        </Snackbar>
+      )}
     </>
   )
 }

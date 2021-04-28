@@ -19,6 +19,7 @@ export const ClientNavBar = () => {
   const [showMenu, setShowMenu] = useState(false)
   const { isAuthenticated, logout } = useContext(UserContext)
   const [showLogin, setShowLogin] = useState(false)
+  const userMessageHistory = localStorage.getItem('idChat')
 
   const handleLogin = () => {
     if (!isAuthenticated) {
@@ -41,19 +42,22 @@ export const ClientNavBar = () => {
             </IconButton>
           </Hidden>
           <Hidden xsDown={!showMenu}>
-            <Slide timeout={360} in direction="down">
+            <Slide timeout={showMenu ? 360 : 0} in direction="down">
               <div
                 className={`${
                   showMenu ? 'links-container' : classes.linksContainer
                 }`}
               >
                 <Link to="/" className="nav-link-item">
-                  Acerca De
+                  Acerca de
                 </Link>
                 <a className="nav-link-item">Valedores</a>
                 <a className="nav-link-item">Negocios</a>
-                <Link to="/contact" className="nav-link-item">
-                  Contactos
+                <Link
+                  to={`${userMessageHistory ? '/mail' : '/contact'}`}
+                  className="nav-link-item"
+                >
+                  Contáctanos
                 </Link>
                 <button className="login-button" onClick={handleLogin}>
                   <AccountCircleIcon></AccountCircleIcon>
@@ -68,6 +72,38 @@ export const ClientNavBar = () => {
         <Login />
       </PopUp>
     </>
+  )
+}
+
+export const Footer = () => {
+  return (
+    <footer>
+      <div className="footer-logo">
+        <img width="70%" height="70%" src="/images/white-logo.png"></img>
+      </div>
+      <div className="footer-icons">
+        <a href="#">
+          <img src="/images/Elements email-07.png"></img>
+        </a>
+        <a href="#">
+          <img src="/images/Elements email-08.png"></img>
+        </a>
+        <a href="#">
+          <img src="/images/Elements email-10.png"></img>
+        </a>
+      </div>
+      <div className="footer-about">
+        <h4>Acerca De</h4>
+        <a href="#">¿Quienes somos?</a>
+        <a href="#">Aviso de Privacidad</a>
+        <a href="#">Terminos y condiciones</a>
+      </div>
+      <div className="footer-contact">
+        <h4>Contacto</h4>
+        <a href="#">844 123 45 67</a>
+        <a href="#">info@valevaledor.com</a>
+      </div>
+    </footer>
   )
 }
 
@@ -99,35 +135,9 @@ export const Home = () => {
   return (
     <>
       <ClientNavBar />
-      {homeContent}
-      <div className="main-content"></div>
-      <footer>
-        <div className="footer-logo">
-          <img width="70%" height="70%" src="/images/white-logo.png"></img>
-        </div>
-        <div className="footer-icons">
-          <a href="#">
-            <img src="/images/Elements email-07.png"></img>
-          </a>
-          <a href="#">
-            <img src="/images/Elements email-08.png"></img>
-          </a>
-          <a href="#">
-            <img src="/images/Elements email-10.png"></img>
-          </a>
-        </div>
-        <div className="footer-about">
-          <h4>Acerca De</h4>
-          <a href="#">¿Quienes somos?</a>
-          <a href="#">Aviso de Privacidad</a>
-          <a href="#">Terminos y condiciones</a>
-        </div>
-        <div className="footer-contact">
-          <h4>Contacto</h4>
-          <a href="#">844 123 45 67</a>
-          <a href="#">info@valevaledor.com</a>
-        </div>
-      </footer>
+
+      <div className="main-content">{homeContent}</div>
+      <Footer />
     </>
   )
 }
