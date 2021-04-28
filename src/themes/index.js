@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles'
 
-export const blueTheme = createMuiTheme({
+let blueTheme = createMuiTheme({
   palette: {
     secondary: {
       // light: will be calculated from palette.primary.main,
@@ -12,5 +12,11 @@ export const blueTheme = createMuiTheme({
       main: 'rgb(0, 119, 114)',
       contrastText: 'white'
     }
+  },
+  typography: {
+    fontFamily: ['Open Sans', 'sans-serif'].join(',')
   }
 })
+
+blueTheme = responsiveFontSizes(blueTheme)
+export default blueTheme

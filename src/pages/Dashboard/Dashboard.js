@@ -11,6 +11,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import { dashboardStyles } from './DashboardStyles'
 import './dashboard.css'
 import { ChatRoom } from './ChatRoom/ChatRoom'
+import DashboardMessages from 'components/DashboardMessages'
 
 export const Dashboard = () => {
   const classes = dashboardStyles()
@@ -101,7 +102,7 @@ export const Dashboard = () => {
           </a>
         </Grid>
         <Grid item xs={12}>
-          <ChatRoom />
+          <DashboardMessages></DashboardMessages>
         </Grid>
       </Grid>
 
