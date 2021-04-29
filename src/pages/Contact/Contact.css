@@ -1,14 +1,18 @@
 .contact__section {
-  background-image: linear-gradient(to top, #027772 0%, #deecdd 100%);
   box-shadow: 0px -11.1px 21px 5px dimgrey;
+  background-image: url('../../assets/Contact/vale-ribbn.png');
+  background-color: #027773;
+  background-repeat: no-repeat;
+  background-size: 100%;
 }
 
 .contact__img {
-  width: 100vw;
-  height: 39rem;
+  width: 100%;
+  height: 24rem;
   object-fit: contain;
   position: relative;
   right: 6.9em;
+  top: 8.4em;
 }
 
 .contact__form {
@@ -18,12 +22,67 @@
   flex-direction: column;
 }
 
+.contact__welcome-message {
+  margin-top: 1.5em;
+  padding: 1.5em;
+  height: 13.5em;
+  position: absolute;
+  width: 27.9em;
+  margin-bottom: 10px;
+  margin-left: calc(100% - 27em);
+  background-color: #e8e8e8;
+  text-align: left;
+  font: 400 0.9em 'Open Sans', sans-serif;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+}
+.contact__form-login {
+  text-align: center;
+  padding: 7.6em 6em;
+  display: flex;
+  flex-direction: column;
+}
+.contact__welcome-login {
+  color: #f9a02b;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.contact__welcome-message:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 15px solid #e8e8e8;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  bottom: 0;
+  left: -15px;
+}
+
+.contact__welcome-message:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-bottom: 17px solid #e8e8e8;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  bottom: -1px;
+  left: -17px;
+}
+
+.contact__form > h4 {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .contact__input {
-  margin: 0.9em !important;
+  margin: 0.8em !important;
 }
 
 .contact__img-shadow {
-  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+  filter: drop-shadow(6px 9px 12px rgba(50, 50, 0, 0.5));
 }
 
 @media only screen and (max-width: 600px) {
@@ -33,7 +92,7 @@
   }
 
   .contact__form {
-    padding: 3.6em 1.2em;
+    padding: 0.6em 2.1em;
   }
 
   .contact__section {
