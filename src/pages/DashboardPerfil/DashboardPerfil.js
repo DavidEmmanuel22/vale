@@ -20,18 +20,7 @@ import { updateUserSelfSchema } from 'yupSchemas'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  paper: {
-    padding: theme.spacing(3),
-    textAlign: 'center',
-    borderRadius: '15px',
-    color: theme.palette.text.secondary
-  }
-}))
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const NameExpression = /^\S/
 
@@ -51,7 +40,6 @@ const validationSchema = yup.object({
 })
 
 export const DashboardPerfil = () => {
-  const classes = useStyles()
   const { isAuthenticated, user, login, logout } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
@@ -62,6 +50,22 @@ export const DashboardPerfil = () => {
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
+
+  const matches = useMediaQuery('(min-width:600px)')
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: matches ? theme.spacing(3) : theme.spacing(1),
+      textAlign: 'center',
+      borderRadius: '15px',
+      color: theme.palette.text.secondary
+    }
+  }))
+
+  const classes = useStyles()
 
   const formik = useFormik({
     initialValues: {
@@ -239,7 +243,11 @@ export const DashboardPerfil = () => {
                 <Grid
                   item
                   xs={12}
-                  style={{ display: 'flex', flexDirection: 'row-reverse' }}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row-reverse',
+                    flexWrap: 'wrap-reverse'
+                  }}
                 >
                   {onEdit && (
                     <>

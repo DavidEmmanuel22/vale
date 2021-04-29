@@ -30,6 +30,7 @@ import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
 import Fab from '@material-ui/core/Fab'
 import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles2 = makeStyles({
   root: {
@@ -61,11 +62,43 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPaper: {
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between'
   }
 }))
 
 const Negocios = () => {
+  const matches = useMediaQuery('(min-width:525px)')
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary
+    },
+    fab: {
+      margin: theme.spacing(2)
+    },
+    danger: {
+      background: '#cf1c24',
+      margin: theme.spacing(2),
+      '&:hover': {
+        background: '#9e0e0e'
+      }
+    },
+    buttonPaper: {
+      padding: theme.spacing(2),
+      color: theme.palette.text.secondary,
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between'
+    }
+  }))
+
   const classes = useStyles()
   const classes2 = useStyles2()
 
@@ -135,27 +168,10 @@ const Negocios = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper
-          className={classes.buttonPaper}
-          style={{
-            display: 'flex',
-            textAlign: 'center',
-            marginBottom: '1.2rem',
-            justifyContent: 'space-around',
-            flexDirection: 'row-reverse'
-          }}
-        >
-          <Button
-            onClick={() => setOpenDialog(true)}
-            color="primary"
-            variant="contained"
-          >
-            Agregar Negocio
-          </Button>
-
+        <Paper className={classes.buttonPaper}>
           <TextField
             placeholder="Buscar Negocio..."
-            style={{ width: '33vw' }}
+            style={{ width: '' }}
             inputProps={{
               maxLength: 25
             }}
@@ -176,6 +192,14 @@ const Negocios = () => {
             value={searchBusiness}
             onChange={(e) => handleChange(e)}
           />
+          <Button
+            onClick={() => setOpenDialog(true)}
+            color="primary"
+            variant="contained"
+            style={{ marginTop: matches ? '' : '15px' }}
+          >
+            Agregar Negocio
+          </Button>
         </Paper>
         {filteredBusiness.length > 0 ? (
           <Paper className={classes.paper}>

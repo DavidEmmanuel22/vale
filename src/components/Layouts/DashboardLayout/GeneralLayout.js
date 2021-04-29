@@ -66,7 +66,7 @@ export default function GeneralLayout({ children, routes }) {
           })
         }}
       >
-        <List style={{ marginTop: '22px', padding: '10px' }}>
+        <List style={{ marginTop: '22px' }}>
           {/*     ADMIN ROUTES		*/}
           {routes.map((route, index) => (
             <Link

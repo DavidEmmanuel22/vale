@@ -1,8 +1,11 @@
 import { Grid, Paper } from '@material-ui/core'
 import React from 'react'
 import NewMessage from './NewMessage'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const DashboardMessages = () => {
+  const matches = useMediaQuery('(min-width:600px)')
+
   const styles = {
     titleStyles: {
       backgroundColor: 'rgb(0, 119, 114)',
@@ -14,7 +17,7 @@ const DashboardMessages = () => {
       color: '#fff'
     },
     messagesStyles: {
-      padding: '20px 30px'
+      padding: matches ? '20px 30px' : '0'
     }
   }
 
