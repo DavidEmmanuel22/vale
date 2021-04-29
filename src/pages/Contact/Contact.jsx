@@ -57,7 +57,7 @@ const Contact = () => {
       })
       if (success && response) {
         if (response.error) {
-          console.log(response.error)
+          //console.log(response.error)
         } else {
           //console.log(response)
           setOpenAlert(true)
@@ -81,7 +81,42 @@ const Contact = () => {
         }
       })
     },
-    validationSchema: loginHistoryMessages ? loginValidation : contactValidation
+    validationSchema: contactValidation
+  })
+
+  const loginFormikValidation = useFormik({
+    initialValues: loginForm,
+    onSubmit: async (formValue) => {
+      setLoading(true)
+      const { success, response, error } = await createMail({
+        emailUser: formValue.email,
+        telUser: formValue.phoneNumber
+      })
+      if (error) {
+        console.log(error)
+      }
+      if (success && response) {
+        if (response.error) {
+          const message = response.error[0].message
+          setTimeout(() => {
+            history.push({
+              pathname: '/mail',
+              state: response.error
+            })
+            localStorage.setItem('idChat', message.idChat)
+          }, 3000)
+        } else {
+          //console.log(response.message)
+        }
+      }
+      loginFormikValidation.resetForm({
+        values: {
+          email: '',
+          phoneNumber: ''
+        }
+      })
+    },
+    validationSchema: loginValidation
   })
 
   const contactContent = (
@@ -133,7 +168,11 @@ const Contact = () => {
 
         <Grid item xs={12} sm={6} md={6}>
           <form
-            onSubmit={contactFormikValidation.handleSubmit}
+            onSubmit={
+              loginHistoryMessages
+                ? loginFormikValidation.handleSubmit
+                : contactFormikValidation.handleSubmit
+            }
             className={`contact__form ${
               loginHistoryMessages ? 'contact__form-login' : ''
             }`}
@@ -173,8 +212,16 @@ const Contact = () => {
               type="email"
               variant="filled"
               name="email"
-              value={contactFormikValidation.values.email}
-              onChange={contactFormikValidation.handleChange}
+              value={
+                loginHistoryMessages
+                  ? loginFormikValidation.values.email
+                  : contactFormikValidation.values.email
+              }
+              onChange={
+                loginHistoryMessages
+                  ? loginFormikValidation.handleChange
+                  : contactFormikValidation.handleChange
+              }
               error={
                 contactFormikValidation.touched.email &&
                 Boolean(contactFormikValidation.errors.email)
@@ -197,8 +244,16 @@ const Contact = () => {
               variant="filled"
               type="number"
               name="phoneNumber"
-              value={contactFormikValidation.values.phoneNumber}
-              onChange={contactFormikValidation.handleChange}
+              value={
+                loginHistoryMessages
+                  ? loginFormikValidation.values.phoneNumber
+                  : contactFormikValidation.values.phoneNumber
+              }
+              onChange={
+                loginHistoryMessages
+                  ? loginFormikValidation.handleChange
+                  : contactFormikValidation.handleChange
+              }
               error={
                 contactFormikValidation.touched.phoneNumber &&
                 Boolean(contactFormikValidation.errors.phoneNumber)

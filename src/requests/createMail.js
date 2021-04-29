@@ -12,3 +12,10 @@ export const messageHistory = (idChat) => {
     method: 'GET'
   })
 }
+
+export const createMessage = (idChat, message) => {
+  return noTokenRequest(`/create-message`, {
+    method: 'POST',
+    body: JSON.stringify(idChat, message)
+  })
+}

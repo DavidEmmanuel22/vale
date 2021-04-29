@@ -9,11 +9,11 @@ export const styleMessage = makeStyles((theme) =>
       display: 'flex',
       justifyContent: 'flex-end'
     },
-    messageBlue: {
+    messageAdmin: {
       position: 'relative',
       marginLeft: '20px',
-      marginBottom: '10px',
-      padding: '10px',
+      marginBottom: '27px',
+      padding: '12px',
       backgroundColor: '#e6e6e6',
       width: '60%',
       //height: "50px",
@@ -44,7 +44,7 @@ export const styleMessage = makeStyles((theme) =>
         left: '-17px'
       }
     },
-    messageOrange: {
+    messageUser: {
       position: 'relative',
       marginRight: '20px',
       marginBottom: '27px',
@@ -94,7 +94,7 @@ export const styleMessage = makeStyles((theme) =>
       right: '39px'
     },
 
-    orange: {
+    messageLeftAvatar: {
       backgroundColor: '#0c7d75',
       width: theme.spacing(4),
       height: theme.spacing(4)
