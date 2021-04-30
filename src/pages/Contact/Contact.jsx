@@ -122,7 +122,7 @@ const Contact = () => {
               setError(false)
               setOpenErrorAlert(false)
               setLoading(false)
-            }, 4000)
+            }, 6000)
           }, 1000)
         } else {
           //console.log(response.message)
@@ -242,12 +242,20 @@ const Contact = () => {
                   : contactFormikValidation.handleChange
               }
               error={
-                contactFormikValidation.touched.email &&
-                Boolean(contactFormikValidation.errors.email)
+                loginHistoryMessages
+                  ? loginFormikValidation.touched.email
+                  : contactFormikValidation.touched.email &&
+                    loginHistoryMessages
+                  ? Boolean(loginFormikValidation.errors.email)
+                  : Boolean(contactFormikValidation.errors.email)
               }
               helperText={
-                contactFormikValidation.touched.email &&
-                contactFormikValidation.errors.email
+                loginHistoryMessages
+                  ? loginFormikValidation.touched.email &&
+                    loginFormikValidation.errors.email
+                  : !loginHistoryMessages &&
+                    contactFormikValidation.touched.email &&
+                    contactFormikValidation.errors.email
               }
               InputProps={{
                 startAdornment: (
@@ -274,12 +282,20 @@ const Contact = () => {
                   : contactFormikValidation.handleChange
               }
               error={
-                contactFormikValidation.touched.phoneNumber &&
-                Boolean(contactFormikValidation.errors.phoneNumber)
+                loginHistoryMessages
+                  ? loginFormikValidation.touched.phoneNumber
+                  : contactFormikValidation.touched.phoneNumber &&
+                    loginHistoryMessages
+                  ? Boolean(loginFormikValidation.errors.phoneNumber)
+                  : Boolean(contactFormikValidation.errors.phoneNumber)
               }
               helperText={
-                contactFormikValidation.touched.phoneNumber &&
-                contactFormikValidation.errors.phoneNumber
+                loginHistoryMessages
+                  ? loginFormikValidation.touched.phoneNumber &&
+                    loginFormikValidation.errors.phoneNumber
+                  : !loginHistoryMessages &&
+                    contactFormikValidation.touched.phoneNumber &&
+                    contactFormikValidation.errors.phoneNumber
               }
               InputProps={{
                 startAdornment: (
@@ -386,7 +402,7 @@ const Contact = () => {
                 {
                   <span
                     onClick={() => setLoginHistoryMessages(false)}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', fontWeight: 'bold' }}
                   >
                     registrarse
                   </span>

@@ -1,8 +1,22 @@
 import { Grid, Paper } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { getChats } from 'requests/createMail'
 import NewMessage from './NewMessage'
 
 const DashboardMessages = () => {
+  const [chats, setChats] = useState([])
+  useEffect(() => {
+    async function getAllChats() {
+      const { success, response, error } = await getChats()
+      if (success && response) {
+        //console.log(response.data)
+        setChats(response.data)
+      } else {
+        console.log(error)
+      }
+    }
+    getAllChats()
+  }, [])
   const styles = {
     titleStyles: {
       backgroundColor: 'rgb(0, 119, 114)',
@@ -26,10 +40,9 @@ const DashboardMessages = () => {
             <h3>Nuevos Mensajes</h3>
           </div>
           <div style={styles.messagesStyles}>
-            <NewMessage></NewMessage>
-            <NewMessage></NewMessage>
-            <NewMessage></NewMessage>
-            <NewMessage></NewMessage>
+            {chats.map((chat, _) => (
+              <NewMessage key={_}></NewMessage>
+            ))}
           </div>
         </Paper>
       </Grid>

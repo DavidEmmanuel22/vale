@@ -19,3 +19,9 @@ export const createMessage = (idChat, message) => {
     body: JSON.stringify(idChat, message)
   })
 }
+
+export const getChats = () => {
+  return noTokenRequest(`/get-chats`, {
+    method: 'GET'
+  })
+}
