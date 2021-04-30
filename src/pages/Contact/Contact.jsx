@@ -39,8 +39,10 @@ const Contact = () => {
     phoneNumber: ''
   })
   const [openAlert, setOpenAlert] = useState(false)
+  const [openErrorAlert, setOpenErrorAlert] = useState(false)
   const [loginHistoryMessages, setLoginHistoryMessages] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
@@ -62,7 +64,7 @@ const Contact = () => {
           //console.log(response)
           setOpenAlert(true)
           setLoading(false)
-          console.log(response.data)
+          //console.log(response.data)
           setTimeout(() => {
             history.push({
               pathname: '/mail',
@@ -93,18 +95,35 @@ const Contact = () => {
         telUser: formValue.phoneNumber
       })
       if (error) {
-        console.log(error)
+        //console.log(error)
       }
       if (success && response) {
         if (response.error) {
+          //console.log(response.error)
           const message = response.error[0].message
           setTimeout(() => {
-            history.push({
-              pathname: '/mail',
-              state: response.error
-            })
-            localStorage.setItem('idChat', message.idChat)
+            if (typeof response.error !== 'string') {
+              localStorage.setItem('idChat', message.idChat)
+              history.push({
+                pathname: '/mail',
+                state: response.error
+              })
+            }
           }, 3000)
+
+          setTimeout(() => {
+            if (typeof response.error === 'string') {
+              //console.log('error: ', response.error)
+              setError(true)
+              setOpenErrorAlert(true)
+            }
+
+            setTimeout(() => {
+              setError(false)
+              setOpenErrorAlert(false)
+              setLoading(false)
+            }, 4000)
+          }, 1000)
         } else {
           //console.log(response.message)
         }
@@ -123,7 +142,7 @@ const Contact = () => {
     <>
       <ClientNavBar />
 
-      <Grid container>
+      <Grid container style={{ height: '100vh' }}>
         <Hidden xsDown>
           <Grid
             className="contact__section"
@@ -308,12 +327,12 @@ const Contact = () => {
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={loading}
+                disabled={loading && !error}
                 endIcon={<SendIcon />}
               >
                 {`${loginHistoryMessages ? 'Entrar' : 'Enviar'}`}
               </Button>
-              {loading && (
+              {loading && !error && (
                 <CircularProgress
                   style={{
                     position: 'absolute',
@@ -327,7 +346,7 @@ const Contact = () => {
           </form>
         </Grid>
       </Grid>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
   return (
@@ -346,6 +365,34 @@ const Contact = () => {
           <Slide timeout={600} in mountOnEnter unmountOnExit>
             <div>
               <Alert severity="success">Mensaje enviado correctamente</Alert>
+            </div>
+          </Slide>
+        </Snackbar>
+      )}
+
+      {error && (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={openErrorAlert}
+          onClose={() => {
+            setOpenErrorAlert(false)
+          }}
+          autoHideDuration={6000}
+        >
+          <Slide timeout={600} in mountOnEnter unmountOnExit>
+            <div>
+              <Alert severity="warning">
+                Usuario no encontrado, le invitamos a{' '}
+                {
+                  <span
+                    onClick={() => setLoginHistoryMessages(false)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    registrarse
+                  </span>
+                }
+                .
+              </Alert>
             </div>
           </Slide>
         </Snackbar>

@@ -26,7 +26,6 @@ const Mail = () => {
   //     localStorage.setItem('idChat', idChat)
   //   }
 
-  console.log(messages)
   const mailFormikValidation = useFormik({
     initialValues: message,
     onSubmit: async (formValue) => {

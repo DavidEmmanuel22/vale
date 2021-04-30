@@ -98,9 +98,7 @@ const Routes = () => {
         isAuthenticated={isAuthenticated}
         path="/valedores/history"
       >
-        <GeneralLayout>
-          <Historial />
-        </GeneralLayout>
+        <Historial />
       </PrivateRoute>
       <Route exact path="/forgot-password">
         <ForgotPassword />
