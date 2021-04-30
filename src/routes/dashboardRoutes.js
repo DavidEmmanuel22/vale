@@ -55,13 +55,6 @@ const dashboardRoutes = [
     component: Dashboard,
     user: 'administrator',
     icon: Contacts
-  },
-  {
-    name: 'History',
-    path: '/history',
-    component: History,
-    user: 'administrator',
-    icon: DashboardIcon
   }
 ]
 
