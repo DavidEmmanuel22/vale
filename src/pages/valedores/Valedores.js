@@ -31,6 +31,7 @@ import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined'
 import DeleteValedor from 'components/valedor/delete'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AttachMoneySharpIcon from '@material-ui/icons/AttachMoneySharp'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,14 +54,17 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonPaper: {
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between'
   }
 }))
 
 const Valedores = () => {
   const classes = useStyles()
   const history = useHistory()
-
+  const matches = useMediaQuery('(min-width:525px)')
   const [openDialog, setOpenDialog] = useState(false)
   const [openAddCredits, setOpenAddCredits] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState(false)
@@ -128,24 +132,16 @@ const Valedores = () => {
             display: 'flex',
             textAlign: 'center',
             marginBottom: '1.2rem',
-            justifyContent: 'space-around',
-            flexDirection: 'row-reverse'
+            justifyContent: 'space-between'
           }}
         >
-          <Button
-            onClick={() => setOpenDialog(true)}
-            color="primary"
-            variant="contained"
-          >
-            Agregar Valedor
-          </Button>
           <TextField
             placeholder="Buscar Valedor..."
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput
             }}
-            style={{ width: '33vw' }}
+            style={{ width: '' }}
             inputProps={{
               maxLength: 25
             }}
@@ -162,6 +158,14 @@ const Valedores = () => {
             value={searchValedor}
             onChange={(e) => handleChange(e)}
           />
+          <Button
+            onClick={() => setOpenDialog(true)}
+            color="primary"
+            variant="contained"
+            style={{ marginTop: matches ? '' : '15px' }}
+          >
+            Agregar Valedor
+          </Button>
         </Paper>
         {filteredValedores.length > 0 ? (
           <Paper className={classes.paper}>
@@ -187,7 +191,9 @@ const Valedores = () => {
                     <Hidden smDown>
                       <TableCell align="center">Correo</TableCell>
                     </Hidden>
-                    <TableCell align="center">Crédito</TableCell>
+                    <Hidden smDown>
+                      <TableCell align="center">Crédito</TableCell>
+                    </Hidden>
                     <TableCell align="center">Acciones</TableCell>
                   </TableRow>
                 </TableHead>
@@ -211,9 +217,11 @@ const Valedores = () => {
                                 {valedor.email}
                               </TableCell>
                             </Hidden>
-                            <TableCell align="center">
-                              {numeral(valedor.credits).format('$0,0')}
-                            </TableCell>
+                            <Hidden smDown>
+                              <TableCell align="center">
+                                {numeral(valedor.credits).format('$0,0')}
+                              </TableCell>
+                            </Hidden>
                             <TableCell
                               style={{
                                 justifyContent: 'center'
