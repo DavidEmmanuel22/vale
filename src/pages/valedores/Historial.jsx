@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom'
 import numeral from 'numeral'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import { makeStyles } from '@material-ui/core/styles'
+import NavBar from '../../components/NavBar/NavBar'
 import clsx from 'clsx'
 
 const Historial = () => {
@@ -76,6 +77,7 @@ const Historial = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
+      {/* <NavBar /> */}
       {isLoading ? (
         <CircularProgress></CircularProgress>
       ) : (

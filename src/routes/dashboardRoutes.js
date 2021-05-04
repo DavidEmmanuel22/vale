@@ -9,6 +9,7 @@ import {
 import { DashboardPerfil } from 'pages/DashboardPerfil/DashboardPerfil'
 import Negocios from 'pages/negocios/Negocios'
 import Valedores from 'pages/valedores/Valedores'
+import History from 'pages/valedores/Historial'
 import React from 'react'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
 

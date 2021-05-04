@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { TextField, Button, InputAdornment } from '@material-ui/core'
+import { TextField, Button, InputAdornment, Hidden } from '@material-ui/core'
 import Alert from 'components/Alert/Alert'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import LockIcon from '@material-ui/icons/Lock'
@@ -16,16 +16,9 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [isDone, setDone] = useState(false)
 
   const { login } = useContext(UserContext)
   const history = useHistory()
-
-  useEffect(() => {
-    if (isDone) {
-      history.push('/dashboard')
-    }
-  }, [isDone])
 
   const passwordInputProps = {
     startAdornment: (
@@ -52,7 +45,7 @@ const Login = () => {
       } else {
         //console.log(response)
         login(response.data.token)
-        setDone(true)
+        history.push('/dashboard')
       }
     }
     if (error) {
@@ -69,12 +62,15 @@ const Login = () => {
         <Alert message={error} clearError={() => setError(undefined)} />
       )}
       <div className="content">
-        <div className="foto-tom">
-          <img className="decoration" src={decorationimg} alt="Logo-Login" />
-          <div className="logo-content">
-            <img className="logo-login" src={logologin} alt="Logo-Login" />
+        <Hidden xsDown>
+          <div className="foto-tom">
+            <img className="decoration" src={decorationimg} alt="Logo-Login" />
+            <div className="logo-content">
+              <img className="logo-login" src={logologin} alt="Logo-Login" />
+            </div>
           </div>
-        </div>
+        </Hidden>
+
         <div>
           <form className="content-form" onSubmit={submit}>
             <TextField
