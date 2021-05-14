@@ -30,6 +30,8 @@ const ContextProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('auth-token')
+    localStorage.removeItem('idChat')
+    localStorage.removeItem('email')
     setUser(false)
   }
 

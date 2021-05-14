@@ -68,9 +68,11 @@ const Contact = () => {
           setTimeout(() => {
             history.push({
               pathname: '/mail',
-              state: response.data
+              state: { email: formValue.email }
             })
             localStorage.setItem('idChat', response.data.message.idChat)
+
+            //localStorage.setItem('emailUser', response.data.message.idChat)
           }, 3000)
         }
       }
@@ -95,19 +97,20 @@ const Contact = () => {
         telUser: formValue.phoneNumber
       })
       if (error) {
-        //console.log(error)
+        console.log(error)
       }
       if (success && response) {
         if (response.error) {
-          //console.log(response.error)
+          console.log(response.error)
           const message = response.error[0].message
           setTimeout(() => {
             if (typeof response.error !== 'string') {
               localStorage.setItem('idChat', message.idChat)
               history.push({
                 pathname: '/mail',
-                state: response.error
+                state: { email: formValue.email }
               })
+              localStorage.setItem('email', formValue.email)
             }
           }, 3000)
 
@@ -128,12 +131,6 @@ const Contact = () => {
           //console.log(response.message)
         }
       }
-      loginFormikValidation.resetForm({
-        values: {
-          email: '',
-          phoneNumber: ''
-        }
-      })
     },
     validationSchema: loginValidation
   })
@@ -153,7 +150,10 @@ const Contact = () => {
             md={6}
           >
             <div className="contact__img-shadow">
-              <Hidden lgDown={loginHistoryMessages}>
+              <Hidden
+                xlDown={loginHistoryMessages}
+                lgDown={loginHistoryMessages}
+              >
                 <Zoom
                   timeout={600}
                   in
@@ -199,7 +199,7 @@ const Contact = () => {
             <Typography className="contact__input" variant="h4">
               {`${loginHistoryMessages ? 'Historial Mensajes' : 'Contáctanos'}`}
             </Typography>
-            <Hidden lgDown={loginHistoryMessages}>
+            <Hidden xlDown={loginHistoryMessages} lgDown={loginHistoryMessages}>
               <TextField
                 className="contact__input"
                 label="Nombre"
@@ -310,7 +310,7 @@ const Contact = () => {
                   .slice(0, 10)
               }}
             />
-            <Hidden lgDown={loginHistoryMessages}>
+            <Hidden xlDown={loginHistoryMessages} lgDown={loginHistoryMessages}>
               <TextField
                 className="contact__input"
                 label="Mensaje"

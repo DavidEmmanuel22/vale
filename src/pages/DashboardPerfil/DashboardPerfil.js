@@ -117,9 +117,9 @@ export const DashboardPerfil = () => {
       firstName: firstName.trim(),
       lastName: lastName.trim()
     }
-    console.log(body)
+    // console.log(body)
     const { success, response, error } = await updateUser(user._id, body)
-    console.log(response)
+    //console.log(response)
     if (success && response) {
       if (response.data.error) {
         setAlertColor('error')
@@ -268,7 +268,7 @@ export const DashboardPerfil = () => {
                       style={{ marginLeft: '10px' }}
                       onClick={(e) => handleEdit(e)}
                     >
-                      Edit
+                      Editar
                     </Button>
                   )}
                   <a
@@ -284,7 +284,7 @@ export const DashboardPerfil = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={3} lg={3} style={{}}>
+        <Grid item xs={12} md={3} lg={3}>
           <Hidden smDown>
             <BackgroundPaper></BackgroundPaper>
             <Button

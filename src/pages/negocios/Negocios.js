@@ -122,7 +122,7 @@ const Negocios = () => {
         selectedNegocio.email
       )
       if (response.error) {
-        console.log(error)
+        //console.log(error)
       } else {
         setStatusNegocio(true)
       }
