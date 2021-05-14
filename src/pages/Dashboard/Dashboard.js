@@ -102,7 +102,7 @@ export const Dashboard = () => {
           </a>
         </Grid>
         <Grid item xs={12}>
-          <DashboardMessages></DashboardMessages>
+          <DashboardMessages showAll={true} />
         </Grid>
       </Grid>
 

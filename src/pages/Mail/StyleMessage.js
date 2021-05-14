@@ -15,10 +15,10 @@ export const styleMessage = makeStyles((theme) =>
       marginBottom: '27px',
       padding: '12px',
       backgroundColor: '#e6e6e6',
-      width: '60%',
-      //height: "50px",
+      width: '100%',
+      // height: '6.3em',
       textAlign: 'left',
-      font: "400 .9em 'Open Sans', sans-serif",
+      font: "400 .8em 'Open Sans', sans-serif",
       border: '1px solid #e6e6e6',
       borderRadius: '10px',
       '&:after': {
@@ -87,11 +87,11 @@ export const styleMessage = makeStyles((theme) =>
     },
     messageTimeStampRight: {
       position: 'absolute',
-      fontSize: '1.2em',
+      fontSize: '1em',
       fontWeight: '300',
       marginTop: '10px',
       bottom: '0px',
-      right: '39px'
+      right: '19px'
     },
 
     messageLeftAvatar: {
