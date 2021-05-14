@@ -13,7 +13,8 @@ import Valedores from 'pages/valedores/Valedores'
 import Negocios from 'pages/negocios/Negocios'
 import Contact from 'pages/Contact/Contact'
 import dashboardRoutes from './dashboardRoutes'
-import Mail from 'pages/Mail/Mail'
+import historyRoute from './history'
+import { Mail } from 'pages/Mail/Mail'
 
 const Routes = () => {
   const { isAuthenticated } = useContext(UserContext)
@@ -98,7 +99,9 @@ const Routes = () => {
         isAuthenticated={isAuthenticated}
         path="/valedores/history"
       >
-        <Historial />
+        <GeneralLayout routes={dashboardRoutes}>
+          <Historial />
+        </GeneralLayout>
       </PrivateRoute>
       <Route exact path="/forgot-password">
         <ForgotPassword />
