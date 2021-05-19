@@ -9,6 +9,21 @@ a.nav-link-item {
   cursor: pointer;
 }
 
+.column {
+  float: left;
+  width: 25%;
+  padding: 10px;
+
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
 a.nav-link-item:hover {
   border-bottom: 2px solid;
   transition: 30ms;
@@ -16,7 +31,12 @@ a.nav-link-item:hover {
 .home__content {
   padding: 4em;
 }
+.home__content-valedor {
+  background-image: url('../../images/valedor-green.png');
 
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
 button.login-button {
   display: flex;
   justify-content: center;

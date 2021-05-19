@@ -14,6 +14,7 @@ export const contactValidation = yup.object({
 })
 
 export const loginValidation = yup.object({
+  name: yup.string().required('Nombre requerido'),
   email: yup
     .string()
     .email('Correo electrónico inválido')

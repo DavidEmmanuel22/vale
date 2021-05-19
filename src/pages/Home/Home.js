@@ -110,6 +110,54 @@ export const Footer = () => {
 export const Home = () => {
   const classes = Styles()
 
+  const ValedorInfoContent = (
+    <>
+      <Grid container>
+        <Grid item xs={12} sm={6}>
+          <div className="row">
+            <div className="column">
+              <h2>Column 1</h2>
+              <p>Some text..</p>
+            </div>
+            <div className="column">
+              <h2>Column 2</h2>
+              <p>Some text..</p>
+            </div>
+            <div className="column">
+              <h2>Column 3</h2>
+              <p>Some text..</p>
+            </div>
+            <div className="column">
+              <h2>Column 4</h2>
+              <p>Some text..</p>
+            </div>
+          </div>
+        </Grid>
+        <Grid className="home__content-valedor" item xs={12} md={6}>
+          <div
+            className="hero-text-section"
+            style={{
+              padding: '6em',
+              color: 'white',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+          >
+            <p data-aos="zoom-in">Descubre las ventajas de ser un Valedor</p>
+            <span>
+              {' '}
+              amet consectetur adipisicing elit. Deserunt recusandae quae vel
+              sit obcaecati mollitia similique consequatur libero adipisci,
+              incidunt harum perspiciatis doloremque repudiandae optio quis
+              facilis officiis qui cupiditate.
+            </span>
+            <button style={{ marginTop: '3em' }}>Conocer más</button>
+          </div>
+        </Grid>
+      </Grid>
+    </>
+  )
+
   const homeContent = (
     <>
       <Grid container>
@@ -136,7 +184,10 @@ export const Home = () => {
     <>
       <ClientNavBar />
 
-      <div className="main-content">{homeContent}</div>
+      <div className="main-content">
+        {homeContent}
+        {ValedorInfoContent}
+      </div>
       <Footer />
     </>
   )

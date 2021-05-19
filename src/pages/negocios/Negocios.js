@@ -168,7 +168,15 @@ const Negocios = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper}>
+        <Paper
+          style={{
+            display: 'flex',
+            textAlign: 'center',
+            marginBottom: '1.2rem',
+            justifyContent: 'space-between'
+          }}
+          className={classes.buttonPaper}
+        >
           <TextField
             placeholder="Buscar Negocio..."
             style={{ width: '' }}

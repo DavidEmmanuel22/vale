@@ -1,4 +1,5 @@
 import noTokenRequest from './noTokenRequest'
+import fetchRequest from './fetchRequest'
 
 export const createMail = (message) => {
   return noTokenRequest(`/create-chat`, {
@@ -13,6 +14,12 @@ export const messageHistory = (idChat) => {
   })
 }
 
+export const clientMessageHistory = (email) => {
+  return noTokenRequest(`/get-message?email=${email}`, {
+    method: 'GET'
+  })
+}
+
 export const createMessage = (idChat, mail, message) => {
   return noTokenRequest(`/create-message`, {
     method: 'POST',
@@ -21,7 +28,7 @@ export const createMessage = (idChat, mail, message) => {
 }
 
 export const readMessage = (idChat) => {
-  return noTokenRequest(`/read-message`, {
+  return fetchRequest(`/read-message`, {
     method: 'POST',
     body: JSON.stringify(idChat)
   })
