@@ -12,7 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { UserContext } from 'context/userContext'
 import moment from 'moment'
 import 'moment/min/locales'
-import test from '../../assets/Index/folder.svg'
+import noMessage from '../../assets/Index/noMessage.svg'
 moment.locale('es')
 
 const DashboardMessages = ({ showAll }) => {
@@ -131,12 +131,12 @@ const DashboardMessages = ({ showAll }) => {
                 <>
                   <div style={{ textAlign: 'center' }}>
                     <img
-                      src={test}
+                      src={noMessage}
                       style={{
                         padding: '6em',
                         textAlign: 'center',
-                        width: '27em',
-                        opacity: '45%'
+                        width: '100%',
+                        opacity: '66%'
                       }}
                     />
                   </div>
