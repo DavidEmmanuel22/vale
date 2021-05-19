@@ -22,7 +22,7 @@ import { contactValidation, loginValidation } from './ContactValidation'
 import './Contact.css'
 import { ClientNavBar, Footer } from 'pages/Home/Home'
 import { Link, useHistory } from 'react-router-dom'
-import { createMail } from 'requests/createMail'
+import { createMail, clientMessageHistory } from 'requests/createMail'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 const Contact = () => {
@@ -35,6 +35,7 @@ const Contact = () => {
 
   const history = useHistory()
   const [loginForm, setLoginForm] = useState({
+    name: '',
     email: '',
     phoneNumber: ''
   })
@@ -43,12 +44,13 @@ const Contact = () => {
   const [loginHistoryMessages, setLoginHistoryMessages] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [errorCreateChat, setErrorCreateChat] = useState(false)
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
 
   const contactFormikValidation = useFormik({
-    initialValues: loginHistoryMessages ? loginForm : contactForm,
+    initialValues: contactForm,
     onSubmit: async (formValue) => {
       setLoading(true)
       const { success, response, error } = await createMail({
@@ -59,18 +61,24 @@ const Contact = () => {
       })
       if (success && response) {
         if (response.error) {
-          //console.log(response.error)
+          setErrorCreateChat(true)
+          setOpenErrorAlert(true)
+          setLoading(false)
+
+          setTimeout(() => {
+            setError(false)
+            setOpenErrorAlert(false)
+          }, 6000)
         } else {
           //console.log(response)
           setOpenAlert(true)
           setLoading(false)
-          //console.log(response.data)
           setTimeout(() => {
             history.push({
               pathname: '/mail',
               state: { email: formValue.email }
             })
-            localStorage.setItem('idChat', response.data.message.idChat)
+            localStorage.setItem('idChat', response.data.chat._id)
 
             //localStorage.setItem('emailUser', response.data.message.idChat)
           }, 3000)
@@ -92,43 +100,30 @@ const Contact = () => {
     initialValues: loginForm,
     onSubmit: async (formValue) => {
       setLoading(true)
-      const { success, response, error } = await createMail({
-        emailUser: formValue.email,
-        telUser: formValue.phoneNumber
-      })
+      const { success, response, error } = await clientMessageHistory(
+        formValue.email
+      )
       if (error) {
-        console.log(error)
+        //console.log(error)
       }
       if (success && response) {
-        if (response.error) {
-          console.log(response.error)
-          const message = response.error[0].message
-          setTimeout(() => {
-            if (typeof response.error !== 'string') {
-              localStorage.setItem('idChat', message.idChat)
-              history.push({
-                pathname: '/mail',
-                state: { email: formValue.email }
-              })
-              localStorage.setItem('email', formValue.email)
-            }
-          }, 3000)
-
-          setTimeout(() => {
-            if (typeof response.error === 'string') {
-              //console.log('error: ', response.error)
-              setError(true)
-              setOpenErrorAlert(true)
-            }
-
-            setTimeout(() => {
-              setError(false)
-              setOpenErrorAlert(false)
-              setLoading(false)
-            }, 6000)
-          }, 1000)
+        if (response.data.length > 0) {
+          const resp = response.data[0].message.idChat
+          localStorage.setItem('idChat', resp)
+          history.push({
+            pathname: '/mail',
+            state: { email: formValue.email }
+          })
+          localStorage.setItem('email', formValue.email)
         } else {
-          //console.log(response.message)
+          setError(true)
+          setOpenErrorAlert(true)
+
+          setTimeout(() => {
+            setError(false)
+            setOpenErrorAlert(false)
+            setLoading(false)
+          }, 6000)
         }
       }
     },
@@ -199,31 +194,46 @@ const Contact = () => {
             <Typography className="contact__input" variant="h4">
               {`${loginHistoryMessages ? 'Historial Mensajes' : 'Contáctanos'}`}
             </Typography>
-            <Hidden xlDown={loginHistoryMessages} lgDown={loginHistoryMessages}>
-              <TextField
-                className="contact__input"
-                label="Nombre"
-                variant="filled"
-                name="name"
-                value={contactFormikValidation.values.name}
-                onChange={contactFormikValidation.handleChange}
-                error={
-                  contactFormikValidation.touched.name &&
-                  Boolean(contactFormikValidation.errors.name)
-                }
-                helperText={
-                  contactFormikValidation.touched.name &&
-                  contactFormikValidation.errors.name
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon color="primary" />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Hidden>
+
+            <TextField
+              className="contact__input"
+              label="Nombre"
+              variant="filled"
+              name="name"
+              value={
+                loginHistoryMessages
+                  ? loginFormikValidation.values.name
+                  : contactFormikValidation.values.name
+              }
+              onChange={
+                loginHistoryMessages
+                  ? loginFormikValidation.handleChange
+                  : contactFormikValidation.handleChange
+              }
+              error={
+                loginHistoryMessages
+                  ? Boolean(loginFormikValidation.touched.name) &&
+                    Boolean(loginFormikValidation.errors.name)
+                  : !loginHistoryMessages &&
+                    Boolean(contactFormikValidation.touched.name) &&
+                    Boolean(contactFormikValidation.errors.name)
+              }
+              helperText={
+                loginHistoryMessages
+                  ? loginFormikValidation.touched.name &&
+                    loginFormikValidation.errors.name
+                  : !loginHistoryMessages &&
+                    contactFormikValidation.touched.name &&
+                    contactFormikValidation.errors.name
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PersonIcon color="primary" />
+                  </InputAdornment>
+                )
+              }}
+            />
 
             <TextField
               className="contact__input"
@@ -243,11 +253,11 @@ const Contact = () => {
               }
               error={
                 loginHistoryMessages
-                  ? loginFormikValidation.touched.email
-                  : contactFormikValidation.touched.email &&
-                    loginHistoryMessages
-                  ? Boolean(loginFormikValidation.errors.email)
-                  : Boolean(contactFormikValidation.errors.email)
+                  ? Boolean(loginFormikValidation.touched.email) &&
+                    Boolean(loginFormikValidation.errors.email)
+                  : !loginHistoryMessages &&
+                    Boolean(contactFormikValidation.touched.email) &&
+                    Boolean(contactFormikValidation.errors.email)
               }
               helperText={
                 loginHistoryMessages
@@ -283,11 +293,11 @@ const Contact = () => {
               }
               error={
                 loginHistoryMessages
-                  ? loginFormikValidation.touched.phoneNumber
-                  : contactFormikValidation.touched.phoneNumber &&
-                    loginHistoryMessages
-                  ? Boolean(loginFormikValidation.errors.phoneNumber)
-                  : Boolean(contactFormikValidation.errors.phoneNumber)
+                  ? Boolean(loginFormikValidation.touched.phoneNumber) &&
+                    Boolean(loginFormikValidation.errors.phoneNumber)
+                  : !loginHistoryMessages &&
+                    Boolean(contactFormikValidation.touched.phoneNumber) &&
+                    Boolean(contactFormikValidation.errors.phoneNumber)
               }
               helperText={
                 loginHistoryMessages
@@ -405,6 +415,34 @@ const Contact = () => {
                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
                   >
                     registrarse
+                  </span>
+                }
+                .
+              </Alert>
+            </div>
+          </Slide>
+        </Snackbar>
+      )}
+
+      {errorCreateChat && (
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={openErrorAlert}
+          onClose={() => {
+            setOpenErrorAlert(false)
+          }}
+          autoHideDuration={6000}
+        >
+          <Slide timeout={600} in mountOnEnter unmountOnExit>
+            <div>
+              <Alert severity="warning">
+                Este usuario ya existe, le invitamos a{' '}
+                {
+                  <span
+                    onClick={() => setLoginHistoryMessages(true)}
+                    style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                  >
+                    ingresar
                   </span>
                 }
                 .

@@ -1,9 +1,8 @@
 import { Grid, Paper } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { getChats } from 'requests/createMail'
+import { getChats, readMessage } from 'requests/createMail'
 import NewMessage from './NewMessage'
-import useMediaQuery from '@material-ui/core/useMediaQuery'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Mail } from '../../pages/Mail/Mail'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
@@ -13,32 +12,46 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { UserContext } from 'context/userContext'
 import moment from 'moment'
 import 'moment/min/locales'
+import test from '../../assets/Index/folder.svg'
 moment.locale('es')
 
 const DashboardMessages = ({ showAll }) => {
-  const matches = useMediaQuery('(min-width:600px)')
   const [chats, setChats] = useState([])
   const history = useHistory()
   const { user } = useContext(UserContext)
   const [showMessages, setShowMessages] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [read, setRead] = useState(0)
 
   const sortedChats = chats.sort((a, b) => {
     return new Date(b.chats.lastDateMessage) - new Date(a.chats.lastDateMessage)
   })
+
+  const newMessage = sortedChats.filter((readed) => {
+    if (readed.chats.readAdmin && showAll) {
+      return null
+    }
+    return readed
+  })
+
+  const isEmpty = newMessage.length === 0 ? 1 : 0
+  //console.log(isEmpty)
   useEffect(() => {
     async function getAllChats() {
       const { success, response, error } = await getChats()
       if (success && response) {
         //console.log(response.data)
         setChats(response.data)
+
         setLoading(true)
       } else {
         //console.log(error)
       }
     }
-    getAllChats()
-  }, [setChats])
+    if (!showMessages) {
+      getAllChats()
+    }
+  }, [loading, showMessages])
 
   const styles = {
     titleStyles: {
@@ -51,14 +64,14 @@ const DashboardMessages = ({ showAll }) => {
       color: '#fff'
     },
     messagesStyles: {
-      padding: matches ? '20px 30px' : '0'
+      padding: '20px 30px'
     }
   }
 
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Paper>
+        <Paper style={{ borderRadius: '10px 10px 0px 0px' }}>
           <div style={styles.titleStyles}>
             {showMessages ? (
               <Tooltip
@@ -81,9 +94,13 @@ const DashboardMessages = ({ showAll }) => {
                 </IconButton>
               </Tooltip>
             )}
-            <h3>{`${
-              !showAll ? `Mensajes: ${chats.length}` : `Nuevos Mensajes`
-            }`}</h3>
+            <h2>{`${
+              isEmpty
+                ? 'Sin Nuevos Mensajes'
+                : !showAll
+                ? `Mensajes: ${chats.length}`
+                : `Nuevos Mensajes`
+            }`}</h2>
           </div>
           {showMessages ? (
             <Mail />
@@ -92,22 +109,39 @@ const DashboardMessages = ({ showAll }) => {
               {!loading ? (
                 <CircularProgress size={24} />
               ) : (
-                sortedChats
+                newMessage
                   .slice(0, `${!showAll ? chats.length : 6}`)
                   .map((chat, _) => (
-                    <NewMessage
-                      clicked={() => {
-                        history.push({
-                          state: { email: user.email }
-                        })
-                        localStorage.setItem('idChat', chat.chats._id)
-                        setShowMessages(!showMessages)
-                      }}
-                      chat={chat.chats}
-                      key={_}
-                    ></NewMessage>
+                    <>
+                      <NewMessage
+                        clicked={() => {
+                          history.push({
+                            state: { email: user.email }
+                          })
+                          localStorage.setItem('idChat', chat.chats._id)
+                          setShowMessages(!showMessages)
+                        }}
+                        chat={chat.chats}
+                        key={_}
+                      ></NewMessage>
+                    </>
                   ))
               )}
+              {isEmpty && loading ? (
+                <>
+                  <div style={{ textAlign: 'center' }}>
+                    <img
+                      src={test}
+                      style={{
+                        padding: '6em',
+                        textAlign: 'center',
+                        width: '27em',
+                        opacity: '45%'
+                      }}
+                    />
+                  </div>
+                </>
+              ) : null}
             </div>
           )}
         </Paper>

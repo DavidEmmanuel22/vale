@@ -3,7 +3,11 @@ import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useHistory } from 'react-router'
 import { createMessage, messageHistory, readMessage } from 'requests/createMail'
 import { MessageRight, MessageLeft } from './Messages'
-import { TextField, Button, InputAdornment, Grid } from '@material-ui/core'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import CachedIcon from '@material-ui/icons/Cached'
+import { TextField, Button, InputAdornment, Grid, Fab } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 import { useFormik } from 'formik'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -18,7 +22,8 @@ export const Mail = () => {
   const email = localStorage.getItem('email')
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
-  const { user } = useContext(UserContext)
+  const [reload, setReload] = useState(false)
+  const { user, logout } = useContext(UserContext)
   const messagesEndRef = useRef(null)
   const [getMessage, setGetMessage] = useState(false)
   const [message, setMessage] = useState({
@@ -83,6 +88,9 @@ export const Mail = () => {
         setMessages(response.data)
         setLoading(false)
         logOutMessages()
+        setTimeout(() => {
+          setReload(true)
+        }, 3000)
       } else {
         //console.log(error)
       }
@@ -91,19 +99,19 @@ export const Mail = () => {
     // scrollToBottom()
   }, [loading])
 
-  // useEffect(() => {
-  //   async function readMsg() {
-  //     const { success, response, error } = await readMessage({
-  //       idMessage: localStorage.getItem('idChat')
-  //     })
-  //     if (success && response) {
-  //       console.log(response.data)
-  //     } else {
-  //       //console.log(error)
-  //     }
-  //   }
-  //   readMsg()
-  // }, [])
+  useEffect(() => {
+    async function readMsg() {
+      const { success, response, error } = await readMessage({
+        idChat: localStorage.getItem('idChat')
+      })
+      if (success && response) {
+        //console.log(response.data)
+      } else {
+        //console.log(error)
+      }
+    }
+    readMsg()
+  }, [loading])
 
   const MessageContent = () => (
     <>
@@ -134,10 +142,50 @@ export const Mail = () => {
               }}
             />
           ) : (
-            <MessageContent />
+            <>
+              {!user ? (
+                <Tooltip
+                  placement="top"
+                  style={{ position: 'fixed', bottom: '9%', zIndex: '99' }}
+                  color="secondary"
+                  onClick={() => {
+                    logout()
+                    history.push('/contact')
+                  }}
+                  title="Salir"
+                >
+                  <Fab aria-label="exit">
+                    <ExitToAppIcon />
+                  </Fab>
+                </Tooltip>
+              ) : null}
+              {!user && reload ? (
+                <Tooltip
+                  placement="bottom"
+                  style={{
+                    position: 'fixed',
+                    top: '12%',
+                    right: '3%',
+                    zIndex: '99'
+                  }}
+                  color="secondary"
+                  onClick={() => {
+                    window.location.reload(true)
+                  }}
+                  title="Recargar"
+                >
+                  <Fab aria-label="Reload">
+                    <CachedIcon />
+                  </Fab>
+                </Tooltip>
+              ) : null}
+
+              <MessageContent />
+            </>
           )}
           {/* <div ref={messagesEndRef} /> */}
         </div>
+
         {!loading && (
           <form
             onSubmit={mailFormikValidation.handleSubmit}
@@ -167,6 +215,7 @@ export const Mail = () => {
                 mailFormikValidation.errors.message
               }
             />
+
             <Button
               style={{ borderRadius: '0px' }}
               type="submit"
