@@ -15,7 +15,7 @@ export const styleMessage = makeStyles((theme) =>
       marginBottom: '27px',
       padding: '12px',
       backgroundColor: '#e6e6e6',
-      width: '100%',
+      width: '60%',
       // height: '6.3em',
       textAlign: 'left',
       font: "400 .8em 'Open Sans', sans-serif",

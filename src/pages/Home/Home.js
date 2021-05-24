@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { AppBar, Hidden, Toolbar, Grid } from '@material-ui/core'
 import Slide from '@material-ui/core/Slide'
 import Login from 'pages/Login/Login'
@@ -10,12 +10,13 @@ import IconButton from '@material-ui/core/IconButton'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle'
 import ValedorHero from './slider/valedor-hero.jpg'
 import MenuIcon from '@material-ui/icons/Menu'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import CloseIcon from '@material-ui/icons/Close'
 import './home.css'
 
 export const ClientNavBar = () => {
   const classes = Styles()
+  const history = useHistory()
   const [showMenu, setShowMenu] = useState(false)
   const { isAuthenticated, logout } = useContext(UserContext)
   const [showLogin, setShowLogin] = useState(false)
@@ -25,14 +26,18 @@ export const ClientNavBar = () => {
     if (!isAuthenticated) {
       setShowLogin(true)
     } else {
-      window.location.href = '/dashboard'
+      history.push('/dashboard')
     }
   }
   return (
     <>
       <AppBar className={classes.AppBar} position="static">
         <Toolbar className={`${showMenu ? 'toolbar' : classes.ToolBar}`}>
-          <img className={classes.nav__img} src="/images/white-logo.png" />
+          <img
+            className={classes.nav__img}
+            src="/images/white-logo.png"
+            onClick={() => history.push('/')}
+          />
           <Hidden smUp>
             <IconButton
               style={{ color: 'white' }}

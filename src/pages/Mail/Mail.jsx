@@ -45,6 +45,7 @@ export const Mail = () => {
         } else {
           // console.log(response)
           setLoading(false)
+          readMsg()
         }
       }
       mailFormikValidation.resetForm({
@@ -99,19 +100,16 @@ export const Mail = () => {
     // scrollToBottom()
   }, [loading])
 
-  useEffect(() => {
-    async function readMsg() {
-      const { success, response, error } = await readMessage({
-        idChat: localStorage.getItem('idChat')
-      })
-      if (success && response) {
-        //console.log(response.data)
-      } else {
-        //console.log(error)
-      }
+  const readMsg = async () => {
+    const { success, response, error } = await readMessage({
+      idChat: localStorage.getItem('idChat')
+    })
+    if (success && response) {
+      //console.log(response.data)
+    } else {
+      //console.log(error)
     }
-    readMsg()
-  }, [loading])
+  }
 
   const MessageContent = () => (
     <>
@@ -129,7 +127,8 @@ export const Mail = () => {
     <>
       <Grid item xs={12}>
         {!user ? <ClientNavBar /> : null}
-        <div style={{ padding: '1.2em', height: '100vh', overflowY: 'scroll' }}>
+        <div style={{ padding: '1.2em', overflowY: 'scroll' }}>
+          {/* <div ref={messagesEndRef} /> */}
           {loading ? (
             <CircularProgress
               color="secondary"
@@ -150,7 +149,7 @@ export const Mail = () => {
                   color="secondary"
                   onClick={() => {
                     logout()
-                    history.push('/contact')
+                    history.push('/')
                   }}
                   title="Salir"
                 >
@@ -183,7 +182,6 @@ export const Mail = () => {
               <MessageContent />
             </>
           )}
-          {/* <div ref={messagesEndRef} /> */}
         </div>
 
         {!loading && (
