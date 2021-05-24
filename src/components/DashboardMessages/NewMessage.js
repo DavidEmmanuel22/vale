@@ -8,9 +8,10 @@ import CloseIcon from '@material-ui/icons/Close'
 import { Mail } from 'pages/Mail/Mail'
 moment.locale('es')
 
-const NewMessage = ({ chat, clicked, readed }) => {
+const NewMessage = ({ chat, clicked, readed, id }) => {
   return (
     <div
+      key={id}
       onClick={() => clicked()}
       className="message-container"
       style={
@@ -20,10 +21,10 @@ const NewMessage = ({ chat, clicked, readed }) => {
       }
     >
       <span>{chat.roleChat === 'Invited' ? `${'Invitado'}` : ''}</span>
-      <div className="data-container">
+      <div key={id} className="data-container">
         <img width="50" src="/images/no-avatar.png"></img>
 
-        <div>
+        <div key={id}>
           <span>{chat.name}</span>
           <p style={!chat.readAdmin ? { fontWeight: 'bold' } : null}>
             {chat.lastMessage}

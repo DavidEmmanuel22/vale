@@ -23,7 +23,7 @@ export const MessageLeft = ({ data }) => {
           className={classes.messageLeftAvatar}
           src={'photoURL'}
         ></Avatar>
-        <div>
+        <div style={{ width: '100%' }}>
           <div className={classes.displayName}>{displayName}</div>
           <div className={classes.messageAdmin}>
             <p className={classes.messageContent}>{message.message}</p>
@@ -42,7 +42,7 @@ export const MessageRight = ({ data }) => {
   const message = data.message.message
 
   return (
-    <>
+    <div style={{ width: '100%' }}>
       {
         <div className={classes.messageRowRight}>
           <div className={classes.messageUser}>
@@ -51,6 +51,6 @@ export const MessageRight = ({ data }) => {
           </div>
         </div>
       }
-    </>
+    </div>
   )
 }

@@ -24,6 +24,7 @@ import { ClientNavBar, Footer } from 'pages/Home/Home'
 import { Link, useHistory } from 'react-router-dom'
 import { createMail, clientMessageHistory } from 'requests/createMail'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { EmojiPeople } from '@material-ui/icons'
 
 const Contact = () => {
   const [contactForm, setContactForm] = useState({
@@ -81,7 +82,7 @@ const Contact = () => {
             localStorage.setItem('idChat', response.data.chat._id)
 
             //localStorage.setItem('emailUser', response.data.message.idChat)
-          }, 3000)
+          }, 6000)
         }
       }
       contactFormikValidation.resetForm({
@@ -159,17 +160,19 @@ const Contact = () => {
                   <div className="contact__welcome-message">
                     <h2>
                       Lorem ipsum dolor sit,
-                      <span
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<MessageIcon />}
                         className="contact__welcome-login"
                         onClick={() => setLoginHistoryMessages(true)}
                       >
                         {' '}
                         Historial{' '}
-                      </span>
+                      </Button>
                       amet consectetur adipisicing elit. Deserunt recusandae
                       quae vel sit obcaecati mollitia similique consequatur
                       libero adipisci, incidunt harum perspiciatis doloremque
-                      repudiandae optio quis facilis officiis qui cupiditate.
                     </h2>
                   </div>
                 </Zoom>
@@ -390,7 +393,10 @@ const Contact = () => {
         >
           <Slide timeout={600} in mountOnEnter unmountOnExit>
             <div>
-              <Alert severity="success">Mensaje enviado correctamente</Alert>
+              <Alert severity="success">
+                Mensaje enviado, en un momento te redigiremos al historial de
+                mensajes
+              </Alert>
             </div>
           </Slide>
         </Snackbar>
@@ -410,14 +416,16 @@ const Contact = () => {
               <Alert severity="warning">
                 Usuario no encontrado, le invitamos a{' '}
                 {
-                  <span
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<EmojiPeople />}
                     onClick={() => setLoginHistoryMessages(false)}
                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
                   >
                     registrarse
-                  </span>
+                  </Button>
                 }
-                .
               </Alert>
             </div>
           </Slide>
@@ -436,16 +444,18 @@ const Contact = () => {
           <Slide timeout={600} in mountOnEnter unmountOnExit>
             <div>
               <Alert severity="warning">
-                Este usuario ya existe, le invitamos a{' '}
+                Este usuario ya existe, le invitamos a ingresar a su{' '}
                 {
-                  <span
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<MessageIcon />}
                     onClick={() => setLoginHistoryMessages(true)}
                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
                   >
-                    ingresar
-                  </span>
+                    historial
+                  </Button>
                 }
-                .
               </Alert>
             </div>
           </Slide>

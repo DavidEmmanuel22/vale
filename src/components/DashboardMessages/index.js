@@ -1,7 +1,11 @@
 import { Grid, Paper } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router'
-import { getChats, readMessage } from 'requests/createMail'
+import {
+  countMessagesNotRead,
+  getChats,
+  readMessage
+} from 'requests/createMail'
 import NewMessage from './NewMessage'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Mail } from '../../pages/Mail/Mail'
@@ -23,6 +27,19 @@ const DashboardMessages = ({ showAll }) => {
   const [loading, setLoading] = useState(false)
   const [read, setRead] = useState(0)
 
+  const [notReadMessage, setNotReadMessage] = useState('')
+  useEffect(() => {
+    async function notReadMessage() {
+      const { success, response, error } = await countMessagesNotRead()
+      if (success && response) {
+        setNotReadMessage(response.data)
+      } else {
+        //console.log(error)
+      }
+    }
+    notReadMessage()
+  }, [chats])
+
   const sortedChats = chats.sort((a, b) => {
     return new Date(b.chats.lastDateMessage) - new Date(a.chats.lastDateMessage)
   })
@@ -32,6 +49,10 @@ const DashboardMessages = ({ showAll }) => {
       return null
     }
     return readed
+  })
+
+  const showAllMessages = newMessage.sort((a, b) => {
+    return !b.chats.readAdmin - !a.chats.readAdmin
   })
 
   const isEmpty = newMessage.length === 0 ? 1 : 0
@@ -98,7 +119,8 @@ const DashboardMessages = ({ showAll }) => {
               isEmpty
                 ? 'Sin Nuevos Mensajes'
                 : !showAll
-                ? `Mensajes: ${chats.length}`
+                ? `
+                Nuevos Mensajes: ${notReadMessage}`
                 : `Nuevos Mensajes`
             }`}</h2>
           </div>
@@ -109,10 +131,10 @@ const DashboardMessages = ({ showAll }) => {
               {!loading ? (
                 <CircularProgress size={24} />
               ) : (
-                newMessage
+                showAllMessages
                   .slice(0, `${!showAll ? chats.length : 6}`)
                   .map((chat, _) => (
-                    <>
+                    <div key={_}>
                       <NewMessage
                         clicked={() => {
                           history.push({
@@ -122,9 +144,8 @@ const DashboardMessages = ({ showAll }) => {
                           setShowMessages(!showMessages)
                         }}
                         chat={chat.chats}
-                        key={_}
                       ></NewMessage>
-                    </>
+                    </div>
                   ))
               )}
               {isEmpty && loading ? (
