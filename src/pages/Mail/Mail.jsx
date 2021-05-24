@@ -127,7 +127,7 @@ export const Mail = () => {
     <>
       <Grid item xs={12}>
         {!user ? <ClientNavBar /> : null}
-        <div style={{ padding: '1.2em', overflowY: 'scroll' }}>
+        <div style={{ padding: '1.2em', overflowY: 'scroll', height: '80vh' }}>
           {/* <div ref={messagesEndRef} /> */}
           {loading ? (
             <CircularProgress
