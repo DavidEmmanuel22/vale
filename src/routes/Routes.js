@@ -18,6 +18,7 @@ import { Mail } from 'pages/Mail/Mail'
 
 const Routes = () => {
   const { isAuthenticated } = useContext(UserContext)
+  console.log(isAuthenticated)
 
   return (
     <Switch>
@@ -33,67 +34,7 @@ const Routes = () => {
           </GeneralLayout>
         </PrivateRoute>
       ))}
-      {/*
-			<PrivateRoute isAuthenticated={isAuthenticated} exact path="/dashboard">
-				<GeneralLayout>
-					<Dashboard />
-				</GeneralLayout>
-			</PrivateRoute>
 
-			<PrivateRoute
-				isAuthenticated={isAuthenticated}
-				exact
-				path="/dashboard/profile"
-			>
-				<GeneralLayout>
-					<DashboardPerfil />
-				</GeneralLayout>
-			</PrivateRoute>
-
-			<PrivateRoute
-				exact
-				isAuthenticated={isAuthenticated}
-				path="/dashboard/valedores"
-			>
-				<GeneralLayout>
-					<Valedores />
-				</GeneralLayout>
-			</PrivateRoute>
-
-			<PrivateRoute
-				exact
-				isAuthenticated={isAuthenticated}
-				path="/valedores/history"
-			>
-				<GeneralLayout>
-					<Historial />
-				</GeneralLayout>
-			</PrivateRoute>
-
-			<PrivateRoute
-				isAuthenticated={isAuthenticated}
-				exact
-				path="/dashboard/negocios"
-			>
-				<GeneralLayout>
-					<Negocios />
-				</GeneralLayout>
-			</PrivateRoute>
-
-
-
-			<Route exact path="/forgot-password">
-				<ForgotPassword />
-			</Route>
-
-			<Route exact path="/update-password/:token">
-				<UpdatePassword />
-			</Route>
-
-			<Route exact path="/">
-				<Home />
-			</Route>
-			*/}
       <PrivateRoute
         exact
         isAuthenticated={isAuthenticated}

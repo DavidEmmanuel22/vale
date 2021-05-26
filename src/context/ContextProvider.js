@@ -5,9 +5,10 @@ import jwt_decode from 'jwt-decode'
 
 const ContextProvider = ({ children }) => {
   const [user, setUser] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(true)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [hasLoad, setHasLoad] = useState(false)
   const [drawOpen, setDrawOpen] = useState(false)
+  const [showContact, setShowContact] = useState(true)
 
   const handleDrawerOpen = () => {
     setDrawOpen(!drawOpen)
@@ -35,6 +36,14 @@ const ContextProvider = ({ children }) => {
     setUser(false)
   }
 
+  const hiddeContactView = () => {
+    setShowContact(false)
+  }
+
+  const showContactView = () => {
+    setShowContact(true)
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('auth-token')
     if (token) {
@@ -58,7 +67,10 @@ const ContextProvider = ({ children }) => {
         logout,
         hasLoad,
         handleDrawerOpen,
-        drawOpen
+        drawOpen,
+        showContact,
+        hiddeContactView,
+        showContactView
       }}
     >
       {children}

@@ -23,6 +23,7 @@ export const Mail = () => {
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(false)
+  const [scroll, setScroll] = useState(false)
   const { user, logout } = useContext(UserContext)
   const messagesEndRef = useRef(null)
   const [getMessage, setGetMessage] = useState(false)
@@ -75,9 +76,11 @@ export const Mail = () => {
     }, myinterval)
   }
 
-  // const scrollToBottom = () => {
-  //   messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  // }
+  const scrollToBottom = () => {
+    if (messagesEndRef && messagesEndRef.current && scroll) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
 
   useEffect(() => {
     async function getMessages() {
@@ -87,6 +90,9 @@ export const Mail = () => {
       if (success && response) {
         //console.log(response.data)
         setMessages(response.data)
+        if (response.data.length > 5) {
+          setScroll(true)
+        }
         setLoading(false)
         logOutMessages()
         setTimeout(() => {
@@ -97,7 +103,7 @@ export const Mail = () => {
       }
     }
     getMessages()
-    // scrollToBottom()
+    scrollToBottom()
   }, [loading])
 
   const readMsg = async () => {
@@ -128,7 +134,6 @@ export const Mail = () => {
       <Grid item xs={12}>
         {!user ? <ClientNavBar /> : null}
         <div style={{ padding: '1.2em', overflowY: 'scroll', height: '80vh' }}>
-          {/* <div ref={messagesEndRef} /> */}
           {loading ? (
             <CircularProgress
               color="secondary"
@@ -182,6 +187,7 @@ export const Mail = () => {
               <MessageContent />
             </>
           )}
+          <div ref={messagesEndRef} />
         </div>
 
         {!loading && (

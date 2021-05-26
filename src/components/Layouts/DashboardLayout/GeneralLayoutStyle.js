@@ -65,7 +65,7 @@ export const GeneralLayoutStyle = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     backgroundColor: '#e5e5e5',
-    marginTop: '80px',
+    marginTop: '60px',
     paddingTop: '30px',
     minHeight: '100vh'
   },
