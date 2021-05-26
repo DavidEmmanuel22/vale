@@ -121,7 +121,9 @@ export default function GeneralLayout({ children, routes }) {
         ></TemporaryDrawer>
       </Hidden>
       <main className={`${classes.content}`}>
-        <Container maxWidth={false}>{hasLoad && children}</Container>
+        <Container style={{ padding: 9 }} maxWidth={false}>
+          {hasLoad && children}
+        </Container>
       </main>
     </div>
   )

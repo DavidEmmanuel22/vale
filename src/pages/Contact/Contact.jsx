@@ -10,7 +10,7 @@ import {
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
 import SendIcon from '@material-ui/icons/Send'
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Typography from '@material-ui/core/Typography'
 import valeThor from '../../assets/Contact/donVale.svg'
 import EmailIcon from '@material-ui/icons/Email'
@@ -25,6 +25,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { createMail, clientMessageHistory } from 'requests/createMail'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { EmojiPeople } from '@material-ui/icons'
+import { UserContext } from 'context/userContext'
 
 const Contact = () => {
   const [contactForm, setContactForm] = useState({
@@ -42,10 +43,12 @@ const Contact = () => {
   })
   const [openAlert, setOpenAlert] = useState(false)
   const [openErrorAlert, setOpenErrorAlert] = useState(false)
-  const [loginHistoryMessages, setLoginHistoryMessages] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [errorCreateChat, setErrorCreateChat] = useState(false)
+  const { hiddeContactView, showContact, showContactView } = useContext(
+    UserContext
+  )
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
@@ -89,8 +92,7 @@ const Contact = () => {
         values: {
           name: '',
           email: '',
-          phoneNumber: '',
-          message: ''
+          phoneNumber: ''
         }
       })
     },
@@ -127,6 +129,14 @@ const Contact = () => {
           }, 6000)
         }
       }
+      loginFormikValidation.resetForm({
+        values: {
+          name: '',
+          email: '',
+          phoneNumber: '',
+          message: ''
+        }
+      })
     },
     validationSchema: loginValidation
   })
@@ -139,17 +149,14 @@ const Contact = () => {
         <Hidden xsDown>
           <Grid
             className="contact__section"
-            style={loginHistoryMessages ? { backgroundColor: '#003634' } : null}
+            style={!showContact ? { backgroundColor: '#003634' } : null}
             item
             xs={12}
             sm={6}
             md={6}
           >
             <div className="contact__img-shadow">
-              <Hidden
-                xlDown={loginHistoryMessages}
-                lgDown={loginHistoryMessages}
-              >
+              <Hidden xlDown={!showContact} lgDown={!showContact}>
                 <Zoom
                   timeout={600}
                   in
@@ -165,7 +172,9 @@ const Contact = () => {
                         color="primary"
                         startIcon={<MessageIcon />}
                         className="contact__welcome-login"
-                        onClick={() => setLoginHistoryMessages(true)}
+                        onClick={() => {
+                          hiddeContactView()
+                        }}
                       >
                         {' '}
                         Historial{' '}
@@ -186,16 +195,16 @@ const Contact = () => {
         <Grid item xs={12} sm={6} md={6}>
           <form
             onSubmit={
-              loginHistoryMessages
+              !showContact
                 ? loginFormikValidation.handleSubmit
                 : contactFormikValidation.handleSubmit
             }
             className={`contact__form ${
-              loginHistoryMessages ? 'contact__form-login' : ''
+              !showContact ? 'contact__form-login' : ''
             }`}
           >
             <Typography className="contact__input" variant="h4">
-              {`${loginHistoryMessages ? 'Historial Mensajes' : 'Contáctanos'}`}
+              {`${!showContact ? 'Historial Mensajes' : 'Contáctanos'}`}
             </Typography>
 
             <TextField
@@ -204,28 +213,28 @@ const Contact = () => {
               variant="filled"
               name="name"
               value={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.values.name
                   : contactFormikValidation.values.name
               }
               onChange={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.handleChange
                   : contactFormikValidation.handleChange
               }
               error={
-                loginHistoryMessages
+                !showContact
                   ? Boolean(loginFormikValidation.touched.name) &&
                     Boolean(loginFormikValidation.errors.name)
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     Boolean(contactFormikValidation.touched.name) &&
                     Boolean(contactFormikValidation.errors.name)
               }
               helperText={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.touched.name &&
                     loginFormikValidation.errors.name
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     contactFormikValidation.touched.name &&
                     contactFormikValidation.errors.name
               }
@@ -245,28 +254,28 @@ const Contact = () => {
               variant="filled"
               name="email"
               value={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.values.email
                   : contactFormikValidation.values.email
               }
               onChange={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.handleChange
                   : contactFormikValidation.handleChange
               }
               error={
-                loginHistoryMessages
+                !showContact
                   ? Boolean(loginFormikValidation.touched.email) &&
                     Boolean(loginFormikValidation.errors.email)
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     Boolean(contactFormikValidation.touched.email) &&
                     Boolean(contactFormikValidation.errors.email)
               }
               helperText={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.touched.email &&
                     loginFormikValidation.errors.email
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     contactFormikValidation.touched.email &&
                     contactFormikValidation.errors.email
               }
@@ -285,28 +294,28 @@ const Contact = () => {
               type="number"
               name="phoneNumber"
               value={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.values.phoneNumber
                   : contactFormikValidation.values.phoneNumber
               }
               onChange={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.handleChange
                   : contactFormikValidation.handleChange
               }
               error={
-                loginHistoryMessages
+                !showContact
                   ? Boolean(loginFormikValidation.touched.phoneNumber) &&
                     Boolean(loginFormikValidation.errors.phoneNumber)
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     Boolean(contactFormikValidation.touched.phoneNumber) &&
                     Boolean(contactFormikValidation.errors.phoneNumber)
               }
               helperText={
-                loginHistoryMessages
+                !showContact
                   ? loginFormikValidation.touched.phoneNumber &&
                     loginFormikValidation.errors.phoneNumber
-                  : !loginHistoryMessages &&
+                  : showContact &&
                     contactFormikValidation.touched.phoneNumber &&
                     contactFormikValidation.errors.phoneNumber
               }
@@ -323,7 +332,7 @@ const Contact = () => {
                   .slice(0, 10)
               }}
             />
-            <Hidden xlDown={loginHistoryMessages} lgDown={loginHistoryMessages}>
+            <Hidden xlDown={!showContact} lgDown={!showContact}>
               <TextField
                 className="contact__input"
                 label="Mensaje"
@@ -359,7 +368,7 @@ const Contact = () => {
                 disabled={loading && !error}
                 endIcon={<SendIcon />}
               >
-                {`${loginHistoryMessages ? 'Entrar' : 'Enviar'}`}
+                {`${!showContact ? 'Entrar' : 'Enviar'}`}
               </Button>
               {loading && !error && (
                 <CircularProgress
@@ -382,7 +391,7 @@ const Contact = () => {
     <>
       {contactContent}
 
-      {!loginHistoryMessages && (
+      {showContact && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={openAlert}
@@ -402,7 +411,7 @@ const Contact = () => {
         </Snackbar>
       )}
 
-      {error && (
+      {error && !showContact && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={openErrorAlert}
@@ -420,8 +429,8 @@ const Contact = () => {
                     variant="contained"
                     color="primary"
                     endIcon={<EmojiPeople />}
-                    onClick={() => setLoginHistoryMessages(false)}
                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                    onClick={() => showContactView()}
                   >
                     registrarse
                   </Button>
@@ -432,7 +441,7 @@ const Contact = () => {
         </Snackbar>
       )}
 
-      {errorCreateChat && (
+      {errorCreateChat && showContact && (
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={openErrorAlert}
@@ -450,8 +459,8 @@ const Contact = () => {
                     variant="contained"
                     color="primary"
                     endIcon={<MessageIcon />}
-                    onClick={() => setLoginHistoryMessages(true)}
                     style={{ cursor: 'pointer', fontWeight: 'bold' }}
+                    onClick={() => hiddeContactView()}
                   >
                     historial
                   </Button>

@@ -18,7 +18,9 @@ export const ClientNavBar = () => {
   const classes = Styles()
   const history = useHistory()
   const [showMenu, setShowMenu] = useState(false)
-  const { isAuthenticated, logout } = useContext(UserContext)
+  const { isAuthenticated, logout, showContact, showContactView } = useContext(
+    UserContext
+  )
   const [showLogin, setShowLogin] = useState(false)
   const userMessageHistory = localStorage.getItem('idChat')
 
@@ -59,8 +61,11 @@ export const ClientNavBar = () => {
                 <a className="nav-link-item">Valedores</a>
                 <a className="nav-link-item">Negocios</a>
                 <Link
-                  to={`${userMessageHistory ? '/mail' : '/contact'}`}
+                  to={{
+                    pathname: `${userMessageHistory ? '/mail' : '/contact'}`
+                  }}
                   className="nav-link-item"
+                  onClick={() => showContactView()}
                 >
                   Contáctanos
                 </Link>
