@@ -13,27 +13,42 @@ import Valedores from 'pages/valedores/Valedores'
 import Negocios from 'pages/negocios/Negocios'
 import Contact from 'pages/Contact/Contact'
 import dashboardRoutes from './dashboardRoutes'
+import valedorRoutes from './valedorDashboardRoute'
 import historyRoute from './history'
 import { Mail } from 'pages/Mail/Mail'
 
 const Routes = () => {
-  const { isAuthenticated } = useContext(UserContext)
-  console.log(isAuthenticated)
+  const { isAuthenticated, user } = useContext(UserContext)
 
   return (
     <Switch>
-      {dashboardRoutes.map((route, index) => (
-        <PrivateRoute
-          key={index}
-          isAuthenticated={isAuthenticated}
-          exact
-          path={route.path}
-        >
-          <GeneralLayout routes={dashboardRoutes}>
-            <route.component></route.component>
-          </GeneralLayout>
-        </PrivateRoute>
-      ))}
+      {user.role === 'Admin' &&
+        dashboardRoutes.map((route, index) => (
+          <PrivateRoute
+            key={index}
+            isAuthenticated={isAuthenticated}
+            exact
+            path={route.path}
+          >
+            <GeneralLayout routes={dashboardRoutes}>
+              <route.component></route.component>
+            </GeneralLayout>
+          </PrivateRoute>
+        ))}
+
+      {user.role === 'Valedor' &&
+        valedorRoutes.map((route, index) => (
+          <PrivateRoute
+            key={index}
+            isAuthenticated={isAuthenticated}
+            exact
+            path={route.path}
+          >
+            <GeneralLayout routes={valedorRoutes}>
+              <route.component></route.component>
+            </GeneralLayout>
+          </PrivateRoute>
+        ))}
 
       <PrivateRoute
         exact
@@ -44,6 +59,7 @@ const Routes = () => {
           <Historial />
         </GeneralLayout>
       </PrivateRoute>
+
       <Route exact path="/forgot-password">
         <ForgotPassword />
       </Route>

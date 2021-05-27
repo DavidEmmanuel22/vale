@@ -231,10 +231,12 @@ const Valedores = () => {
                               <Tooltip
                                 title="Agregar Crédito"
                                 aria-label="agregar"
-                                onMouseEnter={() => setSelectedValedor(valedor)}
                               >
                                 <Fab
-                                  onClick={() => setOpenAddCredits(true)}
+                                  onClick={() => {
+                                    setOpenAddCredits(true)
+                                    setSelectedValedor(valedor)
+                                  }}
                                   color="primary"
                                   className={classes.fab}
                                 >

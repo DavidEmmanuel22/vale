@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Grid,
   Paper,
@@ -31,6 +31,7 @@ import Fab from '@material-ui/core/Fab'
 import Tooltip from '@material-ui/core/Tooltip'
 import DeleteIcon from '@material-ui/icons/Delete'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { UserContext } from 'context/userContext'
 
 const useStyles2 = makeStyles({
   root: {
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Negocios = () => {
   const matches = useMediaQuery('(min-width:525px)')
+  const { user } = useContext(UserContext)
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1
@@ -168,47 +170,49 @@ const Negocios = () => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
-        <Paper
-          style={{
-            display: 'flex',
-            textAlign: 'center',
-            marginBottom: '1.2rem',
-            justifyContent: 'space-between'
-          }}
-          className={classes.buttonPaper}
-        >
-          <TextField
-            placeholder="Buscar Negocio..."
-            style={{ width: '' }}
-            inputProps={{
-              maxLength: 25
+        {user.role === 'Admin' && (
+          <Paper
+            style={{
+              display: 'flex',
+              textAlign: 'center',
+              marginBottom: '1.2rem',
+              justifyContent: 'space-between'
             }}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  className="MuiInputAdornment-root"
-                >
-                  <SearchIcon fontSize="large" />
-                </InputAdornment>
-              )
-            }}
-            value={searchBusiness}
-            onChange={(e) => handleChange(e)}
-          />
-          <Button
-            onClick={() => setOpenDialog(true)}
-            color="primary"
-            variant="contained"
-            style={{ marginTop: matches ? '' : '15px' }}
+            className={classes.buttonPaper}
           >
-            Agregar Negocio
-          </Button>
-        </Paper>
+            <TextField
+              placeholder="Buscar Negocio..."
+              style={{ width: '' }}
+              inputProps={{
+                maxLength: 25
+              }}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    className="MuiInputAdornment-root"
+                  >
+                    <SearchIcon fontSize="large" />
+                  </InputAdornment>
+                )
+              }}
+              value={searchBusiness}
+              onChange={(e) => handleChange(e)}
+            />
+            <Button
+              onClick={() => setOpenDialog(true)}
+              color="primary"
+              variant="contained"
+              style={{ marginTop: matches ? '' : '15px' }}
+            >
+              Agregar Negocio
+            </Button>
+          </Paper>
+        )}
         {filteredBusiness.length > 0 ? (
           <Paper className={classes.paper}>
             <TableContainer>
@@ -217,7 +221,11 @@ const Negocios = () => {
                   <TableRow>
                     <TableCell
                       align="center"
-                      onClick={() => setUnableNegocio(!unableNegocio)}
+                      onClick={() =>
+                        user.role === 'Admin'
+                          ? setUnableNegocio(!unableNegocio)
+                          : null
+                      }
                       style={{
                         background: `${
                           unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
@@ -236,7 +244,9 @@ const Negocios = () => {
                     <Hidden smDown>
                       <TableCell align="center">Dirección</TableCell>
                     </Hidden>
-                    <TableCell align="center">Acciones</TableCell>
+                    {user.role === 'Admin' && (
+                      <TableCell align="center">Acciones</TableCell>
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -264,31 +274,38 @@ const Negocios = () => {
                                 {negocio.bussinesAdress}
                               </TableCell>
                             </Hidden>
-                            <TableCell align="center">
-                              <Tooltip title="Editar" aria-label="Editar">
-                                <Fab color="secondary" className={classes.fab}>
-                                  <RefreshIcon variant="outlined">
-                                    Editar
-                                  </RefreshIcon>
-                                </Fab>
-                              </Tooltip>
+                            {user.role === 'Admin' && (
+                              <TableCell align="center">
+                                <Tooltip title="Editar" aria-label="Editar">
+                                  <Fab
+                                    color="secondary"
+                                    className={classes.fab}
+                                  >
+                                    <RefreshIcon variant="outlined">
+                                      Editar
+                                    </RefreshIcon>
+                                  </Fab>
+                                </Tooltip>
 
-                              <Tooltip
-                                title="Eliminar"
-                                aria-label="Eliminar"
-                                onMouseEnter={() => setSelectedNegocio(negocio)}
-                              >
-                                <Fab
-                                  onClick={(e) => {
-                                    handleClick(e, negocio)
-                                  }}
-                                  color="primary"
-                                  className={classes.danger}
+                                <Tooltip
+                                  title="Eliminar"
+                                  aria-label="Eliminar"
+                                  onMouseEnter={() =>
+                                    setSelectedNegocio(negocio)
+                                  }
                                 >
-                                  <DeleteIcon />
-                                </Fab>
-                              </Tooltip>
-                            </TableCell>
+                                  <Fab
+                                    onClick={(e) => {
+                                      handleClick(e, negocio)
+                                    }}
+                                    color="primary"
+                                    className={classes.danger}
+                                  >
+                                    <DeleteIcon />
+                                  </Fab>
+                                </Tooltip>
+                              </TableCell>
+                            )}
                           </>
                         ) : (
                           <>
