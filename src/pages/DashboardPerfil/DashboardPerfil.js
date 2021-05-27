@@ -14,10 +14,12 @@ import RegisterValedor from 'components/valedor/register'
 import Hidden from '@material-ui/core/Hidden'
 import { updateUser } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
 import { updateUserSelfSchema } from 'yupSchemas'
 import { useFormik } from 'formik'
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import Fab from '@material-ui/core/Fab'
 import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -50,6 +52,7 @@ export const DashboardPerfil = () => {
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
+  const history = useHistory()
 
   const matches = useMediaQuery('(min-width:600px)')
 
@@ -62,6 +65,9 @@ export const DashboardPerfil = () => {
       textAlign: 'center',
       borderRadius: '15px',
       color: theme.palette.text.secondary
+    },
+    input: {
+      display: 'none'
     }
   }))
 
@@ -112,6 +118,7 @@ export const DashboardPerfil = () => {
       setShowAlert(true)
       setTimeout(() => {
         logout()
+        history.push('/')
       }, 3000)
     }
   }
@@ -167,10 +174,23 @@ export const DashboardPerfil = () => {
                   </Collapse>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  <img
+                  {/* <img
+                    onClick={() => (onEdit ? console.log('test') : null)}
                     width="100"
                     src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-                  ></img>
+                  ></img> */}
+                  <input
+                    accept="image/*"
+                    id="contained-button-file"
+                    className={classes.input}
+                    multiple
+                    type="file"
+                  />
+                  <label htmlFor="contained-button-file">
+                    <Fab component="span" className={classes.button}>
+                      <AddPhotoAlternateIcon />
+                    </Fab>
+                  </label>
                 </Grid>
                 <Grid item xs={12} sm={6} md={5}>
                   <TextField

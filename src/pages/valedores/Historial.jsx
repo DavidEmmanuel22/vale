@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 import numeral from 'numeral'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import { makeStyles } from '@material-ui/core/styles'
-import NavBar from '../../components/NavBar/NavBar'
+
 import clsx from 'clsx'
 
 const Historial = () => {
@@ -45,7 +45,7 @@ const Historial = () => {
   }, [])
 
   const columns = [
-    { field: 'id', headerName: 'Folio', width: 150, flex: 0.1 },
+    { field: '_id', headerName: 'Folio', width: 150, flex: 0.1 },
     { field: 'createdAt', headerName: 'Fecha', width: 250 },
     {
       field: 'credits',
@@ -60,7 +60,7 @@ const Historial = () => {
       cellClassName: (valedor) =>
         clsx('super-app', {
           negative: valedor.row.estatus === 0,
-          positive: valedor.row.estatus === 1
+          positive: valedor.row.estatus >= 1
         }),
       width: 150
     },

@@ -13,12 +13,14 @@ import './dashboard.css'
 import { ChatRoom } from './ChatRoom/ChatRoom'
 import DashboardMessages from 'components/DashboardMessages'
 import { UserContext } from 'context/userContext'
+import { ValedorDashboard } from './ValedorDashboard/ValedorDashboard'
 
 export const Dashboard = () => {
   const classes = dashboardStyles()
   const [showDialog, setShowDialog] = useState(false)
   const [dialogName, setDialogName] = useState('valedor')
   const { user } = useContext(UserContext)
+
   console.log(user)
 
   const handleDialog = () => {
@@ -59,7 +61,7 @@ export const Dashboard = () => {
     <div className={classes.root}>
       <CssBaseline />
       <Grid container className="dashboard-container" spacing={2}>
-        {user.role === 'Admin' ? (
+        {user.role === 'Admin' && (
           <>
             {' '}
             <Grid item xs={12} sm={6} md={4}>
@@ -111,7 +113,9 @@ export const Dashboard = () => {
               <DashboardMessages showAll={true} />
             </Grid>
           </>
-        ) : null}
+        )}
+
+        {user.role === 'Valedor' && <ValedorDashboard />}
       </Grid>
 
       {showDialog && handleDialog()}
