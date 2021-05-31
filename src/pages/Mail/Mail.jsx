@@ -131,7 +131,7 @@ export const Mail = () => {
 
   return (
     <>
-      <Grid item xs={12} style={{maxHeight:`${screen.height - 400}px`, overflow:"scroll"}}>
+      <Grid item xs={12} style={{maxHeight:`${window.screen.height - 400}px`, overflow:"scroll"}}>
         {!user ? <ClientNavBar /> : null}
         <div style={{ padding: '1.2em',  }}>
           {loading ? (
