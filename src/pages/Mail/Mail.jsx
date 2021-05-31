@@ -131,9 +131,9 @@ export const Mail = () => {
 
   return (
     <>
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{maxHeight:`${screen.height - 400}px`, overflow:"scroll"}}>
         {!user ? <ClientNavBar /> : null}
-        <div style={{ padding: '1.2em', overflowY: 'scroll', height: '80vh' }}>
+        <div style={{ padding: '1.2em',  }}>
           {loading ? (
             <CircularProgress
               color="secondary"
