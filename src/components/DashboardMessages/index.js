@@ -90,84 +90,82 @@ const DashboardMessages = ({ showAll }) => {
   }
 
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        <Paper style={{ borderRadius: '10px 10px 0px 0px' }}>
-          <div style={styles.titleStyles}>
-            {showMessages ? (
-              <Tooltip
-                color="secondary"
-                onClick={() => setShowMessages(!showMessages)}
-                title="Mensajes"
-              >
-                <IconButton aria-label="delete">
-                  <ArrowBackIosIcon />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip
-                color="secondary"
-                onClick={() => window.location.reload(true)}
-                title="Recargar"
-              >
-                <IconButton aria-label="delete">
-                  <CachedIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <h2>{`${
-              isEmpty
-                ? 'Sin Nuevos Mensajes'
-                : !showAll
-                ? `
+    <Paper
+      style={{ borderRadius: '10px 10px 0px 0px' /*backgroundColor: "red",*/ }}
+    >
+      <div style={styles.titleStyles}>
+        {showMessages ? (
+          <Tooltip
+            color="secondary"
+            onClick={() => setShowMessages(!showMessages)}
+            title="Mensajes"
+          >
+            <IconButton aria-label="delete">
+              <ArrowBackIosIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip
+            color="secondary"
+            onClick={() => window.location.reload(true)}
+            title="Recargar"
+          >
+            <IconButton aria-label="delete">
+              <CachedIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+        <h2>{`${
+          isEmpty
+            ? 'Sin Nuevos Mensajes'
+            : !showAll
+            ? `
                 Nuevos Mensajes: ${notReadMessage}`
-                : `Nuevos Mensajes`
-            }`}</h2>
-          </div>
-          {showMessages ? (
-            <Mail />
+            : `Nuevos Mensajes`
+        }`}</h2>
+      </div>
+      {showMessages ? (
+        <Mail />
+      ) : (
+        <div style={styles.messagesStyles}>
+          {!loading ? (
+            <CircularProgress size={24} />
           ) : (
-            <div style={styles.messagesStyles}>
-              {!loading ? (
-                <CircularProgress size={24} />
-              ) : (
-                showAllMessages
-                  .slice(0, `${!showAll ? chats.length : 6}`)
-                  .map((chat, _) => (
-                    <div key={_}>
-                      <NewMessage
-                        clicked={() => {
-                          history.push({
-                            state: { email: user.email }
-                          })
-                          localStorage.setItem('idChat', chat.chats._id)
-                          setShowMessages(!showMessages)
-                        }}
-                        chat={chat.chats}
-                      ></NewMessage>
-                    </div>
-                  ))
-              )}
-              {isEmpty && loading ? (
-                <>
-                  <div style={{ textAlign: 'center' }}>
-                    <img
-                      src={noMessage}
-                      style={{
-                        padding: '6em',
-                        textAlign: 'center',
-                        width: '100%',
-                        opacity: '66%'
-                      }}
-                    />
-                  </div>
-                </>
-              ) : null}
-            </div>
+            showAllMessages
+              .slice(0, `${!showAll ? chats.length : 6}`)
+              .map((chat, _) => (
+                <div key={_}>
+                  <NewMessage
+                    clicked={() => {
+                      history.push({
+                        state: { email: user.email }
+                      })
+                      localStorage.setItem('idChat', chat.chats._id)
+                      setShowMessages(!showMessages)
+                    }}
+                    chat={chat.chats}
+                  ></NewMessage>
+                </div>
+              ))
           )}
-        </Paper>
-      </Grid>
-    </Grid>
+          {isEmpty && loading ? (
+            <>
+              <div style={{ textAlign: 'center' }}>
+                <img
+                  src={noMessage}
+                  style={{
+                    padding: '6em',
+                    textAlign: 'center',
+                    width: '100%',
+                    opacity: '66%'
+                  }}
+                />
+              </div>
+            </>
+          ) : null}
+        </div>
+      )}
+    </Paper>
   )
 }
 

@@ -24,7 +24,8 @@ module.exports = {
   rules: {
     'react/prop-types': RULES.OFF,
     'no-unused-vars': 'off',
-    'spaced-comment': 'off'
+    'spaced-comment': 'off',
+    'no-restricted-globals': 'off'
   },
   settings: {
     react: {
