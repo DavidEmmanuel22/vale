@@ -97,7 +97,7 @@ export const Mail = () => {
         logOutMessages()
         setTimeout(() => {
           setReload(true)
-        }, 9000)
+        }, 3000)
       } else {
         //console.log(error)
       }
@@ -131,8 +131,16 @@ export const Mail = () => {
 
   return (
     <>
-      <Grid item xs={12}>
-        <div style={{ padding: '1.2em', overflowY: 'scroll', height: '80vh' }}>
+      <Grid
+        item
+        xs={12}
+        style={{
+          maxHeight: `${window.screen.height - 400}px`,
+          overflow: 'scroll'
+        }}
+      >
+        {!user ? <ClientNavBar /> : null}
+        <div style={{ padding: '1.2em' }}>
           {loading ? (
             <CircularProgress
               color="secondary"
