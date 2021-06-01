@@ -21,7 +21,7 @@ import ContactsIcon from '@material-ui/icons/Contacts'
 import { Link, Route } from 'react-router-dom'
 import { Container, Button, Hidden } from '@material-ui/core'
 import { UserContext } from '../../../context/userContext'
-import './Styles.css'
+//import './Styles.css'
 import { GeneralLayoutStyle } from './GeneralLayoutStyle'
 import NavBar from 'components/NavBar/NavBar'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
@@ -92,7 +92,6 @@ export default function GeneralLayout({ children, routes }) {
           <List style={{ marginTop: '22px' }}>
             {routes.map((route, index) => (
               <Link
-                className="listLink"
                 to={route.path}
                 key={index}
                 onClick={() => handleListItemClick(index)}

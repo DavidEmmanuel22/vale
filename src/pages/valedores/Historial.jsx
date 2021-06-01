@@ -77,7 +77,6 @@ const Historial = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      {/* <NavBar /> */}
       {isLoading ? (
         <CircularProgress></CircularProgress>
       ) : (

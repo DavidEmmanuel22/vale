@@ -1,5 +1,6 @@
 import { GetRequest, PostRequest, PostRequest2 } from './axiosRequest'
 import fetchRequest from './fetchRequest'
+import valeHTMLRequest from './valeHTMLRequest'
 
 export const getValedores = () => {
   return fetchRequest(`/users-valedor?role=Valedor`, {
@@ -48,5 +49,19 @@ export const addCredit = (email, credits) => {
 export const valesHistory = (emailUser) => {
   return fetchRequest(`/vales?emailUser=${emailUser}`, {
     method: 'GET'
+  })
+}
+
+export const valeHistory = (userId) => {
+  return valeHTMLRequest(`/vales-id`, {
+    method: 'POST',
+    body: JSON.stringify({ id: userId })
+  })
+}
+
+export const createVale = (vale) => {
+  return fetchRequest(`/vale`, {
+    method: 'POST',
+    body: JSON.stringify(vale)
   })
 }
