@@ -139,7 +139,6 @@ export const Mail = () => {
           overflow: 'scroll'
         }}
       >
-        {!user ? <ClientNavBar /> : null}
         <div style={{ padding: '1.2em' }}>
           {loading ? (
             <CircularProgress
@@ -228,7 +227,7 @@ export const Mail = () => {
             />
 
             <Button
-              style={{ borderRadius: '0px' }}
+              style={{ borderRadius: '0px', height: '4em' }}
               type="submit"
               variant="contained"
               color="primary"
