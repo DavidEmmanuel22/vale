@@ -18,11 +18,33 @@ export const ClientNavBar = () => {
   const classes = Styles()
   const history = useHistory()
   const [showMenu, setShowMenu] = useState(false)
-  const { isAuthenticated, logout, showContact, showContactView } = useContext(
-    UserContext
-  )
+  const {
+    isAuthenticated,
+    logout,
+    showContact,
+    showContactView,
+    user
+  } = useContext(UserContext)
   const [showLogin, setShowLogin] = useState(false)
   const userMessageHistory = localStorage.getItem('idChat')
+  // window.addEventListener(
+  //   'beforeunload',
+  //   () => localStorage.removeItem('email'),
+  //   localStorage.removeItem('idChat')
+  // )
+
+  // window.onunload = () => {
+  //   // Clear the local storage
+  //   window.MyStorage.clear()
+  // }
+
+  const handleContactMessagesView = () => {
+    if (user) {
+      localStorage.removeItem('email')
+      localStorage.removeItem('idChat')
+    }
+    history.push('/contact')
+  }
 
   const handleLogin = () => {
     if (!isAuthenticated) {
@@ -62,10 +84,13 @@ export const ClientNavBar = () => {
                 <a className="nav-link-item">Negocios</a>
                 <Link
                   to={{
-                    pathname: `${userMessageHistory ? '/mail' : '/contact'}`
+                    pathname: `${'/contact'}`
                   }}
                   className="nav-link-item"
-                  onClick={() => showContactView()}
+                  onClick={() => {
+                    showContactView()
+                    handleContactMessagesView()
+                  }}
                 >
                   Contáctanos
                 </Link>

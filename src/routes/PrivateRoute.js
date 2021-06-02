@@ -2,16 +2,16 @@ import React, { useRef, useEffect } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 
 const PrivateRoute = ({ children, isAuthenticated, ...rest }) => {
-  const messagesEndRef = useRef(null)
+  const refToScroll = useRef(null)
 
-  const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  const scrollToTop = () => {
+    refToScroll.current.scrollIntoView({ behavior: 'smooth' })
   }
   useEffect(() => {
-    scrollToBottom()
+    scrollToTop()
   }, [])
   return (
-    <div ref={messagesEndRef}>
+    <div ref={refToScroll}>
       <Route
         {...rest}
         render={({ location }) =>

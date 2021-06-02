@@ -1,42 +1,47 @@
-import * as React from 'react'
-import { DataGrid } from '@material-ui/data-grid'
+import React, { useContext, useEffect, useState } from 'react'
+import { DataGrid, GridToolbar } from '@material-ui/data-grid'
+import { Paper } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
-import DeleteIcon from '@material-ui/icons/Delete'
+import { GRID_DEFAULT_LOCALE_TEXT } from '../../../themes/gridText'
 import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
+import { UserContext } from 'context/userContext'
+import { valesHistory } from 'requests/allValedores'
+import numeral from 'numeral'
+import clsx from 'clsx'
+import { useHistory } from 'react-router'
+
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
+  { field: '_id', headerName: 'Folio', width: 250 },
+  { field: 'firstName', headerName: 'Nombre', width: 250 },
   {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 90
+    field: 'lastName',
+    headerName: 'Apellido',
+    width: 150
   },
   {
-    field: 'fullName',
-    headerName: 'Full name',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.getValue('firstName') || ''} ${
-        params.getValue('lastName') || ''
-      }`
-  }
-]
+    field: 'credits',
+    headerName: 'Credito',
+    valueFormatter: (valedor) => numeral(valedor.row.credits).format('$0,0'),
+    width: 150
+  },
+  {
+    field: `estatus`,
+    headerName: 'Usado',
+    valueFormatter: (valedor) => (valedor.row.estatus === 0 ? 'No' : 'Si'),
+    cellClassName: (valedor) =>
+      clsx('super-app', {
+        negative: valedor.row.estatus === 0,
+        positive: valedor.row.estatus >= 1
+      }),
+    width: 150
+  },
+  {
+    field: 'updatedAt',
+    headerName: 'Fecha',
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 }
+    width: 200
+  }
 ]
 
 const useStyles = makeStyles((theme) => ({
@@ -47,21 +52,70 @@ const useStyles = makeStyles((theme) => ({
 
 export const ValedorDashboard = () => {
   const classes = useStyles()
+  const { user } = useContext(UserContext)
+  const [vales, setVales] = useState([])
+  const history = useHistory()
+  console.log(vales)
+
+  const sortedVales = vales.sort((a, b) => {
+    return new Date(b.updatedAt) - new Date(a.updatedAt)
+  })
+
+  const useStyle = makeStyles({
+    root: {
+      '& .super-app.negative': {
+        backgroundColor: 'rgba(157, 255, 118, 0.49)',
+        color: '#1a3e72',
+        fontWeight: '600'
+      },
+      '& .super-app.positive': {
+        backgroundColor: '#d47483',
+        color: '#1a3e72',
+        fontWeight: '600'
+      }
+    }
+  })
+
+  useEffect(() => {
+    async function getAllVales() {
+      const { success, response, error } = await valesHistory(user.email)
+      if (success && response) {
+        setVales(response.data)
+        //setIsLoading(false)
+      } else {
+        //console.log(error)
+      }
+    }
+    if (vales.length === 0) {
+      getAllVales()
+    }
+  }, [])
+  const style = useStyle()
   return (
     <>
-      <div style={{ height: 400, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} pageSize={5} />
-      </div>
-      <div style={{ padding: 33 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          startIcon={<AddCircleTwoToneIcon />}
-        >
-          Crear Vale
-        </Button>
-      </div>
+      <Paper style={{ height: 570, width: '100%' }} className={style.root}>
+        <div style={{ height: 500, width: '100%' }}>
+          <DataGrid
+            localeText={GRID_DEFAULT_LOCALE_TEXT}
+            rows={sortedVales}
+            getRowId={(row) => row._id}
+            columns={columns}
+            pageSize={6}
+            onRowClick={(id) => {
+              const idFolio = id.id
+              const credits = id.row.credits
+              if (credits > 0) {
+                history.push({
+                  pathname: '/vale',
+                  state: {
+                    idFolio
+                  }
+                })
+              }
+            }}
+          />
+        </div>
+      </Paper>
     </>
   )
 }

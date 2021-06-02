@@ -21,7 +21,7 @@ export const MessageLeft = ({ data }) => {
         <Avatar
           alt={displayName}
           className={classes.messageLeftAvatar}
-          src={'photoURL'}
+          //src={'photoURL'}
         ></Avatar>
         <div style={{ width: '100%' }}>
           <div className={classes.displayName}>{displayName}</div>
