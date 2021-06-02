@@ -1,0 +1,78 @@
+.content {
+  display: flex;
+}
+
+h1.inicia-sesion {
+  color: #2d6a4f;
+  font-weight: 500;
+}
+
+.foto-tom {
+  background-color: #efc64f;
+  width: 100%;
+}
+
+.logincontainer {
+  margin-top: 6%;
+}
+
+form.content-form {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  margin-top: 14%;
+}
+
+.bienvenido-content {
+  display: flex;
+  justify-content: center;
+}
+
+.button-login {
+  display: flex;
+  justify-content: center;
+}
+
+.forgot-password {
+  display: flex;
+  justify-content: center;
+  margin: 10%;
+}
+
+.MuiInputAdornment-root {
+  color: #eaeaea;
+}
+
+a {
+  color: #007772;
+  text-decoration: none;
+}
+
+.MuiInputBase-input:focus {
+  color: black;
+}
+.MuiInput-underline:before {
+  border-bottom: 1px solid #eaeaea !important;
+}
+.MuiInput-underline:hover :not(.Mui-disabled)::before {
+  border-bottom: 1px solid #007772 !important;
+}
+.MuiInput-underline:after {
+  border-bottom: 2px solid #007772 !important;
+}
+img.decoration {
+  object-fit: contain;
+}
+
+img.logo-login {
+  position: absolute;
+  right: 52%;
+  top: 28%;
+  width: 41%;
+}
+
+@media only screen and (max-width: 600px) {
+  .content {
+    display: block !important;
+  }
+}

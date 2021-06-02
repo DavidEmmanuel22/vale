@@ -1,0 +1,8 @@
+.MuiListItem-root.Mui-selected {
+  background-color: rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #007772 !important;
+}
+
+.MuiTypography-body1 {
+  line-height: 2 !important;
+}

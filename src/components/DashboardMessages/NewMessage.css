@@ -1,0 +1,54 @@
+.message-container {
+  transition: 0.3s ease-out;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-family: 'Open sans', sans-serif;
+  border-radius: 10px;
+}
+
+.message-container:hover {
+  background-color: rgb(223, 219, 219);
+  border-bottom: none;
+}
+
+.message-container > .data-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.message-container > .data-container > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.message-container > .data-container > div {
+  margin-right: auto;
+}
+
+.message-container > .data-container > div > p {
+  font-size: 15px;
+  font-weight: 300;
+}
+
+.message-container > .data-container > div > span {
+  font-size: 13px;
+  color: #007772;
+  font-weight: 700;
+}
+
+.message-container > .data-container > span {
+  font-size: 13px;
+  font-weight: 500;
+  color: gray;
+}
+
+.message-container > p {
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 10px;
+}

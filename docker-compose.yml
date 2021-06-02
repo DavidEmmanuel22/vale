@@ -1,20 +1,16 @@
 version: '3'
-
 services:
   frontend:
     build: .
     container_name: valevaledor-frontend
     restart: always
-    ports:
-      - 80:3000
-    # expose:
-    #   - 3000
-    # environment:
-    #   VIRTUAL_HOST: dev.valevaledor.com
-    #   LETSENCRYPT_HOST: dev.valevaledor.com
-    # networks:
-    #   - root_valevaledor-nginx
-      
-# networks:
-#   root_valevaledor-nginx:
-#     external: true
+    expose:
+      - 3000
+    environment:
+      VIRTUAL_HOST: dev.valevaledor.com,www.dev.valevaledor.com
+      LETSENCRYPT_HOST: dev.valevaledor.com,www.dev.valevaledor.com
+    networks:
+      - valevaledor_nginx
+networks:
+  valevaledor_nginx:
+    external: true

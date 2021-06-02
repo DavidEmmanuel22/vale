@@ -1,26 +1,25 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React, { useEffect } from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import Routes from 'routes/Routes'
+import ContextProvider from './context/ContextProvider'
+import { ThemeProvider } from '@material-ui/styles'
+import blueTheme from 'themes'
+import Aos from 'aos'
+import 'aos/dist/aos.css'
 
-function App() {
+export default function App() {
+  useEffect(() => {
+    Aos.init({ duration: 1500 })
+  }, [])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ThemeProvider theme={blueTheme}>
+        <ContextProvider>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </ContextProvider>
+      </ThemeProvider>
     </div>
   )
 }
-
-export default App
