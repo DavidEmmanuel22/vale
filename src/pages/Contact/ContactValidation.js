@@ -10,7 +10,7 @@ export const contactValidation = yup.object({
     .string()
     .required('Número celular requerido')
     .length(10, 'Ingrese 10 números'),
-  message: yup.string().required('Mensaje requerido')
+  message: yup.string().required('Mensaje requerido').trim()
 })
 
 export const loginValidation = yup.object({
