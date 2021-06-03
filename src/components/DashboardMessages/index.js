@@ -82,7 +82,11 @@ const DashboardMessages = ({ showAll }) => {
       alignItems: 'center',
       height: '50px',
       borderRadius: '10px 10px 0 0',
-      color: '#fff'
+      color: '#fff',
+      position: 'sticky',
+      top: '80px',
+      zIndex: '100',
+      padding: '30px'
     },
     messagesStyles: {
       padding: '20px 30px'
@@ -131,22 +135,20 @@ const DashboardMessages = ({ showAll }) => {
           {!loading ? (
             <CircularProgress size={24} />
           ) : (
-            showAllMessages
-              .slice(0, `${!showAll ? chats.length : 6}`)
-              .map((chat, _) => (
-                <div key={_}>
-                  <NewMessage
-                    clicked={() => {
-                      history.push({
-                        state: { email: user.email }
-                      })
-                      localStorage.setItem('idChat', chat.chats._id)
-                      setShowMessages(!showMessages)
-                    }}
-                    chat={chat.chats}
-                  ></NewMessage>
-                </div>
-              ))
+            showAllMessages.slice(0, `${chats.length}`).map((chat, _) => (
+              <div key={_}>
+                <NewMessage
+                  clicked={() => {
+                    history.push({
+                      state: { email: user.email }
+                    })
+                    localStorage.setItem('idChat', chat.chats._id)
+                    setShowMessages(!showMessages)
+                  }}
+                  chat={chat.chats}
+                ></NewMessage>
+              </div>
+            ))
           )}
           {isEmpty && loading ? (
             <>

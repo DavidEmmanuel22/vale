@@ -10,7 +10,7 @@ import { DashboardPerfil } from 'pages/DashboardPerfil/DashboardPerfil'
 import Negocios from 'pages/negocios/Negocios'
 import React from 'react'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
-import DashboardMessages from '../components/DashboardMessages/index'
+import { Mail } from 'pages/Mail/Mail'
 
 const valedorDashboardRoute = [
   {
@@ -44,7 +44,7 @@ const valedorDashboardRoute = [
   {
     name: 'Contactos',
     path: '/dashboard/contactos',
-    component: DashboardMessages,
+    component: Mail,
     user: 'administrator',
     icon: Contacts
   }

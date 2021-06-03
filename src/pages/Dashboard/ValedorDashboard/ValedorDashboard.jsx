@@ -55,7 +55,6 @@ export const ValedorDashboard = () => {
   const { user } = useContext(UserContext)
   const [vales, setVales] = useState([])
   const history = useHistory()
-  console.log(vales)
 
   const sortedVales = vales.sort((a, b) => {
     return new Date(b.updatedAt) - new Date(a.updatedAt)

@@ -1,7 +1,12 @@
 import { ClientNavBar } from 'pages/Home/Home'
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useHistory } from 'react-router'
-import { createMessage, messageHistory, readMessage } from 'requests/createMail'
+import {
+  createMessage,
+  messageHistory,
+  readMessage,
+  clientMessageHistory
+} from 'requests/createMail'
 import { MessageRight, MessageLeft } from './Messages'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
@@ -120,7 +125,7 @@ export const Mail = () => {
   const MessageContent = () => (
     <>
       {messages.map((msg, _) =>
-        msg.message.email === email ? (
+        msg.message.email === email || msg.message.email === user.email ? (
           <MessageRight key={_} data={msg} />
         ) : (
           <MessageLeft key={_} data={msg} />
@@ -135,7 +140,7 @@ export const Mail = () => {
         item
         xs={12}
         style={{
-          maxHeight: `${window.screen.height - 400}px`,
+          height: `${!user ? '82vh' : '69vh'}`,
           overflow: 'scroll'
         }}
       >
@@ -193,50 +198,49 @@ export const Mail = () => {
               <MessageContent />
             </>
           )}
-          <div ref={messagesEndRef} />
         </div>
-
-        {!loading && (
-          <form
-            onSubmit={mailFormikValidation.handleSubmit}
-            style={{
-              position: 'sticky',
-              bottom: '0',
-
-              display: 'flex'
-            }}
-          >
-            <TextField
-              style={{
-                width: '95%',
-                backgroundColor: 'white'
-              }}
-              label="Mensaje"
-              variant="filled"
-              name="message"
-              value={mailFormikValidation.values.message}
-              onChange={mailFormikValidation.handleChange}
-              error={
-                mailFormikValidation.touched.message &&
-                Boolean(mailFormikValidation.errors.message)
-              }
-              helperText={
-                mailFormikValidation.touched.message &&
-                mailFormikValidation.errors.message
-              }
-            />
-
-            <Button
-              style={{ borderRadius: '0px', height: '4em' }}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              <SendIcon />
-            </Button>
-          </form>
-        )}
+        <div ref={messagesEndRef} />
       </Grid>
+      {!loading && (
+        <form
+          onSubmit={mailFormikValidation.handleSubmit}
+          style={{
+            position: 'sticky',
+            bottom: '0',
+
+            display: 'flex'
+          }}
+        >
+          <TextField
+            style={{
+              width: '95%',
+              backgroundColor: 'white'
+            }}
+            label="Mensaje"
+            variant="filled"
+            name="message"
+            value={mailFormikValidation.values.message}
+            onChange={mailFormikValidation.handleChange}
+            error={
+              mailFormikValidation.touched.message &&
+              Boolean(mailFormikValidation.errors.message)
+            }
+            helperText={
+              mailFormikValidation.touched.message &&
+              mailFormikValidation.errors.message
+            }
+          />
+
+          <Button
+            style={{ borderRadius: '0px', height: '4em' }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            <SendIcon />
+          </Button>
+        </form>
+      )}
     </>
   )
 }
