@@ -95,6 +95,9 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="firstName"
               placeholder="Nombre"
+              inputProps={{
+                maxLength: 30
+              }}
               value={formik.values.firstName}
               onChange={formik.handleChange}
               error={
@@ -121,6 +124,9 @@ const RegisterValedor = (props) => {
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               helperText={formik.touched.lastName && formik.errors.lastName}
               type="text"
+              inputProps={{
+                maxLength: 30
+              }}
               // onChange={(event) => setLastName(event.target.value)}
               InputProps={{
                 startAdornment: (
@@ -150,6 +156,9 @@ const RegisterValedor = (props) => {
                     <MonetizationOnIcon></MonetizationOnIcon>
                   </InputAdornment>
                 )
+              }}
+              inputProps={{
+                maxLength: 6
               }}
             />
           </Grid>

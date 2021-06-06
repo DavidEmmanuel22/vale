@@ -12,14 +12,32 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import CachedIcon from '@material-ui/icons/Cached'
-import { TextField, Button, InputAdornment, Grid, Fab } from '@material-ui/core'
+import {
+  TextField,
+  Button,
+  InputAdornment,
+  Grid,
+  Fab,
+  Paper
+} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 import { useFormik } from 'formik'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { mailValidation } from './MailValidation'
 import { UserContext } from 'context/userContext'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  buttonPaper: {
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary,
+
+    justifyContent: 'space-between'
+  }
+}))
 
 export const Mail = () => {
+  const classes = useStyles()
   const history = useHistory()
   if (history.location.state) {
     localStorage.setItem('email', history.location.state.email)
@@ -41,7 +59,7 @@ export const Mail = () => {
       setLoading(true)
       const { success, response, error } = await createMessage({
         idChat: localStorage.getItem('idChat'),
-        email: email,
+        email: email || user.email,
         dataMessage: formValue.message
       })
       if (success && response) {
@@ -136,69 +154,74 @@ export const Mail = () => {
 
   return (
     <>
-      <Grid
-        item
-        xs={12}
-        style={{
-          height: `${!user ? '82vh' : '69vh'}`,
-          overflow: 'scroll'
-        }}
-      >
-        <div style={{ padding: '1.2em' }}>
-          {loading ? (
-            <CircularProgress
-              color="secondary"
-              style={{
-                position: 'fixed',
-                width: '66px',
-                height: '66px',
-                left: '44%',
-                top: '50%'
-              }}
-            />
-          ) : (
-            <>
-              {!user ? (
-                <Tooltip
-                  placement="top"
-                  style={{ position: 'fixed', bottom: '9%', zIndex: '99' }}
-                  color="secondary"
-                  onClick={() => {
-                    logout()
-                    history.push('/')
-                  }}
-                  title="Salir"
-                >
-                  <Fab aria-label="exit">
-                    <ExitToAppIcon />
-                  </Fab>
-                </Tooltip>
-              ) : null}
-              {!user && reload ? (
-                <Tooltip
-                  placement="bottom"
-                  style={{
-                    position: 'fixed',
-                    top: '12%',
-                    right: '3%',
-                    zIndex: '99'
-                  }}
-                  color="secondary"
-                  onClick={() => {
-                    window.location.reload(true)
-                  }}
-                  title="Recargar"
-                >
-                  <Fab aria-label="Reload">
-                    <CachedIcon />
-                  </Fab>
-                </Tooltip>
-              ) : null}
+      <Grid item xs={12}>
+        <Paper className={classes.buttonPaper}>
+          <div
+            style={{
+              padding: '1.2em',
+              height: `${messages.length < 5 ? '74vh' : ''}`
+            }}
+          >
+            {loading ? (
+              <CircularProgress
+                color="secondary"
+                style={{
+                  position: 'fixed',
+                  width: '66px',
+                  height: '66px',
+                  left: '44%',
+                  top: '50%'
+                }}
+              />
+            ) : (
+              <>
+                {!user ? (
+                  <Tooltip
+                    placement="top"
+                    style={{
+                      position: 'fixed',
+                      bottom: '12%',
+                      zIndex: '99',
+                      left: '3%'
+                    }}
+                    color="secondary"
+                    onClick={() => {
+                      logout()
+                      history.push('/')
+                    }}
+                    title="Salir"
+                  >
+                    <Fab aria-label="exit">
+                      <ExitToAppIcon />
+                    </Fab>
+                  </Tooltip>
+                ) : null}
+                {!user && reload ? (
+                  <Tooltip
+                    placement="bottom"
+                    style={{
+                      position: 'fixed',
+                      top: '12%',
+                      right: '3%',
+                      zIndex: '99'
+                    }}
+                    color="secondary"
+                    onClick={() => {
+                      window.location.reload(true)
+                    }}
+                    title="Recargar"
+                  >
+                    <Fab aria-label="Reload">
+                      <CachedIcon />
+                    </Fab>
+                  </Tooltip>
+                ) : null}
 
-              <MessageContent />
-            </>
-          )}
-        </div>
+                <MessageContent />
+              </>
+            )}
+          </div>
+        </Paper>
         <div ref={messagesEndRef} />
       </Grid>
       {!loading && (

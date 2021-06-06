@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const Styles = makeStyles(() => ({
   widthnew: {
-    width: 300,
+    width: '100%',
     display: 'flex',
     'flex-direction': 'column',
     marginTop: 30,

@@ -102,12 +102,7 @@ export const Dashboard = () => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <Grid
-        container
-        className="dashboard-container"
-        style={{ justifyContent: 'center' }}
-        spacing={2}
-      >
+      <Grid container className="dashboard-container" spacing={2}>
         {user.role === 'Admin' && (
           <>
             <Grid item xs={12} sm={6} md={4}>
@@ -179,7 +174,7 @@ export const Dashboard = () => {
                 <p>Crear Vale</p>
               </a>
             </Grid>
-            <ValedorDashboard />
+            <ValedorDashboard setShowDialog={showDialog} />
           </>
         )}
       </Grid>

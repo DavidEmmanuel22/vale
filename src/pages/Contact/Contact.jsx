@@ -26,6 +26,7 @@ import { createMail, clientMessageHistory } from 'requests/createMail'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { EmojiPeople } from '@material-ui/icons'
 import { UserContext } from 'context/userContext'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const Contact = () => {
   const [contactForm, setContactForm] = useState({
@@ -52,6 +53,7 @@ const Contact = () => {
   const Alert = (props) => {
     return <MuiAlert elevation={6} variant="filled" {...props} />
   }
+  const matches = useMediaQuery('(max-width:600px)')
 
   const contactFormikValidation = useFormik({
     initialValues: contactForm,
@@ -245,6 +247,9 @@ const Contact = () => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 25
+              }}
             />
 
             <TextField
@@ -285,6 +290,9 @@ const Contact = () => {
                     <EmailIcon color="primary" />
                   </InputAdornment>
                 )
+              }}
+              inputProps={{
+                maxLength: 60
               }}
             />
             <TextField
@@ -357,6 +365,9 @@ const Contact = () => {
                     </InputAdornment>
                   )
                 }}
+                inputProps={{
+                  maxLength: 500
+                }}
               />
             </Hidden>
 
@@ -381,6 +392,28 @@ const Contact = () => {
                 />
               )}
             </div>
+            {matches && (
+              <Hidden xlDown={!showContact} lgDown={!showContact}>
+                <span className="contact__register">
+                  ¿Ya estás registrado?{' '}
+                  <span
+                    onClick={() => {
+                      hiddeContactView()
+                    }}
+                  >
+                    Ingresar
+                  </span>
+                </span>
+              </Hidden>
+            )}
+            {matches && (
+              <Hidden xlDown={showContact} lgDown={showContact}>
+                <span className="contact__register">
+                  ¿No estás registrado?{' '}
+                  <span onClick={() => showContactView()}>Registrate</span>
+                </span>
+              </Hidden>
+            )}
           </form>
         </Grid>
       </Grid>
@@ -403,8 +436,8 @@ const Contact = () => {
           <Slide timeout={600} in mountOnEnter unmountOnExit>
             <div>
               <Alert severity="success">
-                Mensaje enviado, en un momento te redigiremos al historial de
-                mensajes
+                Mensaje enviado, en un momento te redireccionaremos a tu
+                historial de mensajes
               </Alert>
             </div>
           </Slide>

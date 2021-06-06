@@ -10,6 +10,10 @@ import { valesHistory } from 'requests/allValedores'
 import numeral from 'numeral'
 import clsx from 'clsx'
 import { useHistory } from 'react-router'
+import moment from 'moment'
+import 'moment/min/locales'
+
+moment.locale('es')
 
 const columns = [
   { field: '_id', headerName: 'Folio', width: 250 },
@@ -21,7 +25,7 @@ const columns = [
   },
   {
     field: 'credits',
-    headerName: 'Credito',
+    headerName: 'Crédito',
     valueFormatter: (valedor) => numeral(valedor.row.credits).format('$0,0'),
     width: 150
   },
@@ -40,6 +44,8 @@ const columns = [
     field: 'updatedAt',
     headerName: 'Fecha',
 
+    valueFormatter: (valedor) =>
+      moment(valedor.row.updatedAt).format('MM/DD/YYYY  hh:mm A'),
     width: 200
   }
 ]
@@ -53,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 export const ValedorDashboard = () => {
   const classes = useStyles()
   const { user } = useContext(UserContext)
+
   const [vales, setVales] = useState([])
   const history = useHistory()
 
@@ -92,8 +99,8 @@ export const ValedorDashboard = () => {
   const style = useStyle()
   return (
     <>
-      <Paper style={{ height: 570, width: '100%' }} className={style.root}>
-        <div style={{ height: 500, width: '100%' }}>
+      <Paper style={{ height: 470, width: '98%' }} className={style.root}>
+        <div style={{ height: 470, width: '100%' }}>
           <DataGrid
             localeText={GRID_DEFAULT_LOCALE_TEXT}
             rows={sortedVales}

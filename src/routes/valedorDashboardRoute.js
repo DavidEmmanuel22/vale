@@ -34,13 +34,7 @@ const valedorDashboardRoute = [
     user: 'administrator',
     icon: Store
   },
-  {
-    name: 'Compras',
-    path: '/dashboard/compras',
-    component: Dashboard,
-    user: 'administrator',
-    icon: Loyalty
-  },
+
   {
     name: 'Contactos',
     path: '/dashboard/contactos',

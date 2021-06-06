@@ -113,6 +113,9 @@ const RegisterNegocio = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 30
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -137,6 +140,9 @@ const RegisterNegocio = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 60
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -159,6 +165,9 @@ const RegisterNegocio = (props) => {
                     <AssignmentIcon></AssignmentIcon>
                   </InputAdornment>
                 )
+              }}
+              inputProps={{
+                maxLength: 13
               }}
             />
           </Grid>

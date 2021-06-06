@@ -4,6 +4,9 @@
   font-size: 18px;
   font-weight: 800;
 }
+.dashboard-container {
+  justify-content: center;
+}
 .dashboard-container p span {
   font-family: 'Open sans', sans-serif;
   font-size: 18px;
