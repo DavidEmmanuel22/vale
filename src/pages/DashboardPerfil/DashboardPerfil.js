@@ -30,13 +30,13 @@ const validationSchema = yup.object({
   firstName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
-    .max(65, 'Maxímo 65 caracteres')
+    .max(60, 'Maxímo 65 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Nombre es requerido'),
   lastName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
-    .max(65, 'Maxímo 65 caracteres')
+    .max(60, 'Maxímo 65 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Apellido es requerido')
 })
@@ -216,6 +216,9 @@ export const DashboardPerfil = () => {
                         </InputAdornment>
                       )
                     }}
+                    inputProps={{
+                      maxLength: 60
+                    }}
                   />
                   <TextField
                     id="lastName"
@@ -239,6 +242,9 @@ export const DashboardPerfil = () => {
                           <AccountCircle />
                         </InputAdornment>
                       )
+                    }}
+                    inputProps={{
+                      maxLength: 60
                     }}
                   />
                 </Grid>

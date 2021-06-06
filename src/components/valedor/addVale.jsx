@@ -7,6 +7,7 @@ import './registerValedor.css'
 import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { createVale } from 'requests/allValedores'
 import { UserContext } from 'context/userContext'
@@ -19,18 +20,19 @@ const validationSchema = yup.object({
     .string()
     .email('Correo electronico invalido')
     .matches(NameExpression, 'No se permiten espacios vacios')
+    .trim()
     .required('Email requerido'),
   firstName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El nombre contiene caractéres invalidos')
     .required('Nombre requerido'),
   lastName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El nombre contiene caractéres invalidos')
     .required('Apellido requerido'),
   credits: yup
     .string()
@@ -49,7 +51,6 @@ export const AddVale = () => {
     AlertContext
   )
   const { user } = useContext(UserContext)
-  console.log(user)
 
   const formik = useFormik({
     initialValues: {
@@ -97,6 +98,9 @@ export const AddVale = () => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 65
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -118,6 +122,9 @@ export const AddVale = () => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 65
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -137,6 +144,9 @@ export const AddVale = () => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 65
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -144,7 +154,7 @@ export const AddVale = () => {
               className={classes.widthnew}
               id="credits"
               placeholder="Credito"
-              type="text"
+              type="number"
               value={formik.values.credits}
               onChange={formik.handleChange}
               error={formik.touched.credits && Boolean(formik.errors.credits)}
@@ -159,6 +169,11 @@ export const AddVale = () => {
                   </InputAdornment>
                 )
               }}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -166,7 +181,7 @@ export const AddVale = () => {
               className={classes.widthnew}
               id="telefono"
               placeholder="Telefono"
-              type="text"
+              type="number"
               value={formik.values.telefono}
               onChange={formik.handleChange}
               error={formik.touched.telefono && Boolean(formik.errors.telefono)}
@@ -177,9 +192,14 @@ export const AddVale = () => {
                     position="start"
                     className="MuiInputAdornment-root"
                   >
-                    <MonetizationOnIcon></MonetizationOnIcon>
+                    <PhoneAndroidIcon />
                   </InputAdornment>
                 )
+              }}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
               }}
             />
           </Grid>
