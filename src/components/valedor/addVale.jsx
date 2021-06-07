@@ -7,8 +7,10 @@ import './registerValedor.css'
 import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid'
 import { AlertContext } from '../popUp/responsivePopUp'
-import { createValedor } from 'requests/allValedores'
+import { createVale } from 'requests/allValedores'
+import { UserContext } from 'context/userContext'
 
 const NameExpression = /^\S/
 const creditsExpression = /^\d+$/
@@ -18,48 +20,56 @@ const validationSchema = yup.object({
     .string()
     .email('Correo electronico invalido')
     .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Email es requerido'),
+    .trim()
+    .required('Email requerido'),
   firstName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Nombre es requerido'),
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El nombre contiene caractéres invalidos')
+    .required('Nombre requerido'),
   lastName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Apellido es requerido'),
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El nombre contiene caractéres invalidos')
+    .required('Apellido requerido'),
   credits: yup
     .string()
     .matches(creditsExpression, 'Solo nùmeros enteros positivos')
-    .required('Credito es requerido')
+    .required('Credito requerido'),
+  telefono: yup
+    .string()
+    .matches(creditsExpression, 'Solo nùmeros enteros positivos')
+    .required('Telefono requerido')
 })
 
-const RegisterValedor = (props) => {
+export const AddVale = () => {
   const classes = Styles()
 
   const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
     AlertContext
   )
+  const { user } = useContext(UserContext)
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      emailUser: user.email,
       firstName: '',
       lastName: '',
-      credits: ''
+      credits: '',
+      telefono: '',
+      email: ''
     },
     onSubmit: async (valedorUser, { resetForm }) => {
-      const { success, response, error } = await createValedor(valedorUser)
+      const { success, response, error } = await createVale(valedorUser)
       if (success && response) {
         if (response.error) {
           setAlertColor('error')
           setAlertText(response.error)
         } else {
           setAlertColor('success')
-          setAlertText('El valedor fue creado correctamente')
+          setAlertText('El vale fue creado correctamente')
           resetForm({ valedorUser: '' })
         }
       }
@@ -88,6 +98,9 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 65
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -95,9 +108,6 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="firstName"
               placeholder="Nombre"
-              inputProps={{
-                maxLength: 30
-              }}
               value={formik.values.firstName}
               onChange={formik.handleChange}
               error={
@@ -112,6 +122,9 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 65
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -124,16 +137,15 @@ const RegisterValedor = (props) => {
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               helperText={formik.touched.lastName && formik.errors.lastName}
               type="text"
-              inputProps={{
-                maxLength: 30
-              }}
-              // onChange={(event) => setLastName(event.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <AccountCircle />
                   </InputAdornment>
                 )
+              }}
+              inputProps={{
+                maxLength: 65
               }}
             />
           </Grid>
@@ -142,7 +154,7 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="credits"
               placeholder="Credito"
-              type="text"
+              type="number"
               value={formik.values.credits}
               onChange={formik.handleChange}
               error={formik.touched.credits && Boolean(formik.errors.credits)}
@@ -157,8 +169,37 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
-              inputProps={{
-                maxLength: 6
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
+              }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextField
+              className={classes.widthnew}
+              id="telefono"
+              placeholder="Telefono"
+              type="number"
+              value={formik.values.telefono}
+              onChange={formik.handleChange}
+              error={formik.touched.telefono && Boolean(formik.errors.telefono)}
+              helperText={formik.touched.telefono && formik.errors.telefono}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    className="MuiInputAdornment-root"
+                  >
+                    <PhoneAndroidIcon />
+                  </InputAdornment>
+                )
+              }}
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
               }}
             />
           </Grid>
@@ -169,7 +210,7 @@ const RegisterValedor = (props) => {
                 type="submit"
                 color="primary"
               >
-                Registrar Valedor{' '}
+                Asignar Vale{' '}
               </Button>
             </div>
           </Grid>
@@ -178,5 +219,3 @@ const RegisterValedor = (props) => {
     </div>
   )
 }
-
-export default RegisterValedor

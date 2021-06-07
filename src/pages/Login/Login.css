@@ -37,6 +37,7 @@ form.content-form {
   display: flex;
   justify-content: center;
   margin: 10%;
+  text-align: center;
 }
 
 .MuiInputAdornment-root {

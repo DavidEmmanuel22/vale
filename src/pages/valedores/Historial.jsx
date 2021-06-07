@@ -9,6 +9,9 @@ import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import { makeStyles } from '@material-ui/core/styles'
 
 import clsx from 'clsx'
+import moment from 'moment'
+import 'moment/min/locales'
+moment.locale('es')
 
 const Historial = () => {
   const location = useLocation()
@@ -46,7 +49,13 @@ const Historial = () => {
 
   const columns = [
     { field: '_id', headerName: 'Folio', width: 150, flex: 0.1 },
-    { field: 'createdAt', headerName: 'Fecha', width: 250 },
+    {
+      field: 'createdAt',
+      headerName: 'Fecha',
+      width: 250,
+      valueFormatter: (valedor) =>
+        moment(valedor.row.createdAt).format('MM/DD/YYYY  hh:mm A')
+    },
     {
       field: 'credits',
       headerName: 'Crédito',
@@ -77,11 +86,10 @@ const Historial = () => {
 
   return (
     <div style={{ textAlign: 'center' }}>
-      {/* <NavBar /> */}
       {isLoading ? (
         <CircularProgress></CircularProgress>
       ) : (
-        <Paper style={{ height: 570, width: '100%' }} className={classes.root}>
+        <Paper style={{ height: 550, width: '100%' }} className={classes.root}>
           <DataGrid
             pageSize={9}
             components={

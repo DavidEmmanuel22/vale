@@ -37,17 +37,20 @@ const BackgroundPaper = () => {
       <div className="hero-image" style={{ backgroundImage: `url(${Image})` }}>
         <div className="hero-text">
           {!notReadMessage ? (
-            <CircularProgress
-              style={{
-                position: 'absolute',
-                top: '30%',
-                left: '46%'
-              }}
-              size={24}
-              color="secondary"
-            />
-          ) : (
             <>
+              <CircularProgress
+                style={{
+                  position: 'absolute',
+                  top: '30%',
+                  left: '46%'
+                }}
+                size={24}
+                color="secondary"
+              />
+              <h2>Cargando Mensajes...</h2>
+            </>
+          ) : (
+            <div>
               <h3>Nuevos mensajes</h3>
               <h1>{notReadMessage}</h1>
               <Link to="/dashboard" style={{ width: '100%', display: 'flex' }}>
@@ -55,7 +58,7 @@ const BackgroundPaper = () => {
                   Ver Más
                 </Button>
               </Link>
-            </>
+            </div>
           )}
         </div>
       </div>

@@ -8,11 +8,9 @@ import {
 } from '@material-ui/icons'
 import { DashboardPerfil } from 'pages/DashboardPerfil/DashboardPerfil'
 import Negocios from 'pages/negocios/Negocios'
-import Valedores from 'pages/valedores/Valedores'
-import History from 'pages/valedores/Historial'
 import React from 'react'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
-import DashboardMessages from '../components/DashboardMessages/index'
+import { Mail } from 'pages/Mail/Mail'
 
 const valedorDashboardRoute = [
   {
@@ -36,17 +34,11 @@ const valedorDashboardRoute = [
     user: 'administrator',
     icon: Store
   },
-  {
-    name: 'Compras',
-    path: '/dashboard/compras',
-    component: Dashboard,
-    user: 'administrator',
-    icon: Loyalty
-  },
+
   {
     name: 'Contactos',
     path: '/dashboard/contactos',
-    component: DashboardMessages,
+    component: Mail,
     user: 'administrator',
     icon: Contacts
   }

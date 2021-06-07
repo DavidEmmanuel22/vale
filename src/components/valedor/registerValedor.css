@@ -48,7 +48,7 @@ form.content-form {
 
 a {
   color: #007772;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .MuiInputBase-input:focus {

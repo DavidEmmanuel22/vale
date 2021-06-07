@@ -30,13 +30,13 @@ const validationSchema = yup.object({
   firstName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
-    .max(65, 'Maxímo 65 caracteres')
+    .max(60, 'Maxímo 65 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Nombre es requerido'),
   lastName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
-    .max(65, 'Maxímo 65 caracteres')
+    .max(60, 'Maxímo 65 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
     .required('Apellido es requerido')
 })
@@ -81,9 +81,6 @@ export const DashboardPerfil = () => {
     onSubmit: (userUpdated) => {
       handleUpdate(userUpdated.firstName, userUpdated.lastName)
     },
-    handleChange: (u) => {
-      console.log(u)
-    },
     validationSchema: updateUserSelfSchema
   })
 
@@ -100,6 +97,24 @@ export const DashboardPerfil = () => {
     } else {
       setOnEdit(true)
     }
+  }
+
+  const handleCancel = () => {
+    const name = {
+      target: {
+        id: 'firstName',
+        value: firstName
+      }
+    }
+    const last = {
+      target: {
+        id: 'lastName',
+        value: lastName
+      }
+    }
+    formik.handleChange(name)
+    formik.handleChange(last)
+    setOnEdit(false)
   }
 
   const handleChangePassword = async () => {
@@ -161,7 +176,7 @@ export const DashboardPerfil = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={user.role === 'Admin' ? 9 : 12}>
           <Paper className={classes.paper}>
             <form onSubmit={formik.handleSubmit} className={classes.root}>
               <Grid container spacing={3}>
@@ -216,6 +231,9 @@ export const DashboardPerfil = () => {
                         </InputAdornment>
                       )
                     }}
+                    inputProps={{
+                      maxLength: 60
+                    }}
                   />
                   <TextField
                     id="lastName"
@@ -239,6 +257,9 @@ export const DashboardPerfil = () => {
                           <AccountCircle />
                         </InputAdornment>
                       )
+                    }}
+                    inputProps={{
+                      maxLength: 60
                     }}
                   />
                 </Grid>
@@ -283,7 +304,7 @@ export const DashboardPerfil = () => {
                         variant="contained"
                         color="secondary"
                         style={{}}
-                        onClick={() => setOnEdit(false)}
+                        onClick={handleCancel}
                       >
                         Cancelar
                       </Button>
@@ -312,67 +333,69 @@ export const DashboardPerfil = () => {
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={3} lg={3}>
-          <Hidden smDown>
-            <BackgroundPaper></BackgroundPaper>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setModalTitle('valedor')
-                setShowModal(true)
-              }}
-              startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
-              style={{
-                width: '100%',
-                marginTop: '10px',
-                marginBottom: '10px',
-                borderRadius: '15px',
-                height: '21%'
-              }}
-            >
-              Registrar Valedor
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setModalTitle('negocio')
-                setShowModal(true)
-              }}
-              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
-              style={{ width: '100%', borderRadius: '15px', height: '21%' }}
-            >
-              Registrar Negocio
-            </Button>
-          </Hidden>
-          <Hidden mdUp>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setModalTitle('valedor')
-                setShowModal(true)
-              }}
-              startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
-              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
-            >
-              Registrar Valedor
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setModalTitle('negocio')
-                setShowModal(true)
-              }}
-              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
-              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
-            >
-              Registrar Negocio
-            </Button>
-          </Hidden>
-        </Grid>
+        {user.role === 'Admin' && (
+          <Grid item xs={12} md={3} lg={3}>
+            <Hidden smDown>
+              <BackgroundPaper></BackgroundPaper>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  setModalTitle('valedor')
+                  setShowModal(true)
+                }}
+                startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
+                style={{
+                  width: '100%',
+                  marginTop: '10px',
+                  marginBottom: '10px',
+                  borderRadius: '15px',
+                  height: '21%'
+                }}
+              >
+                Registrar Valedor
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setModalTitle('negocio')
+                  setShowModal(true)
+                }}
+                startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
+                style={{ width: '100%', borderRadius: '15px', height: '21%' }}
+              >
+                Registrar Negocio
+              </Button>
+            </Hidden>
+            <Hidden mdUp>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  setModalTitle('valedor')
+                  setShowModal(true)
+                }}
+                startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
+                style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+              >
+                Registrar Valedor
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  setModalTitle('negocio')
+                  setShowModal(true)
+                }}
+                startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
+                style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
+              >
+                Registrar Negocio
+              </Button>
+            </Hidden>
+          </Grid>
+        )}
       </Grid>
       {modalTitle === 'valedor' ? (
         <ResponsivePopUp

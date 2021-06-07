@@ -71,39 +71,43 @@ const Login = () => {
           </div>
         </Hidden>
 
-        <div>
-          <form className="content-form" onSubmit={submit}>
-            <TextField
-              className={classes.widthnew}
-              id="input-with-icon-textfield"
-              placeholder="Correo"
-              type="email"
-              onChange={(event) => setEmail(event.target.value)}
-              InputProps={emailInputProps}
-            />
-            <TextField
-              className={classes.widthnew}
-              id="input-with-icon-password"
-              placeholder="Contraseña"
-              type="password"
-              autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
-              InputProps={passwordInputProps}
-            />
-            <div className="button-login">
-              <Button
-                className={classes.widthbutton}
-                type="submit"
-                color="primary"
-              >
-                Iniciar Sesión
-              </Button>
-            </div>
-            <div className="forgot-password">
-              <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
-            </div>
-          </form>
-        </div>
+        <form className="content-form" onSubmit={submit}>
+          <TextField
+            className={classes.widthnew}
+            id="input-with-icon-textfield"
+            placeholder="Correo"
+            type="email"
+            onChange={(event) => setEmail(event.target.value)}
+            InputProps={emailInputProps}
+            inputProps={{
+              maxLength: 60
+            }}
+          />
+          <TextField
+            className={classes.widthnew}
+            id="input-with-icon-password"
+            placeholder="Contraseña"
+            type="password"
+            autoComplete="current-password"
+            onChange={(event) => setPassword(event.target.value)}
+            InputProps={passwordInputProps}
+            inputProps={{
+              maxLength: 30
+            }}
+          />
+          <div className="button-login">
+            <Button
+              className={classes.widthbutton}
+              type="submit"
+              color="primary"
+            >
+              Iniciar Sesión
+            </Button>
+          </div>
+          <div className="forgot-password">
+            <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+          </div>
+        </form>
       </div>
     </div>
   )

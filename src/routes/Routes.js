@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Switch, Route } from 'react-router-dom'
-import { Home } from '../pages/Home/Home'
+import { ClientNavBar, Home } from '../pages/Home/Home'
 import { Dashboard } from 'pages/Dashboard/Dashboard'
 import ForgotPassword from 'components/ForgotPasword/ForgotPassword'
 import UpdatePassword from 'components/ResetPassword/UpdatePassword'
@@ -16,6 +16,7 @@ import dashboardRoutes from './dashboardRoutes'
 import valedorRoutes from './valedorDashboardRoute'
 import historyRoute from './history'
 import { Mail } from 'pages/Mail/Mail'
+import { Vale } from 'pages/valedores/Vale'
 
 const Routes = () => {
   const { isAuthenticated, user } = useContext(UserContext)
@@ -69,11 +70,18 @@ const Routes = () => {
       </Route>
 
       <Route exact path="/mail">
+        <ClientNavBar />
         <Mail />
       </Route>
 
       <Route exact path="/contact">
         <Contact />
+      </Route>
+
+      <Route exact path="/vale">
+        <GeneralLayout routes={valedorRoutes}>
+          <Vale />
+        </GeneralLayout>
       </Route>
 
       <Route exact path="/">

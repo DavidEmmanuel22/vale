@@ -1,20 +1,43 @@
 import { ClientNavBar } from 'pages/Home/Home'
 import React, { useEffect, useState, useContext, useRef } from 'react'
 import { useHistory } from 'react-router'
-import { createMessage, messageHistory, readMessage } from 'requests/createMail'
+import {
+  createMessage,
+  messageHistory,
+  readMessage,
+  clientMessageHistory
+} from 'requests/createMail'
 import { MessageRight, MessageLeft } from './Messages'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import CachedIcon from '@material-ui/icons/Cached'
-import { TextField, Button, InputAdornment, Grid, Fab } from '@material-ui/core'
+import {
+  TextField,
+  Button,
+  InputAdornment,
+  Grid,
+  Fab,
+  Paper
+} from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 import { useFormik } from 'formik'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { mailValidation } from './MailValidation'
 import { UserContext } from 'context/userContext'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  buttonPaper: {
+    padding: theme.spacing(2),
+    color: theme.palette.text.secondary,
+
+    justifyContent: 'space-between'
+  }
+}))
 
 export const Mail = () => {
+  const classes = useStyles()
   const history = useHistory()
   if (history.location.state) {
     localStorage.setItem('email', history.location.state.email)
@@ -36,7 +59,7 @@ export const Mail = () => {
       setLoading(true)
       const { success, response, error } = await createMessage({
         idChat: localStorage.getItem('idChat'),
-        email: email,
+        email: email || user.email,
         dataMessage: formValue.message
       })
       if (success && response) {
@@ -120,7 +143,7 @@ export const Mail = () => {
   const MessageContent = () => (
     <>
       {messages.map((msg, _) =>
-        msg.message.email === email ? (
+        msg.message.email === email || msg.message.email === user.email ? (
           <MessageRight key={_} data={msg} />
         ) : (
           <MessageLeft key={_} data={msg} />
@@ -131,106 +154,116 @@ export const Mail = () => {
 
   return (
     <>
-      <Grid item xs={12} style={{maxHeight:`${window.screen.height - 400}px`, overflow:"scroll"}}>
-        {!user ? <ClientNavBar /> : null}
-        <div style={{ padding: '1.2em',  }}>
-          {loading ? (
-            <CircularProgress
-              color="secondary"
-              style={{
-                position: 'fixed',
-                width: '66px',
-                height: '66px',
-                left: '44%',
-                top: '50%'
-              }}
-            />
-          ) : (
-            <>
-              {!user ? (
-                <Tooltip
-                  placement="top"
-                  style={{ position: 'fixed', bottom: '9%', zIndex: '99' }}
-                  color="secondary"
-                  onClick={() => {
-                    logout()
-                    history.push('/')
-                  }}
-                  title="Salir"
-                >
-                  <Fab aria-label="exit">
-                    <ExitToAppIcon />
-                  </Fab>
-                </Tooltip>
-              ) : null}
-              {!user && reload ? (
-                <Tooltip
-                  placement="bottom"
-                  style={{
-                    position: 'fixed',
-                    top: '12%',
-                    right: '3%',
-                    zIndex: '99'
-                  }}
-                  color="secondary"
-                  onClick={() => {
-                    window.location.reload(true)
-                  }}
-                  title="Recargar"
-                >
-                  <Fab aria-label="Reload">
-                    <CachedIcon />
-                  </Fab>
-                </Tooltip>
-              ) : null}
-
-              <MessageContent />
-            </>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {!loading && (
-          <form
-            onSubmit={mailFormikValidation.handleSubmit}
+      <Grid item xs={12}>
+        <Paper className={classes.buttonPaper}>
+          <div
             style={{
-              position: 'sticky',
-              bottom: '0',
-
-              display: 'flex'
+              padding: '1.2em',
+              height: `${messages.length < 5 ? '74vh' : ''}`
             }}
           >
-            <TextField
-              style={{
-                width: '95%',
-                backgroundColor: 'white'
-              }}
-              label="Mensaje"
-              variant="filled"
-              name="message"
-              value={mailFormikValidation.values.message}
-              onChange={mailFormikValidation.handleChange}
-              error={
-                mailFormikValidation.touched.message &&
-                Boolean(mailFormikValidation.errors.message)
-              }
-              helperText={
-                mailFormikValidation.touched.message &&
-                mailFormikValidation.errors.message
-              }
-            />
+            {loading ? (
+              <CircularProgress
+                color="secondary"
+                style={{
+                  position: 'fixed',
+                  width: '66px',
+                  height: '66px',
+                  left: '44%',
+                  top: '50%'
+                }}
+              />
+            ) : (
+              <>
+                {!user ? (
+                  <Tooltip
+                    placement="top"
+                    style={{
+                      position: 'fixed',
+                      bottom: '12%',
+                      zIndex: '99',
+                      left: '3%'
+                    }}
+                    color="secondary"
+                    onClick={() => {
+                      logout()
+                      history.push('/')
+                    }}
+                    title="Salir"
+                  >
+                    <Fab aria-label="exit">
+                      <ExitToAppIcon />
+                    </Fab>
+                  </Tooltip>
+                ) : null}
+                {!user && reload ? (
+                  <Tooltip
+                    placement="bottom"
+                    style={{
+                      position: 'fixed',
+                      top: '12%',
+                      right: '3%',
+                      zIndex: '99'
+                    }}
+                    color="secondary"
+                    onClick={() => {
+                      window.location.reload(true)
+                    }}
+                    title="Recargar"
+                  >
+                    <Fab aria-label="Reload">
+                      <CachedIcon />
+                    </Fab>
+                  </Tooltip>
+                ) : null}
 
-            <Button
-              style={{ borderRadius: '0px' }}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              <SendIcon />
-            </Button>
-          </form>
-        )}
+                <MessageContent />
+              </>
+            )}
+          </div>
+        </Paper>
+        <div ref={messagesEndRef} />
       </Grid>
+      {!loading && (
+        <form
+          onSubmit={mailFormikValidation.handleSubmit}
+          style={{
+            position: 'sticky',
+            bottom: '0',
+
+            display: 'flex'
+          }}
+        >
+          <TextField
+            style={{
+              width: '95%',
+              backgroundColor: 'white'
+            }}
+            label="Mensaje"
+            variant="filled"
+            name="message"
+            value={mailFormikValidation.values.message}
+            onChange={mailFormikValidation.handleChange}
+            error={
+              mailFormikValidation.touched.message &&
+              Boolean(mailFormikValidation.errors.message)
+            }
+            helperText={
+              mailFormikValidation.touched.message &&
+              mailFormikValidation.errors.message
+            }
+          />
+
+          <Button
+            style={{ borderRadius: '0px', height: '4em' }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            <SendIcon />
+          </Button>
+        </form>
+      )}
     </>
   )
 }

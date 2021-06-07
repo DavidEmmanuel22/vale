@@ -6,6 +6,17 @@
   background-size: 100% 100%;
 }
 
+.contact__register {
+  margin-top: 0.6em;
+  font-size: 21px;
+}
+
+.contact__register span {
+  color: #f9a02b;
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .contact__img {
   width: 100%;
   height: 81vh;

@@ -364,7 +364,7 @@ const Negocios = () => {
             {isLoading ? (
               <CircularProgress></CircularProgress>
             ) : (
-              <h2>{`El negocio: ${searchBusiness} no está registrado.`}</h2>
+              <h2>{`El negocio: "${searchBusiness}" no está registrado.`}</h2>
             )}
           </div>
         )}

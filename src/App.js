@@ -11,6 +11,7 @@ export default function App() {
   useEffect(() => {
     Aos.init({ duration: 1500 })
   }, [])
+
   return (
     <div>
       <ThemeProvider theme={blueTheme}>

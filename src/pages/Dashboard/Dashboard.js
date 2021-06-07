@@ -14,14 +14,45 @@ import { ChatRoom } from './ChatRoom/ChatRoom'
 import DashboardMessages from 'components/DashboardMessages'
 import { UserContext } from 'context/userContext'
 import { ValedorDashboard } from './ValedorDashboard/ValedorDashboard'
+import { AddVale } from 'components/valedor/addVale'
+import { clientMessageHistory } from 'requests/createMail'
 
 export const Dashboard = () => {
   const classes = dashboardStyles()
   const [showDialog, setShowDialog] = useState(false)
   const [dialogName, setDialogName] = useState('valedor')
+  const [messages, setMessages] = useState([])
   const { user } = useContext(UserContext)
 
-  console.log(user)
+  //console.log(messages)
+
+  useEffect(() => {
+    async function getMessages() {
+      const { success, response, error } = await clientMessageHistory(
+        user.email
+      )
+      if (success && response) {
+        //console.log(response.data)
+        setMessages(response.data)
+        if (response.data.length > 5) {
+          //setScroll(true)
+        }
+        if (response.data.length > 0) {
+          const resp = response.data[0].message.idChat
+          localStorage.setItem('idChat', resp)
+        }
+        //setLoading(false)
+        //logOutMessages()
+        // setTimeout(() => {
+        //   setReload(true)
+        // }, 3000)
+      } else {
+        //console.log(error)
+      }
+    }
+    getMessages()
+    //scrollToBottom()
+  }, [])
 
   const handleDialog = () => {
     if (dialogName === 'valedor') {
@@ -32,6 +63,17 @@ export const Dashboard = () => {
           title={'Registra un valedor'}
         >
           <RegisterValedor />
+        </ResponsivePopUp>
+      )
+    }
+    if (dialogName === 'vale') {
+      return (
+        <ResponsivePopUp
+          open={showDialog}
+          setOpen={setShowDialog}
+          title={'Crear Vale'}
+        >
+          <AddVale />
         </ResponsivePopUp>
       )
     }
@@ -63,7 +105,6 @@ export const Dashboard = () => {
       <Grid container className="dashboard-container" spacing={2}>
         {user.role === 'Admin' && (
           <>
-            {' '}
             <Grid item xs={12} sm={6} md={4}>
               <a
                 className="register-button"
@@ -110,12 +151,32 @@ export const Dashboard = () => {
               </a>
             </Grid>
             <Grid item xs={12}>
-              <DashboardMessages showAll={true} />
+              <DashboardMessages showAll={false} />
             </Grid>
           </>
         )}
 
-        {user.role === 'Valedor' && <ValedorDashboard />}
+        {user.role === 'Valedor' && (
+          <>
+            <Grid item xs={12} sm={6} md={4}>
+              <a
+                className="register-button"
+                style={{ marginBottom: 10 }}
+                href="#"
+                onClick={() => {
+                  setShowDialog(true)
+                  setDialogName('vale')
+                }}
+              >
+                <div>
+                  <AddIcon className={classes.addIcon} />
+                </div>
+                <p>Crear Vale</p>
+              </a>
+            </Grid>
+            <ValedorDashboard setShowDialog={showDialog} />
+          </>
+        )}
       </Grid>
 
       {showDialog && handleDialog()}
