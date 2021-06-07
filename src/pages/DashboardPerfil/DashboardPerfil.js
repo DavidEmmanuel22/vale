@@ -23,6 +23,7 @@ import Fab from '@material-ui/core/Fab'
 import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import UploadImage from './image/UploadImage'
 
 const NameExpression = /^\S/
 
@@ -189,23 +190,27 @@ export const DashboardPerfil = () => {
                   </Collapse>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  {/* <img
-                    onClick={() => (onEdit ? console.log('test') : null)}
-                    width="100"
-                    src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-                  ></img> */}
-                  <input
-                    accept="image/*"
-                    id="contained-button-file"
-                    className={classes.input}
-                    multiple
-                    type="file"
-                  />
+                  {/*<img
+										onClick={() => (onEdit ? console.log('test') : null)}
+										width="100"
+										src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+									></img>*/}
+                  <UploadImage onEdit={onEdit}></UploadImage>
+                  {/*
+									<input
+										accept="image/*"
+										id="contained-button-file"
+										className={classes.input}
+										multiple
+										type="file"
+									/>
+									
                   <label htmlFor="contained-button-file">
                     <Fab component="span" className={classes.button}>
                       <AddPhotoAlternateIcon />
                     </Fab>
-                  </label>
+				  </label>
+				  */}
                 </Grid>
                 <Grid item xs={12} sm={6} md={5}>
                   <TextField
