@@ -9,7 +9,7 @@ const MAX_LAST_NAME = 35
 export const updateUserSelfSchema = yup.object({
   firstName: yup
     .string()
-    .trim('Sin espacios al principio')
+    .trim('No se permiten espacios al principio o al final')
     .required('El nombre es requerido')
     .min(
       MIN_FIRST_NAME,
@@ -22,7 +22,7 @@ export const updateUserSelfSchema = yup.object({
     .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'Nombre invalido'),
   lastName: yup
     .string()
-    .trim()
+    .trim('No se permiten espacios al principio o al final')
     .required('El apellido es requerido')
     .min(
       MIN_LAST_NAME,

@@ -81,9 +81,6 @@ export const DashboardPerfil = () => {
     onSubmit: (userUpdated) => {
       handleUpdate(userUpdated.firstName, userUpdated.lastName)
     },
-    handleChange: (u) => {
-      console.log(u)
-    },
     validationSchema: updateUserSelfSchema
   })
 
@@ -100,6 +97,24 @@ export const DashboardPerfil = () => {
     } else {
       setOnEdit(true)
     }
+  }
+
+  const handleCancel = () => {
+    const name = {
+      target: {
+        id: 'firstName',
+        value: firstName
+      }
+    }
+    const last = {
+      target: {
+        id: 'lastName',
+        value: lastName
+      }
+    }
+    formik.handleChange(name)
+    formik.handleChange(last)
+    setOnEdit(false)
   }
 
   const handleChangePassword = async () => {
@@ -289,7 +304,7 @@ export const DashboardPerfil = () => {
                         variant="contained"
                         color="secondary"
                         style={{}}
-                        onClick={() => setOnEdit(false)}
+                        onClick={handleCancel}
                       >
                         Cancelar
                       </Button>
