@@ -1,3 +1,4 @@
+/* eslint-disable no-unneeded-ternary */
 import { Grid, Paper } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router'
@@ -135,20 +136,21 @@ const DashboardMessages = ({ showAll }) => {
           {!loading ? (
             <CircularProgress size={24} />
           ) : (
-            showAllMessages.slice(0, `${chats.length}`).map((chat, _) => (
-              <div key={_}>
-                <NewMessage
-                  clicked={() => {
-                    history.push({
-                      state: { email: user.email }
-                    })
-                    localStorage.setItem('idChat', chat.chats._id)
-                    setShowMessages(!showMessages)
-                  }}
-                  chat={chat.chats}
-                ></NewMessage>
-              </div>
-            ))
+            showAllMessages /*.filter((chat) => showAll ? showAll : !chat.chats.readAdmin)*/
+              .map((chat, _) => (
+                <div key={_}>
+                  <NewMessage
+                    clicked={() => {
+                      history.push({
+                        state: { email: user.email }
+                      })
+                      localStorage.setItem('idChat', chat.chats._id)
+                      setShowMessages(!showMessages)
+                    }}
+                    chat={chat.chats}
+                  ></NewMessage>
+                </div>
+              ))
           )}
           {isEmpty && loading ? (
             <>
