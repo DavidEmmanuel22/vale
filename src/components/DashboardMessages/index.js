@@ -1,4 +1,5 @@
-import { Grid, Paper } from '@material-ui/core'
+/* eslint-disable no-unneeded-ternary */
+import { Grid, Paper, TextField, InputAdornment } from '@material-ui/core'
 import React, { useEffect, useState, useContext } from 'react'
 import { useHistory } from 'react-router'
 import {
@@ -17,6 +18,8 @@ import { UserContext } from 'context/userContext'
 import moment from 'moment'
 import 'moment/min/locales'
 import noMessage from '../../assets/Index/noMessage.svg'
+import SearchIcon from '@material-ui/icons/Search'
+
 moment.locale('es')
 
 const DashboardMessages = ({ showAll }) => {
@@ -26,6 +29,7 @@ const DashboardMessages = ({ showAll }) => {
   const [showMessages, setShowMessages] = useState(false)
   const [loading, setLoading] = useState(false)
   const [read, setRead] = useState(0)
+  const [searchMessage, setSearchMessage] = useState('')
 
   const [notReadMessage, setNotReadMessage] = useState('')
   useEffect(() => {
@@ -51,7 +55,18 @@ const DashboardMessages = ({ showAll }) => {
     return readed
   })
 
-  const showAllMessages = newMessage.sort((a, b) => {
+  const filterMessages = newMessage.filter((message, index) => {
+    if (
+      message.chats.name.toLowerCase().includes(searchMessage.toLowerCase()) ||
+      message.chats.from.toLowerCase().includes(searchMessage.toLowerCase())
+    ) {
+      return true
+    } else {
+      return false
+    }
+  })
+
+  const showAllMessages = filterMessages.sort((a, b) => {
     return !b.chats.readAdmin - !a.chats.readAdmin
   })
 
@@ -132,23 +147,44 @@ const DashboardMessages = ({ showAll }) => {
         <Mail />
       ) : (
         <div style={styles.messagesStyles}>
+          <TextField
+            placeholder="Buscar Mensaje..."
+            classes={{}}
+            style={{ marginBottom: '10px' }}
+            inputProps={{
+              maxLength: 30
+            }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment
+                  position="start"
+                  className="MuiInputAdornment-root"
+                >
+                  <SearchIcon fontSize="large" />
+                </InputAdornment>
+              )
+            }}
+            value={searchMessage}
+            onChange={(e) => setSearchMessage(e.target.value)}
+          />
           {!loading ? (
             <CircularProgress size={24} />
           ) : (
-            showAllMessages.slice(0, `${chats.length}`).map((chat, _) => (
-              <div key={_}>
-                <NewMessage
-                  clicked={() => {
-                    history.push({
-                      state: { email: user.email }
-                    })
-                    localStorage.setItem('idChat', chat.chats._id)
-                    setShowMessages(!showMessages)
-                  }}
-                  chat={chat.chats}
-                ></NewMessage>
-              </div>
-            ))
+            showAllMessages /*.filter((chat) => showAll ? showAll : !chat.chats.readAdmin)*/
+              .map((chat, _) => (
+                <div key={_}>
+                  <NewMessage
+                    clicked={() => {
+                      history.push({
+                        state: { email: user.email }
+                      })
+                      localStorage.setItem('idChat', chat.chats._id)
+                      setShowMessages(!showMessages)
+                    }}
+                    chat={chat.chats}
+                  ></NewMessage>
+                </div>
+              ))
           )}
           {isEmpty && loading ? (
             <>
