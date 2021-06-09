@@ -38,7 +38,10 @@ export const updateUserSelfSchema = yup.object({
 export const addCreditSchema = yup.object({
   email: yup
     .string()
-    .required('El correo electronico es requerido')
-    .email('El correo electronico es invalido'),
-  credits: yup.number().positive('El credito debe ser positivo')
+    .required('El correo electrónico es requerido')
+    .email('El correo electrónico es invalido'),
+  credits: yup
+    .number()
+    .positive('Credito es requerido')
+    .required('El crédito es requerido')
 })

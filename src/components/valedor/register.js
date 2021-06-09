@@ -18,18 +18,22 @@ const validationSchema = yup.object({
     .string()
     .email('Correo electronico invalido')
     .matches(NameExpression, 'No se permiten espacios vacios')
+    .trim()
     .required('Email es requerido'),
   firstName: yup
     .string()
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El nombre contiene caractéres invalidos')
     .required('Nombre es requerido'),
   lastName: yup
     .string()
+    .trim()
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .min(3, 'Mínimo 3 caracteres')
     .max(65, 'Maxímo 65 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
+    .matches(/^[a-zA-ZÀ-ÿñÑ\s]*$/, 'El apellido contiene caractéres invalidos')
     .required('Apellido es requerido'),
   credits: yup
     .string()
@@ -88,6 +92,9 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 60
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -95,9 +102,6 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="firstName"
               placeholder="Nombre"
-              inputProps={{
-                maxLength: 30
-              }}
               value={formik.values.firstName}
               onChange={formik.handleChange}
               error={
@@ -112,6 +116,9 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 30
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -124,9 +131,6 @@ const RegisterValedor = (props) => {
               error={formik.touched.lastName && Boolean(formik.errors.lastName)}
               helperText={formik.touched.lastName && formik.errors.lastName}
               type="text"
-              inputProps={{
-                maxLength: 30
-              }}
               // onChange={(event) => setLastName(event.target.value)}
               InputProps={{
                 startAdornment: (
@@ -135,6 +139,9 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
+              inputProps={{
+                maxLength: 30
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -142,7 +149,7 @@ const RegisterValedor = (props) => {
               className={classes.widthnew}
               id="credits"
               placeholder="Credito"
-              type="text"
+              type="number"
               value={formik.values.credits}
               onChange={formik.handleChange}
               error={formik.touched.credits && Boolean(formik.errors.credits)}
@@ -157,8 +164,10 @@ const RegisterValedor = (props) => {
                   </InputAdornment>
                 )
               }}
-              inputProps={{
-                maxLength: 6
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 10)
               }}
             />
           </Grid>
