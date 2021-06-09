@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import { Hidden } from '@material-ui/core'
+import { getValedores, enableValedor } from 'requests/allValedores'
 import AddIcon from '@material-ui/icons/Add'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import RegisterValedor from 'components/valedor/register'
@@ -10,19 +11,36 @@ import RegisterCredit from 'components/credito/register'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import { dashboardStyles } from './DashboardStyles'
 import './dashboard.css'
-import { ChatRoom } from './ChatRoom/ChatRoom'
 import DashboardMessages from 'components/DashboardMessages'
 import { UserContext } from 'context/userContext'
 import { ValedorDashboard } from './ValedorDashboard/ValedorDashboard'
 import { AddVale } from 'components/valedor/addVale'
 import { clientMessageHistory } from 'requests/createMail'
+import ValedoresChart from './ValedoresChart'
 
 export const Dashboard = () => {
   const classes = dashboardStyles()
   const [showDialog, setShowDialog] = useState(false)
   const [dialogName, setDialogName] = useState('valedor')
   const [messages, setMessages] = useState([])
+  const [valedores, setValedores] = useState([])
   const { user } = useContext(UserContext)
+
+  // useEffect(() => {
+  //   async function getAllValedores() {
+  //     //setIsLoading(true)
+  //     const { success, response, error } = await getValedores()
+  //     if (success && response) {
+  //       setValedores(response.data)
+
+  //       // setIsLoading(false)
+  //     } else {
+  //       //setIsLoading(false)
+  //     }
+  //   }
+
+  //   getAllValedores()
+  // }, [])
 
   //console.log(messages)
 
@@ -106,9 +124,8 @@ export const Dashboard = () => {
         {user.role === 'Admin' && (
           <>
             <Grid item xs={12} sm={6} md={4}>
-              <a
+              <div
                 className="register-button"
-                href="#"
                 onClick={() => {
                   setShowDialog(true)
                   setDialogName('valedor')
@@ -117,13 +134,16 @@ export const Dashboard = () => {
                 <div>
                   <AddIcon className={classes.addIcon} />
                 </div>
-                <p>Agregar Valedor</p>
-              </a>
+
+                <p>
+                  {/* <p>Total:{valedores.length}</p> */}
+                  Agregar Valedor
+                </p>
+              </div>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <a
+              <div
                 className="register-button"
-                href="#"
                 onClick={() => {
                   setShowDialog(true)
                   setDialogName('negocio')
@@ -133,12 +153,11 @@ export const Dashboard = () => {
                   <AddIcon className={classes.addIcon} />
                 </div>
                 <p>Agregar Negocio</p>
-              </a>
+              </div>
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
-              <a
+              <div
                 className="register-button"
-                href="#"
                 onClick={() => {
                   setShowDialog(true)
                   setDialogName('credit')
@@ -148,7 +167,7 @@ export const Dashboard = () => {
                   <AddIcon className={classes.addIcon} />
                 </div>
                 <p>Agregar Crédito</p>
-              </a>
+              </div>
             </Grid>
             <Grid item xs={12}>
               <DashboardMessages showAll={false} />
