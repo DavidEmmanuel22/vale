@@ -190,12 +190,14 @@ export const DashboardPerfil = () => {
                   </Collapse>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  {/*<img
-										onClick={() => (onEdit ? console.log('test') : null)}
-										width="100"
-										src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-									></img>*/}
-                  <UploadImage onEdit={onEdit}></UploadImage>
+                  {
+                    <img
+                      onClick={() => (onEdit ? console.log('test') : null)}
+                      width="100"
+                      src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+                    ></img>
+                  }
+                  {/*<UploadImage onEdit={onEdit}></UploadImage>*/}
                   {/*
 									<input
 										accept="image/*"
