@@ -120,7 +120,10 @@ export default function GeneralLayout({ children, routes }) {
         ></TemporaryDrawer>
       </Hidden>
       <main className={`${classes.content}`}>
-        <Container style={{ padding: 9 }} maxWidth={false}>
+        <Container
+          style={{ height: '100vh', padding: 9, paddingTop: '90px' }}
+          maxWidth={false}
+        >
           {hasLoad && children}
         </Container>
       </main>
