@@ -193,7 +193,7 @@ export const Dashboard = () => {
                 <p>Crear Vale</p>
               </a>
             </Grid>
-            <ValedorDashboard setShowDialog={showDialog} />
+            <ValedorDashboard showDialog={showDialog} />
           </>
         )}
       </Grid>
