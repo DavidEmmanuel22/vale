@@ -80,7 +80,9 @@ const Negocios = () => {
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
-      color: theme.palette.text.secondary
+      color: theme.palette.text.secondary,
+      maxHeight: '90%',
+      overflowY: 'scroll'
     },
     fab: {
       margin: theme.spacing(2)
@@ -168,8 +170,8 @@ const Negocios = () => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Grid container spacing={3} style={{ height: '100%' }}>
+      <Grid item xs={12} style={{ height: '100%' }}>
         {user.role === 'Admin' && (
           <Paper
             style={{
