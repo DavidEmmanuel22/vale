@@ -90,7 +90,7 @@ const RegisterCredit = (props) => {
         setDisabledBtn(true)
         setTimeout(() => {
           handleClose()
-        }, 6000)
+        }, 3000)
       }
     }
   }

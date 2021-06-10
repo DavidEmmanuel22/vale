@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import moment from 'moment'
 import 'moment/min/locales'
+import { NoRow } from 'assets/Helpers/NoRow'
 moment.locale('es')
 
 const Historial = () => {
@@ -97,7 +98,7 @@ const Historial = () => {
                 ? {
                     Toolbar: GridToolbar
                   }
-                : null
+                : { NoRowsOverlay: NoRow }
             }
             localeText={GRID_DEFAULT_LOCALE_TEXT}
             getRowId={(row) => row._id}

@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { DataGrid, GridToolbar } from '@material-ui/data-grid'
+import { DataGrid } from '@material-ui/data-grid'
 import { Paper } from '@material-ui/core'
-import Button from '@material-ui/core/Button'
 import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../../themes/gridText'
-import AddCircleTwoToneIcon from '@material-ui/icons/AddCircleTwoTone'
 import { UserContext } from 'context/userContext'
 import { valesHistory } from 'requests/allValedores'
 import numeral from 'numeral'
@@ -12,6 +10,7 @@ import clsx from 'clsx'
 import { useHistory } from 'react-router'
 import moment from 'moment'
 import 'moment/min/locales'
+import { NoRow } from 'assets/Helpers/NoRow'
 
 moment.locale('es')
 
@@ -57,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export const ValedorDashboard = () => {
-  const classes = useStyles()
+  //const classes = useStyles()
   const { user } = useContext(UserContext)
 
   const [vales, setVales] = useState([])
@@ -96,6 +95,7 @@ export const ValedorDashboard = () => {
       getAllVales()
     }
   }, [])
+
   const style = useStyle()
   return (
     <>
@@ -105,6 +105,9 @@ export const ValedorDashboard = () => {
             localeText={GRID_DEFAULT_LOCALE_TEXT}
             rows={sortedVales}
             getRowId={(row) => row._id}
+            components={{
+              NoRowsOverlay: NoRow
+            }}
             columns={columns}
             pageSize={6}
             onRowClick={(id) => {

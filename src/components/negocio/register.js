@@ -18,7 +18,8 @@ const validationSchema = yup.object({
     .string()
     .email('Correo Electronico Invalido')
     .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Email es requerido'),
+    .required('Email es requerido')
+    .trim(),
   bussinesName: yup
     .string()
     .min(3, 'Mínimo 3 caracteres')
@@ -33,6 +34,7 @@ const validationSchema = yup.object({
     .required('Dirección es requerida'),
   bussinesRfc: yup
     .string()
+    .matches(NameExpression, 'No se permiten espacios vacios')
     .min(13, 'Mínimo 13 caracteres')
     .matches(RfcExpression, 'Ingrese un RFC valido')
     .required('RFC es requerido')
