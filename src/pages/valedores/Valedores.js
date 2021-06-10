@@ -50,7 +50,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: 'center',
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    maxHeight: `90%`,
+    overflowY: 'scroll'
   },
   buttonPaper: {
     padding: theme.spacing(2),
@@ -125,8 +127,8 @@ const Valedores = () => {
   }
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
+    <Grid container spacing={3} style={{ height: '100%' }}>
+      <Grid item xs={12} style={{ height: '100%' }}>
         <Paper
           className={classes.buttonPaper}
           style={{
@@ -134,6 +136,9 @@ const Valedores = () => {
             textAlign: 'center',
             marginBottom: '1.2rem',
             justifyContent: 'space-between'
+            /*position: "sticky",
+						top:"100px",
+						zIndex:200*/
           }}
         >
           <TextField
