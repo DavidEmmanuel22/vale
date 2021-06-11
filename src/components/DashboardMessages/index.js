@@ -19,6 +19,7 @@ import moment from 'moment'
 import 'moment/min/locales'
 import noMessage from '../../assets/Index/noMessage.svg'
 import SearchIcon from '@material-ui/icons/Search'
+import './DashboardMessages.css'
 
 moment.locale('es')
 
@@ -124,16 +125,38 @@ const DashboardMessages = ({ showAll }) => {
             </IconButton>
           </Tooltip>
         ) : (
-          <Tooltip
-            color="secondary"
-            onClick={() => window.location.reload(true)}
-            title="Recargar"
-          >
-            <IconButton aria-label="delete">
-              <CachedIcon />
-            </IconButton>
-          </Tooltip>
+          <div>
+            <TextField
+              placeholder="Buscar Mensaje..."
+              className="dashboardMessages__searchInput"
+              inputProps={{
+                maxLength: 30
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    className="MuiInputAdornment-root"
+                  >
+                    <SearchIcon fontSize="large" />
+                  </InputAdornment>
+                )
+              }}
+              value={searchMessage}
+              onChange={(e) => setSearchMessage(e.target.value)}
+            />
+            <Tooltip
+              color="secondary"
+              onClick={() => window.location.reload(true)}
+              title="Recargar"
+            >
+              <IconButton aria-label="delete">
+                <CachedIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
         )}
+
         <h2>{`${
           isEmpty
             ? 'Sin Nuevos Mensajes'
@@ -147,26 +170,6 @@ const DashboardMessages = ({ showAll }) => {
         <Mail />
       ) : (
         <div style={styles.messagesStyles}>
-          <TextField
-            placeholder="Buscar Mensaje..."
-            classes={{}}
-            style={{ marginBottom: '10px' }}
-            inputProps={{
-              maxLength: 30
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  className="MuiInputAdornment-root"
-                >
-                  <SearchIcon fontSize="large" />
-                </InputAdornment>
-              )
-            }}
-            value={searchMessage}
-            onChange={(e) => setSearchMessage(e.target.value)}
-          />
           {!loading ? (
             <CircularProgress size={24} />
           ) : (
