@@ -1,0 +1,8 @@
+.dashboardMessages__searchInput {
+  margin-bottom: 10px;
+  color: white !important;
+}
+
+.dashboardMessages__searchInput .MuiInputBase-input {
+  color: white !important;
+}
