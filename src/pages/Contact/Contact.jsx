@@ -94,7 +94,8 @@ const Contact = () => {
         values: {
           name: '',
           email: '',
-          phoneNumber: ''
+          phoneNumber: '',
+          message: ''
         }
       })
     },
