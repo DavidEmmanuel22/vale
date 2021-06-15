@@ -96,13 +96,12 @@ const DashboardMessages = ({ showAll }) => {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '50px',
+      height: '60px',
       borderRadius: '10px 10px 0 0',
       color: '#fff',
       position: 'sticky',
       top: '80px',
-      zIndex: '100',
-      padding: '30px'
+      zIndex: '100'
     },
     messagesStyles: {
       padding: '20px 30px'
@@ -125,7 +124,13 @@ const DashboardMessages = ({ showAll }) => {
             </IconButton>
           </Tooltip>
         ) : (
-          <div>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
             <TextField
               placeholder="Buscar Mensaje..."
               className="dashboardMessages__searchInput"
@@ -145,26 +150,28 @@ const DashboardMessages = ({ showAll }) => {
               value={searchMessage}
               onChange={(e) => setSearchMessage(e.target.value)}
             />
-            <Tooltip
-              color="secondary"
-              onClick={() => window.location.reload(true)}
-              title="Recargar"
-            >
-              <IconButton aria-label="delete">
-                <CachedIcon />
-              </IconButton>
-            </Tooltip>
           </div>
         )}
 
-        <h2>{`${
-          isEmpty
-            ? 'Sin Nuevos Mensajes'
-            : !showAll
-            ? `
+        <h2>
+          <Tooltip
+            color="secondary"
+            onClick={() => window.location.reload(true)}
+            title="Recargar"
+          >
+            <IconButton aria-label="delete">
+              <CachedIcon />
+            </IconButton>
+          </Tooltip>
+          {`${
+            isEmpty
+              ? 'Sin Nuevos Mensajes'
+              : !showAll
+              ? `
                 Nuevos Mensajes: ${notReadMessage}`
-            : `Nuevos Mensajes`
-        }`}</h2>
+              : `Nuevos Mensajes`
+          }`}
+        </h2>
       </div>
       {showMessages ? (
         <Mail />
