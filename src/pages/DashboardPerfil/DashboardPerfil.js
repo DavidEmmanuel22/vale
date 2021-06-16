@@ -54,17 +54,19 @@ export const DashboardPerfil = () => {
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
   const history = useHistory()
-  const [imgData, setImgData] = useState(null)
-
-  console.log(user)
+  const [imgData, setImgData] = useState(false)
+  const [imgUrl, setImageUrl] = useState(user.imgUrl)
+  const [reload, setReload] = useState(false)
 
   const onChangePicture = (e) => {
     if (e.target.files[0]) {
+      console.log('canging image')
       const reader = new FileReader()
       reader.addEventListener('load', () => {
         setImgData(reader.result)
       })
       reader.readAsDataURL(e.target.files[0])
+      setImageUrl(URL.createObjectURL(e.target.files[0]))
     }
   }
 
@@ -96,7 +98,7 @@ export const DashboardPerfil = () => {
     onSubmit: (userUpdated) => {
       handleUpdate(userUpdated.firstName, userUpdated.lastName)
 
-      handleUploadImage()
+      imgData && handleUploadImage()
     },
     validationSchema: updateUserSelfSchema
   })
@@ -105,7 +107,7 @@ export const DashboardPerfil = () => {
     setEmail(user.email)
     setFirstName(user.firstName)
     setLastName(user.lastName)
-    setImgData(user.urlImage)
+    setImageUrl(user.urlImage)
   }, [user])
 
   const handleEdit = () => {
@@ -166,11 +168,11 @@ export const DashboardPerfil = () => {
     const { success, response, error } = await updateUser(user._id, body)
     //console.log(response)
     if (success && response) {
+      console.log(response)
       if (response.data.error) {
         setAlertColor('error')
         setAlertText(response.data.error)
         setShowAlert(true)
-        login('hello')
       } else {
         setAlertColor('success')
         setAlertText(response.data.message)
@@ -193,13 +195,14 @@ export const DashboardPerfil = () => {
   }
 
   const handleUploadImage = async () => {
-    // console.log(body)
+    console.log('uploading')
     const { success, response, error } = await uploadImage(imgData)
+
     //console.log(response)
     if (success && response) {
       //setAlertColor('success')
-      setImgData(response.data.urlImage)
       setOnEdit(false)
+      history.go(0)
       // setShowAlert(true)
       // login(response.data.token)
       // setOnEdit(false)
@@ -262,7 +265,24 @@ export const DashboardPerfil = () => {
                     />
                     // </label>
                   )}
-                  <BadgeAvatars image={user.urlImage} />
+                  {onEdit ? (
+                    <BadgeAvatars
+                      onEdit={onEdit}
+                      image={
+                        imgUrl ||
+                        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
+                      }
+                    />
+                  ) : (
+                    <BadgeAvatars
+                      onEdit={onEdit}
+                      image={
+                        imgUrl ||
+                        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
+                      }
+                    />
+                  )}
+
                   {/* {onEdit ? null : (
                     // <img
                     //   style={{
