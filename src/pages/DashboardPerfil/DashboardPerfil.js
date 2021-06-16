@@ -12,7 +12,7 @@ import ResponsivePopUp from 'components/popUp/responsivePopUp'
 import RegisterNegocio from 'components/negocio/register'
 import RegisterValedor from 'components/valedor/register'
 import Hidden from '@material-ui/core/Hidden'
-import { updateUser } from 'requests/allValedores'
+import { updateUser, uploadImage } from 'requests/allValedores'
 import { Alert } from '@material-ui/lab'
 import { Link, useHistory } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
@@ -23,7 +23,7 @@ import Fab from '@material-ui/core/Fab'
 import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import UploadImage from './image/UploadImage'
+import BadgeAvatars from './Avatar'
 
 const NameExpression = /^\S/
 
@@ -54,6 +54,21 @@ export const DashboardPerfil = () => {
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
   const history = useHistory()
+  const [imgData, setImgData] = useState(false)
+  const [imgUrl, setImageUrl] = useState(user.imgUrl)
+  const [reload, setReload] = useState(false)
+
+  const onChangePicture = (e) => {
+    if (e.target.files[0]) {
+      console.log('canging image')
+      const reader = new FileReader()
+      reader.addEventListener('load', () => {
+        setImgData(reader.result)
+      })
+      reader.readAsDataURL(e.target.files[0])
+      setImageUrl(URL.createObjectURL(e.target.files[0]))
+    }
+  }
 
   const matches = useMediaQuery('(min-width:600px)')
 
@@ -79,8 +94,11 @@ export const DashboardPerfil = () => {
       firstName,
       lastName
     },
+
     onSubmit: (userUpdated) => {
       handleUpdate(userUpdated.firstName, userUpdated.lastName)
+
+      imgData && handleUploadImage()
     },
     validationSchema: updateUserSelfSchema
   })
@@ -89,6 +107,7 @@ export const DashboardPerfil = () => {
     setEmail(user.email)
     setFirstName(user.firstName)
     setLastName(user.lastName)
+    setImageUrl(user.urlImage)
   }, [user])
 
   const handleEdit = () => {
@@ -116,6 +135,7 @@ export const DashboardPerfil = () => {
     formik.handleChange(name)
     formik.handleChange(last)
     setOnEdit(false)
+    setImgData(null)
   }
 
   const handleChangePassword = async () => {
@@ -148,11 +168,11 @@ export const DashboardPerfil = () => {
     const { success, response, error } = await updateUser(user._id, body)
     //console.log(response)
     if (success && response) {
+      console.log(response)
       if (response.data.error) {
         setAlertColor('error')
         setAlertText(response.data.error)
         setShowAlert(true)
-        login('hello')
       } else {
         setAlertColor('success')
         setAlertText(response.data.message)
@@ -174,6 +194,24 @@ export const DashboardPerfil = () => {
     }
   }
 
+  const handleUploadImage = async () => {
+    console.log('uploading')
+    const { success, response, error } = await uploadImage(imgData)
+
+    //console.log(response)
+    if (success && response) {
+      //setAlertColor('success')
+      setOnEdit(false)
+      history.go(0)
+      // setShowAlert(true)
+      // login(response.data.token)
+      // setOnEdit(false)
+    }
+    //setTimeout(() => {
+    // setShowAlert(false)
+    //}, 8000)
+  }
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -190,29 +228,78 @@ export const DashboardPerfil = () => {
                   </Collapse>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                  {
-                    <img
-                      onClick={() => (onEdit ? console.log('test') : null)}
-                      width="100"
-                      src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
-                    ></img>
-                  }
-                  {/*<UploadImage onEdit={onEdit}></UploadImage>*/}
-                  {/*
-									<input
-										accept="image/*"
-										id="contained-button-file"
-										className={classes.input}
-										multiple
-										type="file"
-									/>
-									
-                  <label htmlFor="contained-button-file">
-                    <Fab component="span" className={classes.button}>
-                      <AddPhotoAlternateIcon />
-                    </Fab>
-				  </label>
-				  */}
+                  {onEdit && (
+                    // <label htmlFor="contained-button-file">
+                    //   <img
+                    //     style={{
+                    //       width: 100,
+                    //       height: 100,
+                    //       objectFit: 'contain',
+                    //       borderRadius: '1em'
+                    //     }}
+                    //     src={!imgData ? user.urlImage : imgData}
+                    //   ></img>
+                    //   <Fab
+                    //     component="span"
+                    //     className={classes.button}
+                    //     style={{
+                    //       position: 'relative',
+                    //       right: '10%',
+                    //       bottom: '40%'
+                    //     }}
+                    //   >
+                    //     <AddPhotoAlternateIcon />
+                    //   </Fab>
+
+                    <input
+                      accept="image/*"
+                      // style={{
+                      //   position: 'relative',
+                      //   bottom: '12%',
+                      //   left: '15%'
+                      // }}
+                      id="contained-button-file"
+                      className={classes.input}
+                      onChange={(e) => onChangePicture(e)}
+                      type="file"
+                    />
+                    // </label>
+                  )}
+                  {onEdit ? (
+                    <BadgeAvatars
+                      onEdit={onEdit}
+                      image={
+                        imgUrl ||
+                        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
+                      }
+                    />
+                  ) : (
+                    <BadgeAvatars
+                      onEdit={onEdit}
+                      image={
+                        imgUrl ||
+                        'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
+                      }
+                    />
+                  )}
+
+                  {/* {onEdit ? null : (
+                    // <img
+                    //   style={{
+                    //     width: 100,
+                    //     height: 100,
+                    //     objectFit: 'contain',
+                    //     borderRadius: '1em'
+                    //   }}
+                    //   src={
+                    //     user.urlImage ||
+                    //     'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png' ||
+                    //     imgData
+                    //   }
+                    // ></img>
+                   
+                  )}
+                  <UploadImage onEdit={onEdit}></UploadImage> */}
                 </Grid>
                 <Grid item xs={12} sm={6} md={5}>
                   <TextField
