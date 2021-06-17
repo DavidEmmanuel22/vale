@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    maxHeight: `90%`,
+    maxHeight: `80vh`,
     overflowY: 'scroll'
   },
   buttonPaper: {

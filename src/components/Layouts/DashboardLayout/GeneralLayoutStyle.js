@@ -66,7 +66,7 @@ export const GeneralLayoutStyle = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: '#e5e5e5',
     paddingTop: '',
-    height: '100vh'
+    minHeight: '100vh'
   },
   dividerLine: {
     margin: '30px 0px'

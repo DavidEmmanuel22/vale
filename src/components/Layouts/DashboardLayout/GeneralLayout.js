@@ -121,7 +121,7 @@ export default function GeneralLayout({ children, routes }) {
       </Hidden>
       <main className={`${classes.content}`}>
         <Container
-          style={{ height: '100vh', padding: 9, paddingTop: '90px' }}
+          style={{ minHeight: '100vh', padding: 9, paddingTop: '90px' }}
           maxWidth={false}
         >
           {hasLoad && children}
