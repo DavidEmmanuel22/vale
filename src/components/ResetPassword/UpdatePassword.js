@@ -58,10 +58,10 @@ const UpdatePassword = () => {
             setAlertText('Tu contraseña se ha reestablecido')
           }
           setShowAlert(true)
-          setTimeout(() => {
-            setShowAlert(false)
-            window.location.href = '/'
-          }, 3000)
+          /*setTimeout(() => {
+						setShowAlert(false)
+						//window.location.href = '/'
+					}, 3000)*/
         }
       } else if (data.password !== data.passwordCheck) {
         setAlertColor('error')
@@ -82,7 +82,9 @@ const UpdatePassword = () => {
           className={classes.PaperContent}
         >
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
-            <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
+            <a href="/">
+              <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
+            </a>
             <h2 className={classes.H2Password}>Cambiar Contraseña</h2>
             <Typography className={classes.TypoEmail}>
               Ingrese su nueva contraseña
@@ -137,6 +139,9 @@ const UpdatePassword = () => {
               >
                 Click para restablecer contraseña
               </Button>
+              <a href="/" style={{ float: 'right', marginTop: '10px' }}>
+                Iniciar Sesion
+              </a>
             </div>
           </form>
         </Paper>

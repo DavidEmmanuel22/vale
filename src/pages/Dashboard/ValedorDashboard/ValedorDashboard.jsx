@@ -110,6 +110,7 @@ export const ValedorDashboard = ({ showDialog = false }) => {
 						columns={columns}
 						pageSize={6}
 						onRowClick={(id) => {
+							console.log(id);
 							const idFolio = id.id
 							const credits = id.row.credits
 							if (credits > 0) {

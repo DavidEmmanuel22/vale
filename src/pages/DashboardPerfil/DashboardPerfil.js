@@ -64,6 +64,7 @@ export const DashboardPerfil = () => {
       const reader = new FileReader()
       reader.addEventListener('load', () => {
         setImgData(reader.result)
+        console.log(reader.result)
       })
       reader.readAsDataURL(e.target.files[0])
       setImageUrl(URL.createObjectURL(e.target.files[0]))

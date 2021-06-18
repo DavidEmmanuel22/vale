@@ -57,7 +57,7 @@ const ForgotPassword = () => {
           setShowAlert(true)
           setTimeout(() => {
             setChecked(true)
-            history.push('/')
+            //history.push('/')
           }, 3000)
         }
         setShowAlert(true)
@@ -108,8 +108,20 @@ const ForgotPassword = () => {
                 )
               }}
             />
-            <Collapse in={showAlert}>
+            <Collapse
+              in={showAlert}
+              style={{ marginTop: '10px', marginBottom: '10px' }}
+            >
               <Alert severity={alertColor}>{alertText}</Alert>
+            </Collapse>
+            <Collapse in={checked}>
+              <a
+                style={{ float: 'right' }}
+                href="#"
+                onClick={() => history.push('/')}
+              >
+                Iniciar sesion
+              </a>
             </Collapse>
             <div>
               <Button
