@@ -132,7 +132,7 @@ export const DashboardPerfil = () => {
     setFirstName(user.firstName)
     setLastName(user.lastName)
     setImageUrl(user.urlImage)
-  }, [user])
+  }, [user, onEdit])
 
   const handleEdit = () => {
     if (onEdit) {
@@ -160,6 +160,7 @@ export const DashboardPerfil = () => {
     formik.handleChange(last)
     setOnEdit(false)
     setImgData(null)
+    setImageUrl(user.imgUrl)
   }
 
   const handleChangePassword = async () => {
