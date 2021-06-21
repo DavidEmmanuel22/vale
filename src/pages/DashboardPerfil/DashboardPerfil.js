@@ -56,18 +56,41 @@ export const DashboardPerfil = () => {
   const history = useHistory()
   const [imgData, setImgData] = useState(false)
   const [imgUrl, setImageUrl] = useState(user.imgUrl)
+  const [imageTitle, setImageTitle] = useState('')
   const [reload, setReload] = useState(false)
+
+  const valiateImage = (imageName) => {
+    const validExtensions = ['png', 'jpg', 'jpeg', 'gif']
+
+    const fileName = imageName.split('.')
+    const extension = fileName[fileName.length - 1]
+    //console.log("extension", extension);
+
+    return validExtensions.find((ext) => ext === extension)
+  }
 
   const onChangePicture = (e) => {
     if (e.target.files[0]) {
-      console.log('canging image')
-      const reader = new FileReader()
-      reader.addEventListener('load', () => {
-        setImgData(reader.result)
-        console.log(reader.result)
-      })
-      reader.readAsDataURL(e.target.files[0])
-      setImageUrl(URL.createObjectURL(e.target.files[0]))
+      if (valiateImage(e.target.files[0].name)) {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+          setImgData(reader.result)
+          setImageTitle(e.target.files[0].name)
+          console.log('Image was charged')
+        })
+        reader.readAsDataURL(e.target.files[0])
+        setImageUrl(URL.createObjectURL(e.target.files[0]))
+      } else {
+        //console.log("invalid image");
+        setAlertColor('error')
+        setAlertText(
+          'Solo se permite subir imagenes de tipo png, jpg, jpeg y gif'
+        )
+        setShowAlert(true)
+        setTimeout(() => {
+          setShowAlert(false)
+        }, 5000)
+      }
     }
   }
 
@@ -197,13 +220,14 @@ export const DashboardPerfil = () => {
 
   const handleUploadImage = async () => {
     console.log('uploading')
-    const { success, response, error } = await uploadImage(imgData)
+    const { success, response, error } = await uploadImage(imgData, imageTitle)
 
-    //console.log(response)
+    console.log(response)
     if (success && response) {
-      //setAlertColor('success')
+      setImageUrl(response.data.urlImage)
+      login(response.data.token)
       setOnEdit(false)
-      history.go(0)
+      //history.go(0)
       // setShowAlert(true)
       // login(response.data.token)
       // setOnEdit(false)
@@ -273,6 +297,7 @@ export const DashboardPerfil = () => {
                         imgUrl ||
                         'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
                       }
+                      setImageUrl={setImageUrl}
                     />
                   ) : (
                     <BadgeAvatars

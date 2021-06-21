@@ -15,11 +15,12 @@ export const createValedor = (valedor) => {
   })
 }
 
-export const uploadImage = (image) => {
+export const uploadImage = (image, imageTitle) => {
   return fetchRequest('/upload-picks', {
     method: 'POST',
     body: JSON.stringify({
-      imageBase: image
+      imageBase: image,
+      nameImage: imageTitle
     })
   })
 }
