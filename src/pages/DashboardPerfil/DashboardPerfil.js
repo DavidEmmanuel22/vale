@@ -54,10 +54,9 @@ export const DashboardPerfil = () => {
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
   const history = useHistory()
-  const [imgData, setImgData] = useState(false)
+  const [imgData, setImgData] = useState('')
   const [imgUrl, setImageUrl] = useState(user.imgUrl)
   const [imageTitle, setImageTitle] = useState('')
-  const [reload, setReload] = useState(false)
 
   const valiateImage = (imageName) => {
     const validExtensions = ['png', 'jpg', 'jpeg', 'gif']
@@ -185,10 +184,18 @@ export const DashboardPerfil = () => {
   }
 
   const handleUpdate = async (firstName, lastName) => {
-    const body = {
-      firstName: firstName.trim(),
-      lastName: lastName.trim()
-    }
+    const body =
+      imgData && imgUrl
+        ? {
+            firstName: firstName.trim(),
+            lastName: lastName.trim()
+          }
+        : {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            urlImage:
+              'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
+          }
     // console.log(body)
     const { success, response, error } = await updateUser(user._id, body)
     //console.log(response)
@@ -299,6 +306,7 @@ export const DashboardPerfil = () => {
                         'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
                       }
                       setImageUrl={setImageUrl}
+                      setImgData={setImgData}
                     />
                   ) : (
                     <BadgeAvatars

@@ -18,18 +18,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-export default function BadgeAvatars({ image, onEdit, setImageUrl }) {
+export default function BadgeAvatars({ image, onEdit, setImageUrl, setImgData }) {
 	const classes = useStyles()
-	const [imgData, setImgData] = useState(null)
 
-	const onChangePicture = (e) => {
-		if (e.target.files[0]) {
-			const reader = new FileReader()
-			reader.addEventListener('load', () => {
-				setImgData(reader.result)
-			})
-			reader.readAsDataURL(e.target.files[0])
-		}
+	const handleDeleteImage = () => {
+		setImageUrl(false)
+		setImgData(false)
+		console.log("deleting");
 	}
 
 	return (
@@ -48,11 +43,9 @@ export default function BadgeAvatars({ image, onEdit, setImageUrl }) {
 							<label htmlFor="contained-button-file" style={{ cursor: "pointer", display: onEdit ? "block" : "none" }}>
 								<AddPhotoAlternateIcon color="secondary" />
 							</label>
-							{/*
-								<label style={{ cursor: "pointer", display: !onEdit ? "none" : image === "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" ? "none" : "block" }} onClick={() => setImageUrl("https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png")}>
-									<DeleteIcon color="primary" />
-								</label>
-							*/}
+							<label style={{ cursor: "pointer", display: !onEdit ? "none" : image === "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png" ? "none" : "block" }} onClick={handleDeleteImage}>
+								<DeleteIcon color="primary" />
+							</label>
 						</>
 					}
 				>
