@@ -58,10 +58,12 @@ const UpdatePassword = () => {
             setAlertText('Tu contraseña se ha reestablecido')
           }
           setShowAlert(true)
-          /*setTimeout(() => {
-						setShowAlert(false)
-						//window.location.href = '/'
-					}, 3000)*/
+          setTimeout(() => {
+            setShowAlert(false)
+            if (alertColor === 'success') {
+              window.location.href = '/'
+            }
+          }, 5000)
         }
       } else if (data.password !== data.passwordCheck) {
         setAlertColor('error')

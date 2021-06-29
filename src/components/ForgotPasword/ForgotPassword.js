@@ -86,7 +86,9 @@ const ForgotPassword = () => {
             </div>
           </div>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
-            <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
+            <a href="/">
+              <img className={classes.ImageLogo} src={Logo} alt="Logo"></img>
+            </a>
             <h2 className={classes.H2Password}>Recuperar Contraseña</h2>
             <Typography className={classes.TypoEmail}>
               Ingrese su correo, para cambiar su contraseña
