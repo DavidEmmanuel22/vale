@@ -1,6 +1,12 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+// import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
+import { GoogleApiWrapper } from 'google-maps-react'
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng
+} from 'react-places-autocomplete'
 import { TextField, Button, InputAdornment, Grid } from '@material-ui/core'
 import './registerNegocio.css'
 import Styles from './Styles'
@@ -10,6 +16,18 @@ import DirectionsIcon from '@material-ui/icons/Directions'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { createNegocio } from 'requests/allNegocios'
+// import GoogleMap from 'components/Map/GoogleMap'
+import GoogleMapExample from 'components/Map/GoogleMapExample'
+import AnotherMap from 'components/Map/AnotherMap'
+import { UserContext } from 'context/userContext'
+import { compose, withStateHandlers } from 'recompose'
+import {
+  InfoWindow,
+  withGoogleMap,
+  withScriptjs,
+  GoogleMap,
+  Marker
+} from 'react-google-maps'
 
 const NameExpression = /^\S/
 const RfcExpression = /^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})\d{2}((0[1-9]|1[012])(0[1-9]|1\d|2[0-8])|(0[13456789]|1[012])(29|30)|(0[13578]|1[02])31)(\w{2})([A|a|0-9]{1}))$|^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})([02468][048]|[13579][26])0229)(\w{2})([A|a|0-9]{1})$/
@@ -40,18 +58,53 @@ const validationSchema = yup.object({
     .required('RFC es requerido')
 })
 
-const RegisterNegocio = (props) => {
+export const RegisterNegocio = (props) => {
   const classes = Styles()
+  const [address, setAddress] = useState('')
+  const [position, setPosition] = useState({
+    lat: 0,
+    lng: 0
+  })
+
+  const Map = compose(
+    withStateHandlers(
+      () => ({
+        isMarkerShown: false,
+        markerPosition: null
+      }),
+      {
+        onMapClick: ({ isMarkerShown }) => (e) => ({
+          markerPosition: e.latLng,
+          isMarkerShown: true
+        })
+      }
+    ),
+    withScriptjs,
+    withGoogleMap
+  )((props) => (
+    <GoogleMap
+      defaultZoom={15}
+      defaultCenter={position}
+      onClick={props.onMapClick}
+    >
+      {console.log(props.markerPosition)}
+      {props.isMarkerShown && <Marker position={props.markerPosition} />}
+    </GoogleMap>
+  ))
+  console.log(address, position)
   const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
     AlertContext
   )
-  //setAlertColor("error")
-  //setAlertText("hello")
+  const handleSelect = async (value) => {
+    const results = await geocodeByAddress(value)
+    const latlng = await getLatLng(results[0])
+    setPosition({ lat: latlng.lat, lng: latlng.lng })
+  }
   const formik = useFormik({
     initialValues: {
       email: '',
       bussinesName: '',
-      bussinesAdress: '',
+      bussinesAdress: address,
       bussinesRfc: ''
     },
     onSubmit: async (negocio, { resetForm }) => {
@@ -69,6 +122,15 @@ const RegisterNegocio = (props) => {
     },
     validationSchema: validationSchema
   })
+
+  const onMapClick = (t, map, coord) => {
+    //console.log(map)
+    const { latLng } = coord
+    const lat = latLng.lat()
+    const lng = latLng.lng()
+
+    console.log(lat, lng)
+  }
 
   return (
     <div className="register-valedor">
@@ -121,31 +183,57 @@ const RegisterNegocio = (props) => {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <TextField
-              className={classes.widthnew}
-              id="bussinesAdress"
-              placeholder="Direcciòn del negocio"
-              value={formik.values.bussinesAdress || ''}
-              onChange={formik.handleChange}
-              error={
-                formik.touched.bussinesAdress &&
-                Boolean(formik.errors.bussinesAdress)
-              }
-              helperText={
-                formik.touched.bussinesAdress && formik.errors.bussinesAdress
-              }
-              type="text"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <DirectionsIcon></DirectionsIcon>
-                  </InputAdornment>
-                )
+            <PlacesAutocomplete
+              value={address}
+              onChange={(value) => {
+                setAddress(value)
+                handleSelect(value)
               }}
-              inputProps={{
-                maxLength: 60
-              }}
-            />
+            >
+              {({
+                getInputProps,
+                suggestions,
+                getSuggestionItemProps,
+                loading
+              }) => (
+                <div>
+                  <TextField
+                    className={classes.widthnew}
+                    {...getInputProps({ placeholder: 'Dirección del negocio' })}
+                    type="text"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <DirectionsIcon></DirectionsIcon>
+                        </InputAdornment>
+                      )
+                    }}
+                    inputProps={{
+                      maxLength: 60
+                    }}
+                  />
+                  <div>
+                    {loading ? <div>...Cargando</div> : null}
+                    {suggestions.map((suggestion) => {
+                      const style = {
+                        backgroundColor: suggestion.active
+                          ? '#00777257'
+                          : '#fff'
+                      }
+
+                      return (
+                        <div
+                          {...getSuggestionItemProps(suggestion, { style })}
+                          key={suggestion.description}
+                        >
+                          {suggestion.description}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </PlacesAutocomplete>
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
@@ -186,8 +274,55 @@ const RegisterNegocio = (props) => {
           </Grid>
         </Grid>
       </form>
+      {/* <GoogleMap coordinates={position} /> */}
+
+      {/* <GoogleMapExample /> */}
+      {/* <Map google={window.google} zoom={18} initialCenter={position}>
+        <Marker
+          title={'The marker`s title will appear as a tooltip.'}
+          name={'SOMA'}
+          draggable={true}
+          onDragend={(e) => console.log(e)}
+          position={position}
+        />
+        <InfoWindow
+          marker={this.state.activeMarker}
+          visible={this.state.showingInfoWindow}
+        >
+          <div>
+            <h1>{this.state.selectedPlace.name}</h1>
+          </div>
+        </InfoWindow>
+      </Map> */}
+      {/* <AnotherMap /> */}
+
+      {/* <Map
+        google={window.google}
+        initialCenter={{
+          lat: position.lat,
+          lng: position.lng
+        }}
+        center={{
+          lat: position.lat,
+          lng: position.lng
+        }}
+        zoom={16}
+        onClick={onMapClick}
+      >
+        <Marker position={position} />
+      </Map> */}
+
+      <Map
+        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
     </div>
   )
 }
 
-export default RegisterNegocio
+export default GoogleApiWrapper({
+  apiKey: 'AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw'
+  //LoadingContainer: LoadingContainer
+})(RegisterNegocio)
