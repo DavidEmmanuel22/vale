@@ -57,8 +57,8 @@ const ForgotPassword = () => {
           setShowAlert(true)
           setTimeout(() => {
             setChecked(true)
-            //history.push('/')
-          }, 3000)
+            history.push('/')
+          }, 5000)
         }
         setShowAlert(true)
         // setTimeout(() => {
@@ -77,13 +77,7 @@ const ForgotPassword = () => {
           className={classes.PaperContent}
         >
           <div>
-            <div style={{ top: '0' }} className={classes.FooterText}>
-              <Zoom in={checked}>
-                <Typography className={classes.TextInicia}>
-                  <a href="/">Inicia Sesión</a>
-                </Typography>
-              </Zoom>
-            </div>
+            <div style={{ top: '0' }} className={classes.FooterText}></div>
           </div>
           <form className={classes.FormContent} onSubmit={formik.handleSubmit}>
             <a href="/">

@@ -87,6 +87,10 @@ export default function ResponsivePopUp({
     }
   }, [alertText])
 
+  useEffect(() => {
+    !showAlert && setAlertText('')
+  }, [showAlert])
+
   return (
     <div>
       <Dialog
