@@ -68,8 +68,9 @@ export const Mail = () => {
           setGetMessage(true)
         } else {
           // console.log(response)
-          setLoading(false)
-          readMsg()
+		  setLoading(false)
+		  readMsg()
+		  scrollToBottom()
         }
       }
       mailFormikValidation.resetForm({
@@ -102,7 +103,7 @@ export const Mail = () => {
   const scrollToBottom = () => {
     if (messagesEndRef && messagesEndRef.current && scroll) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+	}
   }
 
   useEffect(() => {
@@ -134,7 +135,8 @@ export const Mail = () => {
       idChat: localStorage.getItem('idChat')
     })
     if (success && response) {
-      //console.log(response.data)
+	  //console.log(response.data)
+	  window.scrollTo(0, document.body.scrollHeight)
     } else {
       //console.log(error)
     }
