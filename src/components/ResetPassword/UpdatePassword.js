@@ -141,9 +141,6 @@ const UpdatePassword = () => {
               >
                 Click para restablecer contraseña
               </Button>
-              <a href="/" style={{ float: 'right', marginTop: '10px' }}>
-                Iniciar Sesion
-              </a>
             </div>
           </form>
         </Paper>

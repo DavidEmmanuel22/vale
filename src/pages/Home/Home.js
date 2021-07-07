@@ -145,6 +145,10 @@ export const Footer = () => {
 export const Home = () => {
   const classes = Styles()
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
   const ValedorInfoContent = (
     <>
       <Grid container>
