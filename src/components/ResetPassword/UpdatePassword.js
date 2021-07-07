@@ -53,6 +53,11 @@ const UpdatePassword = () => {
           if (response.error) {
             setAlertColor('error')
             setAlertText(response.error)
+            if (response.error.toLowerCase().includes('token')) {
+              setTimeout(() => {
+                window.location.href = '/'
+              }, 5000)
+            }
           } else {
             setAlertColor('success')
             setAlertText('Tu contraseña se ha reestablecido')
