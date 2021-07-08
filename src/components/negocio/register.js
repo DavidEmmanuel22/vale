@@ -44,13 +44,13 @@ const validationSchema = yup.object({
     .min(3, 'Mínimo 3 caracteres')
     .max(30, 'Maxímo 30 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Negocio es requerido')
-  // bussinesRfc: yup
-  //   .string()
-  //   .matches(NameExpression, 'No se permiten espacios vacios')
-  //   .min(13, 'Mínimo 13 caracteres')
-  //   .matches(RfcExpression, 'Ingrese un RFC valido')
-  //   .required('RFC es requerido')
+    .required('Negocio es requerido'),
+  bussinesRfc: yup
+    .string()
+    .matches(NameExpression, 'No se permiten espacios vacios')
+    .min(13, 'Mínimo 13 caracteres')
+    .matches(RfcExpression, 'Ingrese un RFC valido')
+    .required('RFC es requerido')
 })
 
 export const RegisterNegocio = (props) => {
