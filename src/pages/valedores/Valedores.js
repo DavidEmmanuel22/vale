@@ -136,9 +136,6 @@ const Valedores = () => {
             textAlign: 'center',
             marginBottom: '1.2rem',
             justifyContent: 'space-between'
-            /*position: "sticky",
-						top:"100px",
-						zIndex:200*/
           }}
         >
           <TextField

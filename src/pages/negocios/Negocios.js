@@ -9,16 +9,14 @@ import {
 } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import { makeStyles } from '@material-ui/core/styles'
-import PopUp from 'components/Dialog/PopUp'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableContainer from '@material-ui/core/TableContainer'
 import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import { getNegocios, enableNegocio } from 'requests/allNegocios'
-import { updateUser } from 'requests/allValedores'
+import RoomIcon from '@material-ui/icons/Room'
 import RegisterNegocio from 'components/negocio/register'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
@@ -33,26 +31,12 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { UserContext } from 'context/userContext'
 
-const useStyles2 = makeStyles({
-  root: {
-    width: '100%'
-  },
-  container: {
-    maxHeight: 440
-  }
-})
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1
   },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  },
   fab: {
-    margin: theme.spacing(2)
+    margin: theme.spacing(1)
   },
   danger: {
     background: '#cf1c24',
@@ -60,6 +44,13 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       background: '#9e0e0e'
     }
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    maxHeight: `80vh`,
+    overflowY: 'scroll'
   },
   buttonPaper: {
     padding: theme.spacing(2),
@@ -73,38 +64,8 @@ const useStyles = makeStyles((theme) => ({
 const Negocios = () => {
   const matches = useMediaQuery('(min-width:525px)')
   const { user } = useContext(UserContext)
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-      maxHeight: '90%',
-      overflowY: 'scroll'
-    },
-    fab: {
-      margin: theme.spacing(2)
-    },
-    danger: {
-      background: '#cf1c24',
-      margin: theme.spacing(2),
-      '&:hover': {
-        background: '#9e0e0e'
-      }
-    },
-    buttonPaper: {
-      padding: theme.spacing(2),
-      color: theme.palette.text.secondary,
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between'
-    }
-  }))
 
   const classes = useStyles()
-  const classes2 = useStyles2()
 
   const [openDialog, setOpenDialog] = useState(false)
   const [negocios, setNegocios] = useState([])
@@ -120,7 +81,7 @@ const Negocios = () => {
       negocio.bussinesName
         .toLowerCase()
         .includes(searchBusiness.toLowerCase()) ||
-      negocio.bussinesAdress
+      negocio.bussinesAdress.direction
         .toLowerCase()
         .includes(searchBusiness.toLowerCase()) ||
       negocio.email.toLowerCase().includes(searchBusiness.toLowerCase())
@@ -272,8 +233,11 @@ const Negocios = () => {
                               </TableCell>
                             </Hidden>
                             <Hidden smDown>
-                              <TableCell align="center">
-                                {negocio.bussinesAdress}
+                              <TableCell
+                                align="center"
+                                style={{ width: '12em' }}
+                              >
+                                {negocio.bussinesAdress.direction}
                               </TableCell>
                             </Hidden>
                             {user.role === 'Admin' && (
@@ -306,6 +270,27 @@ const Negocios = () => {
                                     <DeleteIcon />
                                   </Fab>
                                 </Tooltip>
+
+                                <Tooltip
+                                  title="Dirección"
+                                  aria-label="Dirección"
+                                  onMouseEnter={() =>
+                                    setSelectedNegocio(negocio)
+                                  }
+                                >
+                                  <Fab
+                                    color="primary"
+                                    className={classes.success}
+                                    onClick={() =>
+                                      window.open(
+                                        `${selectedNegocio.urlMap}`,
+                                        '_blank'
+                                      )
+                                    }
+                                  >
+                                    <RoomIcon />
+                                  </Fab>
+                                </Tooltip>
                               </TableCell>
                             )}
                           </>
@@ -329,7 +314,7 @@ const Negocios = () => {
                                 </Hidden>
                                 <Hidden smDown>
                                   <TableCell align="center">
-                                    {negocio.bussinesAdress}
+                                    {negocio.bussinesAdress.direction}
                                   </TableCell>
                                 </Hidden>
                                 <TableCell align="center">

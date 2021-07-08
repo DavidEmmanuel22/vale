@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-// import { Map, GoogleApiWrapper, Marker } from 'google-maps-react'
 import { GoogleApiWrapper } from 'google-maps-react'
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -16,19 +15,21 @@ import DirectionsIcon from '@material-ui/icons/Directions'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { createNegocio } from 'requests/allNegocios'
-// import GoogleMap from 'components/Map/GoogleMap'
-import GoogleMapExample from 'components/Map/GoogleMapExample'
-import AnotherMap from 'components/Map/AnotherMap'
-import { UserContext } from 'context/userContext'
 import { compose, withStateHandlers } from 'recompose'
 import {
-  InfoWindow,
   withGoogleMap,
   withScriptjs,
   GoogleMap,
-  Marker
+  Marker,
+  OverlayView
 } from 'react-google-maps'
+import Geocode from 'react-geocode'
 
+const divStyle = {
+  background: 'white',
+  border: '1px solid #ccc',
+  borderRadius: '9px'
+}
 const NameExpression = /^\S/
 const RfcExpression = /^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})\d{2}((0[1-9]|1[012])(0[1-9]|1\d|2[0-8])|(0[13456789]|1[012])(29|30)|(0[13578]|1[02])31)(\w{2})([A|a|0-9]{1}))$|^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})([02468][048]|[13579][26])0229)(\w{2})([A|a|0-9]{1})$/
 const validationSchema = yup.object({
@@ -43,28 +44,27 @@ const validationSchema = yup.object({
     .min(3, 'Mínimo 3 caracteres')
     .max(30, 'Maxímo 30 caracteres')
     .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Negocio es requerido'),
-  bussinesAdress: yup
-    .string()
-    .min(3, 'Mínimo 3 caracteres')
-    .max(30, 'Maxímo 30 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Dirección es requerida'),
-  bussinesRfc: yup
-    .string()
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .min(13, 'Mínimo 13 caracteres')
-    .matches(RfcExpression, 'Ingrese un RFC valido')
-    .required('RFC es requerido')
+    .required('Negocio es requerido')
+  // bussinesRfc: yup
+  //   .string()
+  //   .matches(NameExpression, 'No se permiten espacios vacios')
+  //   .min(13, 'Mínimo 13 caracteres')
+  //   .matches(RfcExpression, 'Ingrese un RFC valido')
+  //   .required('RFC es requerido')
 })
 
 export const RegisterNegocio = (props) => {
+  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
+    AlertContext
+  )
+
   const classes = Styles()
   const [address, setAddress] = useState('')
   const [position, setPosition] = useState({
     lat: 0,
     lng: 0
   })
+  const [showMap, setShowMap] = useState(false)
 
   const Map = compose(
     withStateHandlers(
@@ -74,7 +74,10 @@ export const RegisterNegocio = (props) => {
       }),
       {
         onMapClick: ({ isMarkerShown }) => (e) => ({
-          markerPosition: e.latLng,
+          markerPosition: {
+            lat: e.latLng.lat(),
+            lng: e.latLng.lng()
+          },
           isMarkerShown: true
         })
       }
@@ -87,14 +90,48 @@ export const RegisterNegocio = (props) => {
       defaultCenter={position}
       onClick={props.onMapClick}
     >
-      {console.log(props.markerPosition)}
-      {props.isMarkerShown && <Marker position={props.markerPosition} />}
+      {props.isMarkerShown === true ? (
+        <>
+          <Marker
+            onClick={() => setMarkerPosition(props.markerPosition)}
+            position={props.markerPosition}
+          >
+            {props.isMarkerShown && (
+              <OverlayView
+                position={props.markerPosition}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                onClick={() => setMarkerPosition(props.markerPosition)}
+              >
+                <div style={divStyle}>
+                  <button
+                    className={`${classes.mapButton} `}
+                    onClick={() => setMarkerPosition(props.markerPosition)}
+                  >
+                    Seleccionar esta dirección
+                  </button>
+                </div>
+              </OverlayView>
+            )}
+          </Marker>
+        </>
+      ) : (
+        <Marker position={position} />
+      )}
     </GoogleMap>
   ))
-  console.log(address, position)
-  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
-    AlertContext
-  )
+
+  const setMarkerPosition = (location) => {
+    setPosition(location)
+    Geocode.setApiKey('AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw')
+    Geocode.fromLatLng(position.lat, position.lng).then(
+      (response) => {
+        setAddress(response.results[0].formatted_address)
+      },
+      (error) => {
+        console.error(error)
+      }
+    )
+  }
   const handleSelect = async (value) => {
     const results = await geocodeByAddress(value)
     const latlng = await getLatLng(results[0])
@@ -104,11 +141,23 @@ export const RegisterNegocio = (props) => {
     initialValues: {
       email: '',
       bussinesName: '',
-      bussinesAdress: address,
+      bussinesAdress: {
+        direction: '',
+        latitude: 0,
+        longitude: 0
+      },
       bussinesRfc: ''
     },
     onSubmit: async (negocio, { resetForm }) => {
-      const { success, response, error } = await createNegocio(negocio)
+      const updatedBusiness = {
+        ...negocio,
+        bussinesAdress: {
+          direction: address,
+          latitude: position.lat,
+          longitude: position.lng
+        }
+      }
+      const { success, response, error } = await createNegocio(updatedBusiness)
       if (success && response) {
         if (response.error) {
           setAlertColor('error')
@@ -117,20 +166,12 @@ export const RegisterNegocio = (props) => {
           setAlertText('El Negocio ha sido creado satisfactoriamente')
           setAlertColor('success')
           resetForm({ negocio: '' })
+          setAddress('')
         }
       }
     },
     validationSchema: validationSchema
   })
-
-  const onMapClick = (t, map, coord) => {
-    //console.log(map)
-    const { latLng } = coord
-    const lat = latLng.lat()
-    const lng = latLng.lng()
-
-    console.log(lat, lng)
-  }
 
   return (
     <div className="register-valedor">
@@ -138,6 +179,7 @@ export const RegisterNegocio = (props) => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField
+              onClick={() => setShowMap(false)}
               className={classes.widthnew}
               id="email"
               placeholder="Email"
@@ -157,6 +199,7 @@ export const RegisterNegocio = (props) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
+              onClick={() => setShowMap(false)}
               className={classes.widthnew}
               id="bussinesName"
               placeholder="Negocio"
@@ -187,7 +230,11 @@ export const RegisterNegocio = (props) => {
               value={address}
               onChange={(value) => {
                 setAddress(value)
+              }}
+              onSelect={(value) => {
                 handleSelect(value)
+                setAddress(value)
+                setShowMap(true)
               }}
             >
               {({
@@ -199,6 +246,11 @@ export const RegisterNegocio = (props) => {
                 <div>
                   <TextField
                     className={classes.widthnew}
+                    onClick={() => setShowMap(false)}
+                    onChange={(value) => {
+                      setAddress(value)
+                    }}
+                    id="bussinesAdress"
                     {...getInputProps({ placeholder: 'Dirección del negocio' })}
                     type="text"
                     InputProps={{
@@ -239,6 +291,7 @@ export const RegisterNegocio = (props) => {
             <TextField
               className={classes.widthnew}
               id="bussinesRfc"
+              onClick={() => setShowMap(false)}
               placeholder="RFC"
               value={formik.values.bussinesRfc || ''}
               onChange={formik.handleChange}
@@ -274,55 +327,23 @@ export const RegisterNegocio = (props) => {
           </Grid>
         </Grid>
       </form>
-      {/* <GoogleMap coordinates={position} /> */}
 
-      {/* <GoogleMapExample /> */}
-      {/* <Map google={window.google} zoom={18} initialCenter={position}>
-        <Marker
-          title={'The marker`s title will appear as a tooltip.'}
-          name={'SOMA'}
-          draggable={true}
-          onDragend={(e) => console.log(e)}
-          position={position}
-        />
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
-        >
-          <div>
-            <h1>{this.state.selectedPlace.name}</h1>
-          </div>
-        </InfoWindow>
-      </Map> */}
-      {/* <AnotherMap /> */}
-
-      {/* <Map
-        google={window.google}
-        initialCenter={{
-          lat: position.lat,
-          lng: position.lng
-        }}
-        center={{
-          lat: position.lat,
-          lng: position.lng
-        }}
-        zoom={16}
-        onClick={onMapClick}
-      >
-        <Marker position={position} />
-      </Map> */}
-
-      <Map
-        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-      />
+      {showMap && (
+        <>
+          <Map
+            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={
+              <div style={{ height: `400px`, marginTop: '1em' }} />
+            }
+            mapElement={<div style={{ height: `100%` }} />}
+          />
+        </>
+      )}
     </div>
   )
 }
 
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw'
-  //LoadingContainer: LoadingContainer
 })(RegisterNegocio)
