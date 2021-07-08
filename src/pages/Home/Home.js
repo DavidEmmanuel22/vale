@@ -81,7 +81,9 @@ export const ClientNavBar = () => {
                   Acerca de
                 </Link>
                 <a className="nav-link-item">Valedores</a>
-                <a className="nav-link-item">Negocios</a>
+                <Link to="/business" className="nav-link-item">
+                  Negocios
+                </Link>
                 <Link
                   to={{
                     pathname: `${'/contact'}`

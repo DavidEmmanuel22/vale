@@ -17,6 +17,18 @@ const Styles = makeStyles(() => ({
       backgroundColor: '#007772'
     }
   },
+  mapButton: {
+    borderRadius: 6,
+    width: '12em',
+    height: '3em',
+    cursor: 'pointer',
+    padding: '3px',
+    backgroundColor: '#007772',
+    color: '#ffff',
+    '&:hover': {
+      backgroundColor: '#007772'
+    }
+  },
   root: {
     flexGrow: 1
   },

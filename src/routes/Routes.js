@@ -17,6 +17,7 @@ import valedorRoutes from './valedorDashboardRoute'
 import historyRoute from './history'
 import { Mail } from 'pages/Mail/Mail'
 import { Vale } from 'pages/valedores/Vale'
+import { Business } from 'components/Business/Business'
 
 const Routes = () => {
   const { isAuthenticated, user } = useContext(UserContext)
@@ -72,6 +73,10 @@ const Routes = () => {
       <Route exact path="/mail">
         <ClientNavBar />
         <Mail />
+      </Route>
+
+      <Route exact path="/business">
+        <Business />
       </Route>
 
       <Route exact path="/contact">
