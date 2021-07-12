@@ -26,6 +26,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { mailValidation } from './MailValidation'
 import { UserContext } from 'context/userContext'
 import { makeStyles } from '@material-ui/core/styles'
+import { SessionExpired } from './SessionExpired'
+import expired from '../../assets/Contact/expired.png'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
@@ -43,11 +46,14 @@ export const Mail = () => {
     localStorage.setItem('email', history.location.state.email)
   }
   const email = localStorage.getItem('email')
+  const idChat = localStorage.getItem('idChat')
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(true)
   const [reload, setReload] = useState(false)
   const [scroll, setScroll] = useState(false)
+  const [showInvalidMessages, setShowInvalidMessages] = useState(false)
   const { user, logout } = useContext(UserContext)
+  const [showSessionMessage, setShowSessionMessage] = useState(false)
   const messagesEndRef = useRef(null)
   const [getMessage, setGetMessage] = useState(false)
   const [message, setMessage] = useState({
@@ -68,9 +74,9 @@ export const Mail = () => {
           setGetMessage(true)
         } else {
           // console.log(response)
-		  setLoading(false)
-		  readMsg()
-		  scrollToBottom()
+          setLoading(false)
+          readMsg()
+          scrollToBottom()
         }
       }
       mailFormikValidation.resetForm({
@@ -88,13 +94,14 @@ export const Mail = () => {
     const values = localStorage.getItem('idChat')
     //check "my hour" index here
     if ((values !== null) < new Date()) {
-      //history.push('/')
-      localStorage.removeItem('idChat')
+      setShowSessionMessage(true)
+      ///setShowInvalidMessages(false)
     }
   }
 
   const logOutMessages = () => {
-    const myinterval = 60 * 60 * 1000
+    //    const myinterval = 60 * 60 * 1000
+    const myinterval = 6000
     setInterval(function () {
       checkExpiration()
     }, myinterval)
@@ -103,10 +110,15 @@ export const Mail = () => {
   const scrollToBottom = () => {
     if (messagesEndRef && messagesEndRef.current && scroll) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-	}
+    }
   }
 
   useEffect(() => {
+    const session = localStorage.getItem('idChat')
+    //check "my hour" index here
+    if (session === null) {
+      setShowInvalidMessages(true)
+    }
     async function getMessages() {
       const { success, response, error } = await messageHistory(
         localStorage.getItem('idChat')
@@ -132,11 +144,11 @@ export const Mail = () => {
 
   const readMsg = async () => {
     const { success, response, error } = await readMessage({
-      idChat: localStorage.getItem('idChat')
+      idChat: idChat
     })
     if (success && response) {
-	  //console.log(response.data)
-	  window.scrollTo(0, document.body.scrollHeight)
+      //console.log(response.data)
+      window.scrollTo(0, document.body.scrollHeight)
     } else {
       //console.log(error)
     }
@@ -177,7 +189,7 @@ export const Mail = () => {
               />
             ) : (
               <>
-                {!user ? (
+                {!user && !showSessionMessage && !showInvalidMessages ? (
                   <Tooltip
                     placement="top"
                     style={{
@@ -198,7 +210,10 @@ export const Mail = () => {
                     </Fab>
                   </Tooltip>
                 ) : null}
-                {!user && reload ? (
+                {!user &&
+                reload &&
+                !showSessionMessage &&
+                !showInvalidMessages ? (
                   <Tooltip
                     placement="bottom"
                     style={{
@@ -219,14 +234,31 @@ export const Mail = () => {
                   </Tooltip>
                 ) : null}
 
-                <MessageContent />
+                {showSessionMessage && !showInvalidMessages ? (
+                  <SessionExpired />
+                ) : (
+                  <MessageContent />
+                )}
+                {showInvalidMessages && (
+                  <div style={{ textAlign: 'center', marginTop: '9%' }}>
+                    <img src={expired} />
+                    <h2>Sesion Finalizada.</h2>
+                    <span style={{ cursor: 'pointer' }}>
+                      Favor de ir a su{' '}
+                      <Link to="/contact">
+                        <strong>Historial</strong>
+                      </Link>{' '}
+                      para cargar sus mensajes.
+                    </span>
+                  </div>
+                )}
               </>
             )}
           </div>
         </Paper>
         <div ref={messagesEndRef} />
       </Grid>
-      {!loading && (
+      {!loading && !showSessionMessage && !showInvalidMessages ? (
         <form
           onSubmit={mailFormikValidation.handleSubmit}
           style={{
@@ -265,7 +297,7 @@ export const Mail = () => {
             <SendIcon />
           </Button>
         </form>
-      )}
+      ) : null}
     </>
   )
 }
