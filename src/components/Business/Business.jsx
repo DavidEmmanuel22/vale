@@ -126,14 +126,10 @@ export const Business = () => {
 
 	const errors = (data) => {
 		setGeolocation({
-			latitude: 25.4407258,
-			longitude: -101.0012267,
+			latitude: 25.45751220415444,
+			longitude: -100.98095387364758,
 		})
 		setLoadingMap(false)
-	}
-
-	const options = (data) => {
-		console.log(data)
 	}
 
 	const Map = compose(
@@ -289,34 +285,6 @@ export const Business = () => {
 			)}
 		</>
 	))
-
-	/*useEffect(() => {
-		if (navigator.geolocation) {
-			navigator.permissions
-				.query({ name: 'geolocation' })
-				.then(function (result) {
-					if (result.state === 'granted') {
-						//console.log(result.state)
-						//If granted then you can directly call your function here
-						console.log("granteddd");
-						navigator.geolocation.getCurrentPosition(success)
-					} else if (result.state === 'prompt') {
-						console.log("prompttt");
-						navigator.geolocation.getCurrentPosition(success, errors, options)
-					} else if (result.state === 'denied') {
-						console.log("deniedddd");
-						errors(false)
-						//locationDenied()
-						//If denied then you have to show instructions to enable location
-					}
-					result.onchange = function () {
-						//console.log(result.state)
-					}
-				})
-		} else {
-			alert('Ubicacion no encontrada!')
-		}
-	}, [])*/
 
 	const getCurrentLocation = () => {
 		window.navigator.geolocation.getCurrentPosition(function (position) {

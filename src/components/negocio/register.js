@@ -61,8 +61,8 @@ export const RegisterNegocio = (props) => {
   const classes = Styles()
   const [address, setAddress] = useState('')
   const [position, setPosition] = useState({
-    lat: 0,
-    lng: 0
+    lat: 25.45751220415444,
+    lng: -100.98095387364758
   })
   const [showMap, setShowMap] = useState(false)
 
@@ -272,6 +272,7 @@ export const RegisterNegocio = (props) => {
                     {loading ? <div>...Cargando</div> : null}
                     {suggestions.map((suggestion) => {
                       const style = {
+                        cursor: 'pointer',
                         backgroundColor: suggestion.active
                           ? '#00777257'
                           : '#fff'
@@ -332,18 +333,12 @@ export const RegisterNegocio = (props) => {
         </Grid>
       </form>
 
-      {showMap && (
-        <>
-          <Map
-            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
-            loadingElement={<div style={{ height: `100%` }} />}
-            containerElement={
-              <div style={{ height: `400px`, marginTop: '1em' }} />
-            }
-            mapElement={<div style={{ height: `100%` }} />}
-          />
-        </>
-      )}
+      <Map
+        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px`, marginTop: '1em' }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+      />
     </div>
   )
 }

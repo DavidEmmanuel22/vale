@@ -176,6 +176,12 @@ const Negocios = () => {
             </Button>
           </Paper>
         )}
+        {isLoading && <CircularProgress></CircularProgress>}
+        {!isLoading && negocios.length <= 0 && (
+          <Alert severity="info">
+            !UPS! Parece que aun no hay negocios registrados.
+          </Alert>
+        )}
         {filteredBusiness.length > 0 ? (
           <Paper className={classes.paper}>
             <TableContainer>
@@ -347,13 +353,12 @@ const Negocios = () => {
             </TableContainer>
           </Paper>
         ) : (
-          <div style={{ textAlign: 'center' }}>
-            {isLoading ? (
-              <CircularProgress></CircularProgress>
-            ) : (
-              <h2>{`El negocio: "${searchBusiness}" no está registrado.`}</h2>
-            )}
-          </div>
+          negocios.length > 0 && (
+            <Alert severity="warning">
+              !Ups! Parece que no hay resultados disponibles para los filtros
+              aplicados.
+            </Alert>
+          )
         )}
       </Grid>
       <ResponsivePopUp
