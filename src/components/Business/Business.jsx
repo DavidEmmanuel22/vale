@@ -355,16 +355,11 @@ export const Business = () => {
 		async function getAllNegocios() {
 			const { success, response, error } = await getBusiness()
 			if (success && response) {
-				setBusiness(response.data)
-			} else {
-				// console.log(error)
+				!response.error && setBusiness(response.data)
 			}
 		}
-
-		if (business.length === 0) {
-			getAllNegocios()
-		}
-	}, [business])
+		getAllNegocios()
+	}, [])
 
 	return (
 		<div>
