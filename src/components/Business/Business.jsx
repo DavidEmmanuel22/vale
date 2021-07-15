@@ -323,7 +323,7 @@ export const Business = () => {
 		async function getAllNegocios() {
 			const { success, response, error } = await getBusiness()
 			if (success && response) {
-				!response.error && setBusiness(response.data)
+				!response.error && setBusiness(response.data.filter(busItem => busItem.estatus === 0))
 			}
 		}
 		getAllNegocios()

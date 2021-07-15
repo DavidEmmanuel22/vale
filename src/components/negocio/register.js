@@ -183,7 +183,6 @@ export const RegisterNegocio = (props) => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <TextField
-              onClick={() => setShowMap(false)}
               className={classes.widthnew}
               id="email"
               placeholder="Email"
@@ -203,7 +202,6 @@ export const RegisterNegocio = (props) => {
           </Grid>
           <Grid item xs={12} md={6}>
             <TextField
-              onClick={() => setShowMap(false)}
               className={classes.widthnew}
               id="bussinesName"
               placeholder="Negocio"
@@ -238,7 +236,6 @@ export const RegisterNegocio = (props) => {
               onSelect={(value) => {
                 handleSelect(value)
                 setAddress(value)
-                setShowMap(true)
               }}
             >
               {({
@@ -277,7 +274,6 @@ export const RegisterNegocio = (props) => {
                           ? '#00777257'
                           : '#fff'
                       }
-
                       return (
                         <div
                           {...getSuggestionItemProps(suggestion, { style })}
