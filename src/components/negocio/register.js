@@ -121,10 +121,14 @@ export const RegisterNegocio = (props) => {
   ))
 
   const setMarkerPosition = (location) => {
+    console.log('locatoin')
+    console.log(location)
     setPosition(location)
     Geocode.setApiKey('AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw')
-    Geocode.fromLatLng(position.lat, position.lng).then(
+    Geocode.fromLatLng(location.lat, location.lng).then(
       (response) => {
+        console.log('directions')
+        console.log(response)
         setAddress(response.results[0].formatted_address)
       },
       (error) => {
