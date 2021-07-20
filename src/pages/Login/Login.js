@@ -40,6 +40,7 @@ const Login = () => {
     event.preventDefault()
     const { success, response, error } = await loginUser(email, password)
     if (success && response) {
+      console.log(response)
       if (response.error) {
         setError(response.error)
       } else {
@@ -49,7 +50,7 @@ const Login = () => {
       }
     }
     if (error) {
-      setError(error)
+      setError(error.toString())
     }
     setTimeout(() => {
       setError(false)

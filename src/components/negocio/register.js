@@ -53,50 +53,36 @@ const validationSchema = yup.object({
     .required('RFC es requerido')
 })
 
-export const RegisterNegocio = (props) => {
-  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
-    AlertContext
-  )
-
-  const classes = Styles()
-  const [address, setAddress] = useState('')
-  const [position, setPosition] = useState({
-    lat: 25.45751220415444,
-    lng: -100.98095387364758
-  })
-  const [showMap, setShowMap] = useState(false)
-
-  const Map = compose(
-    withStateHandlers(
-      () => ({
-        isMarkerShown: false,
-        markerPosition: null
-      }),
-      {
-        onMapClick: ({ isMarkerShown }) => (e) => ({
-          markerPosition: {
-            lat: e.latLng.lat(),
-            lng: e.latLng.lng()
-          },
-          isMarkerShown: true
-        })
-      }
-    ),
-    withScriptjs,
-    withGoogleMap
-  )((props) => (
-    <GoogleMap
-      defaultZoom={15}
-      defaultCenter={position}
-      onClick={props.onMapClick}
-    >
-      {props.isMarkerShown === true ? (
+const Map = compose(
+  withStateHandlers(
+    ({ position, showMarker }) => ({
+      showMarker,
+      markerPosition: position
+    }),
+    {
+      onMapClick: ({ isMarkerShown }) => (e) => ({
+        markerPosition: {
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng()
+        },
+        showMarker: true
+      })
+    }
+  ),
+  withScriptjs,
+  withGoogleMap
+)((props) => {
+  const { position, setMarkerPosition, classes } = props
+  console.log('render')
+  return (
+    <GoogleMap defaultZoom={15} center={position} onClick={props.onMapClick}>
+      {props.showMarker ? (
         <>
           <Marker
             onClick={() => setMarkerPosition(props.markerPosition)}
             position={props.markerPosition}
           >
-            {props.isMarkerShown && (
+            {props.showMarker && (
               <OverlayView
                 position={props.markerPosition}
                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
@@ -118,7 +104,21 @@ export const RegisterNegocio = (props) => {
         <Marker position={position} />
       )}
     </GoogleMap>
-  ))
+  )
+})
+
+export const RegisterNegocio = (props) => {
+  const { alertText, alertColor, setAlertText, setAlertColor } = useContext(
+    AlertContext
+  )
+
+  const classes = Styles()
+  const [address, setAddress] = useState('')
+  const [position, setPosition] = useState({
+    lat: 25.45751220415444,
+    lng: -100.98095387364758
+  })
+  const [showMarker, setShowMarker] = useState(false)
 
   const setMarkerPosition = (location) => {
     console.log('locatoin')
@@ -247,7 +247,6 @@ export const RegisterNegocio = (props) => {
                 <div>
                   <TextField
                     className={classes.widthnew}
-                    onClick={() => setShowMap(false)}
                     onChange={(value) => {
                       setAddress(value)
                     }}
@@ -292,7 +291,6 @@ export const RegisterNegocio = (props) => {
             <TextField
               className={classes.widthnew}
               id="bussinesRfc"
-              onClick={() => setShowMap(false)}
               placeholder="RFC"
               value={formik.values.bussinesRfc || ''}
               onChange={formik.handleChange}
@@ -328,12 +326,15 @@ export const RegisterNegocio = (props) => {
           </Grid>
         </Grid>
       </form>
-
       <Map
         googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `400px`, marginTop: '1em' }} />}
         mapElement={<div style={{ height: `100%` }} />}
+        position={position}
+        setMarkerPosition={setMarkerPosition}
+        classes={classes}
+        showMarker={showMarker}
       />
     </div>
   )

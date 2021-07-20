@@ -60,11 +60,13 @@ const ForgotPassword = () => {
             history.push('/')
           }, 5000)
         }
-        setShowAlert(true)
-        // setTimeout(() => {
-        //   setShowAlert(false)
-        // }, 3000)
       }
+      if (error) {
+        setAlertColor('error')
+        setAlertText(error.toString())
+        setChecked(false)
+      }
+      setShowAlert(true)
     },
     validationSchema: validationSchema
   })
