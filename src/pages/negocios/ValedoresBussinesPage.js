@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Negocios = () => {
+const ValedoresBussines = () => {
   const matches = useMediaQuery('(min-width:525px)')
   const { user } = useContext(UserContext)
 
@@ -133,47 +133,6 @@ const Negocios = () => {
   return (
     <Grid container spacing={3} style={{ height: '100%' }}>
       <Grid item xs={12} style={{ height: '100%' }}>
-        <Paper
-          style={{
-            display: 'flex',
-            textAlign: 'center',
-            marginBottom: '1.2rem',
-            justifyContent: 'space-between'
-          }}
-          className={classes.buttonPaper}
-        >
-          <TextField
-            placeholder="Buscar Negocio..."
-            style={{ width: '' }}
-            inputProps={{
-              maxLength: 25
-            }}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment
-                  position="start"
-                  className="MuiInputAdornment-root"
-                >
-                  <SearchIcon fontSize="large" />
-                </InputAdornment>
-              )
-            }}
-            value={searchBusiness}
-            onChange={(e) => handleChange(e)}
-          />
-          <Button
-            onClick={() => setOpenDialog(true)}
-            color="primary"
-            variant="contained"
-            style={{ marginTop: matches ? '' : '15px' }}
-          >
-            Agregar Negocio
-          </Button>
-        </Paper>
         {isLoading && <CircularProgress></CircularProgress>}
         {!isLoading && negocios.length <= 0 && (
           <Alert severity="info">
@@ -188,7 +147,6 @@ const Negocios = () => {
                   <TableRow>
                     <TableCell
                       align="center"
-                      onClick={() => setUnableNegocio(!unableNegocio)}
                       style={{
                         background: `${
                           unableNegocio ? 'rgb(0, 119, 114)' : '#f44336'
@@ -214,7 +172,7 @@ const Negocios = () => {
                   {filteredBusiness.map((negocio, index) => (
                     <TableRow key={index} role="checkbox" tabIndex={-1}>
                       <>
-                        {negocio.estatus === 0 && unableNegocio ? (
+                        {negocio.estatus === 0 && (
                           <>
                             <TableCell align="center">
                               <CheckCircleIcon
@@ -239,30 +197,6 @@ const Negocios = () => {
                               </TableCell>
                             </Hidden>
                             <TableCell align="center">
-                              <Tooltip title="Editar" aria-label="Editar">
-                                <Fab color="secondary" className={classes.fab}>
-                                  <RefreshIcon variant="outlined">
-                                    Editar
-                                  </RefreshIcon>
-                                </Fab>
-                              </Tooltip>
-
-                              <Tooltip
-                                title="Eliminar"
-                                aria-label="Eliminar"
-                                onMouseEnter={() => setSelectedNegocio(negocio)}
-                              >
-                                <Fab
-                                  onClick={(e) => {
-                                    handleClick(e, negocio)
-                                  }}
-                                  color="primary"
-                                  className={classes.danger}
-                                >
-                                  <DeleteIcon />
-                                </Fab>
-                              </Tooltip>
-
                               <Tooltip
                                 title="Dirección"
                                 aria-label="Dirección"
@@ -282,50 +216,6 @@ const Negocios = () => {
                                 </Fab>
                               </Tooltip>
                             </TableCell>
-                          </>
-                        ) : (
-                          <>
-                            {negocio.estatus === 1 && !unableNegocio ? (
-                              <>
-                                <TableCell align="center">
-                                  <HighlightOffRoundedIcon
-                                    fontSize="large"
-                                    color="error"
-                                  ></HighlightOffRoundedIcon>
-                                </TableCell>
-                                <TableCell align="center">
-                                  {negocio.bussinesName}
-                                </TableCell>
-                                <Hidden xsDown>
-                                  <TableCell align="center">
-                                    {negocio.email}
-                                  </TableCell>
-                                </Hidden>
-                                <Hidden smDown>
-                                  <TableCell align="center">
-                                    {negocio.bussinesAdress.direction}
-                                  </TableCell>
-                                </Hidden>
-                                <TableCell align="center">
-                                  <Button
-                                    onClick={(e) => {
-                                      handleClick(e, negocio)
-                                    }}
-                                    onMouseEnter={() =>
-                                      setSelectedNegocio(negocio)
-                                    }
-                                    color="secondary"
-                                    variant={`${
-                                      negocio.estatus === 1
-                                        ? 'outlined'
-                                        : 'contained'
-                                    }`}
-                                  >
-                                    Habilitar
-                                  </Button>
-                                </TableCell>
-                              </>
-                            ) : null}
                           </>
                         )}
                       </>
@@ -362,4 +252,4 @@ const Negocios = () => {
   )
 }
 
-export default Negocios
+export default ValedoresBussines

@@ -7,7 +7,7 @@ import {
   Store
 } from '@material-ui/icons'
 import ValedorDashboardProfile from 'pages/DashboardPerfil/ValedorDashboardProfile'
-import Negocios from 'pages/negocios/Negocios'
+import ValedoresBussines from 'pages/negocios/ValedoresBussinesPage'
 import ValedorDashboard from '../pages/Dashboard/ValedorDashboard'
 import { Mail } from 'pages/Mail/Mail'
 
@@ -30,7 +30,7 @@ const valedorDashboardRoute = [
   {
     name: 'Negocios',
     path: '/dashboard/negocios',
-    component: Negocios,
+    component: ValedoresBussines,
     user: 'valedor',
     icon: Store
   },
