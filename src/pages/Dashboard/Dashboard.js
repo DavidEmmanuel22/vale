@@ -26,24 +26,6 @@ export const Dashboard = () => {
   const [valedores, setValedores] = useState([])
   const { user } = useContext(UserContext)
 
-  // useEffect(() => {
-  //   async function getAllValedores() {
-  //     //setIsLoading(true)
-  //     const { success, response, error } = await getValedores()
-  //     if (success && response) {
-  //       setValedores(response.data)
-
-  //       // setIsLoading(false)
-  //     } else {
-  //       //setIsLoading(false)
-  //     }
-  //   }
-
-  //   getAllValedores()
-  // }, [])
-
-  //console.log(messages)
-
   useEffect(() => {
     async function getMessages() {
       const { success, response, error } = await clientMessageHistory(
@@ -121,81 +103,55 @@ export const Dashboard = () => {
     <div className={classes.root}>
       <CssBaseline />
       <Grid container className="dashboard-container" spacing={2}>
-        {user.role === 'Admin' && (
-          <>
-            <Grid item xs={12} sm={6} md={4}>
-              <div
-                className="register-button"
-                onClick={() => {
-                  setShowDialog(true)
-                  setDialogName('valedor')
-                }}
-              >
-                <div>
-                  <AddIcon className={classes.addIcon} />
-                </div>
+        <Grid item xs={12} sm={6} md={4}>
+          <div
+            className="register-button"
+            onClick={() => {
+              setShowDialog(true)
+              setDialogName('valedor')
+            }}
+          >
+            <div>
+              <AddIcon className={classes.addIcon} />
+            </div>
 
-                <p>
-                  {/* <p>Total:{valedores.length}</p> */}
-                  Agregar Valedor
-                </p>
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <div
-                className="register-button"
-                onClick={() => {
-                  setShowDialog(true)
-                  setDialogName('negocio')
-                }}
-              >
-                <div>
-                  <AddIcon className={classes.addIcon} />
-                </div>
-                <p>Agregar Negocio</p>
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <div
-                className="register-button"
-                onClick={() => {
-                  setShowDialog(true)
-                  setDialogName('credit')
-                }}
-              >
-                <div>
-                  <AddIcon className={classes.addIcon} />
-                </div>
-                <p>Agregar Crédito</p>
-              </div>
-            </Grid>
-            <Grid item xs={12}>
-              <DashboardMessages showAll={true} />
-            </Grid>
-          </>
-        )}
-
-        {user.role === 'Valedor' && (
-          <>
-            <Grid item xs={12} sm={6} md={4}>
-              <a
-                className="register-button"
-                style={{ marginBottom: 10 }}
-                href="#"
-                onClick={() => {
-                  setShowDialog(true)
-                  setDialogName('vale')
-                }}
-              >
-                <div>
-                  <AddIcon className={classes.addIcon} />
-                </div>
-                <p>Crear Vale</p>
-              </a>
-            </Grid>
-            <ValedorDashboard showDialog={showDialog} />
-          </>
-        )}
+            <p>
+              {/* <p>Total:{valedores.length}</p> */}
+              Agregar Valedor
+            </p>
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <div
+            className="register-button"
+            onClick={() => {
+              setShowDialog(true)
+              setDialogName('negocio')
+            }}
+          >
+            <div>
+              <AddIcon className={classes.addIcon} />
+            </div>
+            <p>Agregar Negocio</p>
+          </div>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4}>
+          <div
+            className="register-button"
+            onClick={() => {
+              setShowDialog(true)
+              setDialogName('credit')
+            }}
+          >
+            <div>
+              <AddIcon className={classes.addIcon} />
+            </div>
+            <p>Agregar Crédito</p>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          <DashboardMessages showAll={true} />
+        </Grid>
       </Grid>
 
       {showDialog && handleDialog()}

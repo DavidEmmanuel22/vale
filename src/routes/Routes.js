@@ -37,7 +37,6 @@ const Routes = () => {
             </GeneralLayout>
           </PrivateRoute>
         ))}
-
       {user.role === 'Valedor' &&
         valedorRoutes.map((route, index) => (
           <PrivateRoute

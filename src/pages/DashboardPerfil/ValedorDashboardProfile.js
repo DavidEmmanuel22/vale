@@ -18,10 +18,13 @@ import { Link, useHistory } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
 import { updateUserSelfSchema } from 'yupSchemas'
 import { useFormik } from 'formik'
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
+import Fab from '@material-ui/core/Fab'
 import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import BadgeAvatars from './Avatar'
+import { AddVale } from 'components/valedor/addVale'
 
 const NameExpression = /^\S/
 
@@ -40,14 +43,13 @@ const validationSchema = yup.object({
     .required('Apellido es requerido')
 })
 
-export const DashboardPerfil = () => {
+const ValedorDashboardProfile = () => {
   const { isAuthenticated, user, login, logout } = useContext(UserContext)
   const [firstName, setFirstName] = useState(user.firstName)
   const [lastName, setLastName] = useState(user.lastName)
   const [email, setEmail] = useState(user.email)
   const [onEdit, setOnEdit] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const [modalTitle, setModalTitle] = useState('valedor')
+  const [showModalVale, setShowModalVale] = useState(false)
   const [alertText, setAlertText] = useState('')
   const [alertColor, setAlertColor] = useState('success')
   const [showAlert, setShowAlert] = useState(false)
@@ -61,8 +63,6 @@ export const DashboardPerfil = () => {
 
     const fileName = imageName.split('.')
     const extension = fileName[fileName.length - 1]
-    //console.log("extension", extension);
-
     return validExtensions.find((ext) => ext === extension)
   }
 
@@ -133,6 +133,7 @@ export const DashboardPerfil = () => {
 
   const handleEdit = () => {
     if (onEdit) {
+      //handleUpdate()
       formik.handleSubmit()
     } else {
       setOnEdit(true)
@@ -221,7 +222,6 @@ export const DashboardPerfil = () => {
   }
 
   const handleUploadImage = async () => {
-    console.log('uploading')
     const { success, response, error } = await uploadImage(imgData, imageTitle)
 
     console.log(response)
@@ -404,83 +404,35 @@ export const DashboardPerfil = () => {
         </Grid>
         <Grid item xs={12} md={3} lg={3}>
           <Hidden smDown>
-            <BackgroundPaper></BackgroundPaper>
+            <BackgroundPaper redirectTo="/dashboard/contactos"></BackgroundPaper>
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => {
-                setModalTitle('valedor')
-                setShowModal(true)
-              }}
+              onClick={() => setShowModalVale(true)}
               startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
               style={{
                 width: '100%',
                 marginTop: '10px',
                 marginBottom: '10px',
                 borderRadius: '15px',
-                height: '21%'
+                height: '21%',
+                fontSize: '18px'
               }}
             >
-              Registrar Valedor
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setModalTitle('negocio')
-                setShowModal(true)
-              }}
-              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
-              style={{ width: '100%', borderRadius: '15px', height: '21%' }}
-            >
-              Registrar Negocio
-            </Button>
-          </Hidden>
-          <Hidden mdUp>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setModalTitle('valedor')
-                setShowModal(true)
-              }}
-              startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
-              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
-            >
-              Registrar Valedor
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setModalTitle('negocio')
-                setShowModal(true)
-              }}
-              startIcon={<BusinessCenterIcon></BusinessCenterIcon>}
-              style={{ width: '100%', padding: '10px', marginBottom: '15px' }}
-            >
-              Registrar Negocio
+              Crear Vale
             </Button>
           </Hidden>
         </Grid>
       </Grid>
-      {modalTitle === 'valedor' ? (
-        <ResponsivePopUp
-          open={showModal}
-          setOpen={setShowModal}
-          title="Registra un valedor"
-        >
-          <RegisterValedor></RegisterValedor>
-        </ResponsivePopUp>
-      ) : (
-        <ResponsivePopUp
-          open={showModal}
-          setOpen={setShowModal}
-          title={'Registra un negocio'}
-        >
-          <RegisterNegocio></RegisterNegocio>
-        </ResponsivePopUp>
-      )}
+      <ResponsivePopUp
+        open={showModalVale}
+        setOpen={setShowModalVale}
+        title={'Crea un nuevo vale'}
+      >
+        <AddVale></AddVale>
+      </ResponsivePopUp>
     </div>
   )
 }
+
+export default ValedorDashboardProfile
