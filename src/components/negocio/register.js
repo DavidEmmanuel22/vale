@@ -24,34 +24,13 @@ import {
   OverlayView
 } from 'react-google-maps'
 import Geocode from 'react-geocode'
+import { createBussinesSchema } from '../../yupSchemas/bussinesSchemas'
 
 const divStyle = {
   background: 'white',
   border: '1px solid #ccc',
   borderRadius: '9px'
 }
-const NameExpression = /^\S/
-const RfcExpression = /^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})\d{2}((0[1-9]|1[012])(0[1-9]|1\d|2[0-8])|(0[13456789]|1[012])(29|30)|(0[13578]|1[02])31)(\w{2})([A|a|0-9]{1}))$|^(([ÑA-Z|ña-z|&amp;]{3}|[A-Z|a-z]{4})([02468][048]|[13579][26])0229)(\w{2})([A|a|0-9]{1})$/
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email('Correo Electronico Invalido')
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Email es requerido')
-    .trim(),
-  bussinesName: yup
-    .string()
-    .min(3, 'Mínimo 3 caracteres')
-    .max(30, 'Maxímo 30 caracteres')
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .required('Negocio es requerido'),
-  bussinesRfc: yup
-    .string()
-    .matches(NameExpression, 'No se permiten espacios vacios')
-    .min(13, 'Mínimo 13 caracteres')
-    .matches(RfcExpression, 'Ingrese un RFC valido')
-    .required('RFC es requerido')
-})
 
 const Map = compose(
   withStateHandlers(
@@ -73,7 +52,6 @@ const Map = compose(
   withGoogleMap
 )((props) => {
   const { position, setMarkerPosition, classes } = props
-  console.log('render')
   return (
     <GoogleMap defaultZoom={15} center={position} onClick={props.onMapClick}>
       {props.showMarker ? (
@@ -174,7 +152,7 @@ export const RegisterNegocio = (props) => {
         }
       }
     },
-    validationSchema: validationSchema
+    validationSchema: createBussinesSchema
   })
 
   return (
