@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar'
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
 import { uploadImage } from '../../requests/allValedores'
 
-const UserAvatar = React.forwardRef(({ onEdit }, ref) => {
+const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
   const { user } = React.useContext(UserContext)
 
   const defaultUrlImage = 'https://dev.valevaledor.com/images/no-avatar.png'
@@ -40,21 +40,13 @@ const UserAvatar = React.forwardRef(({ onEdit }, ref) => {
         const reader = new FileReader()
         reader.addEventListener('load', () => {
           /*setImgData(reader.result)
-					setImageTitle(e.target.files[0].name)
-					console.log('Image was charged')*/
+							  setImageTitle(e.target.files[0].name)
+							  console.log('Image was charged')*/
           handleUploadImage(reader.result, e.target.files[0].name)
         })
         reader.readAsDataURL(e.target.files[0])
       } else {
-        //console.log("invalid image");
-        /*setAlertColor('error')
-				setAlertText(
-					'Solo se permite subir imagenes de tipo png, jpg, jpeg y gif'
-				)
-				setShowAlert(true)
-				setTimeout(() => {
-					setShowAlert(false)
-				}, 5000)*/
+        errorImageHandler('El tipo de archivo especificado no esta permitido')
       }
     }
   }

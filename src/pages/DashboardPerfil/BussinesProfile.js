@@ -26,6 +26,7 @@ import Geocode from 'react-geocode'
 import { forgotPassword } from '../../requests/forgotPassword'
 import useAlert from '../../hooks/useAlert'
 import UserAvatar from '../../components/avatar'
+import { updateUser } from '../../requests/allValedores'
 
 const BussinesProfile = () => {
   const matches = useMediaQuery('(min-width:600px)')
@@ -93,36 +94,21 @@ const BussinesProfile = () => {
       .required('Bussines name is required')
   })
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case 'updateName':
-        return { ...state, bussinesName: action.payload }
-      case 'updateAdress':
-        return { ...state, bussinesAdress: action.payload }
-      case 'updateRfc':
-        return { ...state, bussinesRfc: action.payload }
-      case 'updateImage':
-        return { ...state, urlImage: action.payload }
-      default:
-        throw new Error(`The action < ${action.type} > is not defined`)
-    }
-  }
-
-  const [userData, userDispatch] = useReducer(reducer, initialValues)
   const [alert, dispatchAlert] = useAlert()
   const avatarRef = React.useRef()
   const [adress, setAddress] = useState(initialValues.bussinesAdress.direction)
   const [latlng, setLatlng] = useState({
-    lat: parseInt(initialValues.bussinesAdress.latitude),
-    lng: parseInt(initialValues.bussinesAdress.longitude)
+    lat: parseFloat(initialValues.bussinesAdress.latitude),
+    lng: parseFloat(initialValues.bussinesAdress.longitude)
   })
 
   const formik = useFormik({
     initialValues,
-    onSubmit: (userUpdated, onS) => {
+    onSubmit: async (userUpdated, onS) => {
       setOnEdit(false)
       const newUser = {
-        ...userUpdated,
+        bussinesName: userUpdated.bussinesName,
+        email: userUpdated.email,
         bussinesAdress: {
           direction: adress,
           latitude: latlng.lat,
@@ -131,6 +117,35 @@ const BussinesProfile = () => {
         urlImage: avatarRef.current.urlImage()
       }
       console.log(newUser)
+      const { success, response, error } = await updateUser(user._id, newUser)
+      if (success && response) {
+        if (response.error) {
+          dispatchAlert({
+            type: 'error',
+            payload: {
+              content: response.error,
+              show: true
+            }
+          })
+        } else {
+          login(response.data.token)
+          dispatchAlert({
+            type: 'success',
+            payload: {
+              content: `El usuario ha sido actualizado satisfactoriamente`,
+              show: true
+            }
+          })
+        }
+        setTimeout(() => {
+          dispatchAlert({
+            type: 'show',
+            payload: {
+              show: true
+            }
+          })
+        }, 10000)
+      }
     },
     onReset: (userUpdated, onS) => {
       onS.setValues(initialValues)
@@ -206,6 +221,25 @@ const BussinesProfile = () => {
     }
   }
 
+  const errorImageHandler = (error) => {
+    dispatchAlert({
+      type: 'error',
+      payload: {
+        content: error,
+        show: true
+      }
+    })
+
+    setTimeout(() => {
+      dispatchAlert({
+        type: 'show',
+        payload: {
+          show: false
+        }
+      })
+    }, 5000)
+  }
+
   return (
     <div>
       <Paper className={classes.paper}>
@@ -219,7 +253,11 @@ const BussinesProfile = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.avatarContainer}>
-                  <UserAvatar onEdit={onEdit} ref={avatarRef}></UserAvatar>
+                  <UserAvatar
+                    errorImageHandler={errorImageHandler}
+                    onEdit={onEdit}
+                    ref={avatarRef}
+                  ></UserAvatar>
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextField
