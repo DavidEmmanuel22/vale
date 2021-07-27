@@ -6,32 +6,32 @@ import {
   Person,
   Store
 } from '@material-ui/icons'
-import { DashboardPerfil } from 'pages/DashboardPerfil/DashboardPerfil'
-import Negocios from 'pages/negocios/Negocios'
-import React from 'react'
-import { Dashboard } from 'pages/Dashboard/Dashboard'
+import ValedorDashboardProfile from 'pages/DashboardPerfil/ValedorDashboardProfile'
+import ValedoresBussines from 'pages/negocios/ValedoresBussinesPage'
+import ValedorDashboard from '../pages/Dashboard/ValedorDashboard'
 import { Mail } from 'pages/Mail/Mail'
 
 const valedorDashboardRoute = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    component: Dashboard,
-    user: 'administrator',
+    // eslint-disable-next-line react/display-name
+    component: ValedorDashboard,
+    user: 'valedor',
     icon: DashboardIcon
   },
   {
     name: 'Perfil',
     path: '/dashboard/perfil',
-    component: DashboardPerfil,
-    user: 'administrator',
+    component: ValedorDashboardProfile,
+    user: 'valedor',
     icon: Person
   },
   {
     name: 'Negocios',
     path: '/dashboard/negocios',
-    component: Negocios,
-    user: 'administrator',
+    component: ValedoresBussines,
+    user: 'valedor',
     icon: Store
   },
 
@@ -39,7 +39,7 @@ const valedorDashboardRoute = [
     name: 'Contactos',
     path: '/dashboard/contactos',
     component: Mail,
-    user: 'administrator',
+    user: 'valedor',
     icon: Contacts
   }
 ]

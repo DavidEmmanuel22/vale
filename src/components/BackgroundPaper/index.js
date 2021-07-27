@@ -19,15 +19,13 @@ const styles = {
   }
 }
 
-const BackgroundPaper = () => {
+const BackgroundPaper = ({ redirectTo = '/dashboard' }) => {
   const [notReadMessage, setNotReadMessage] = useState('')
   useEffect(() => {
     async function notReadMessage() {
       const { success, response, error } = await countMessagesNotRead()
       if (success && response) {
-        setNotReadMessage(response.data)
-      } else {
-        //console.log(error)
+        !response.error && setNotReadMessage(response.data)
       }
     }
     notReadMessage()
@@ -53,7 +51,7 @@ const BackgroundPaper = () => {
             <div>
               <h3>Nuevos mensajes</h3>
               <h1>{notReadMessage}</h1>
-              <Link to="/dashboard" style={{ width: '100%', display: 'flex' }}>
+              <Link to={redirectTo} style={{ width: '100%', display: 'flex' }}>
                 <Button variant="contained" color="secondary">
                   Ver Más
                 </Button>

@@ -13,7 +13,8 @@ import Valedores from 'pages/valedores/Valedores'
 import Negocios from 'pages/negocios/Negocios'
 import Contact from 'pages/Contact/Contact'
 import dashboardRoutes from './dashboardRoutes'
-import valedorRoutes from './valedorDashboardRoute'
+import valedorRoutes from './valedorRoutes'
+import BussinesRoutes from './bussinesRoutes'
 import historyRoute from './history'
 import { Mail } from 'pages/Mail/Mail'
 import { Vale } from 'pages/valedores/Vale'
@@ -37,9 +38,21 @@ const Routes = () => {
             </GeneralLayout>
           </PrivateRoute>
         ))}
-
       {user.role === 'Valedor' &&
         valedorRoutes.map((route, index) => (
+          <PrivateRoute
+            key={index}
+            isAuthenticated={isAuthenticated}
+            exact
+            path={route.path}
+          >
+            <GeneralLayout routes={valedorRoutes}>
+              <route.component></route.component>
+            </GeneralLayout>
+          </PrivateRoute>
+        ))}
+      {user.role === 'Bussines' &&
+        BussinesRoutes.map((route, index) => (
           <PrivateRoute
             key={index}
             isAuthenticated={isAuthenticated}
