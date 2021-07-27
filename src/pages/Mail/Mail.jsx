@@ -94,14 +94,14 @@ export const Mail = () => {
     const values = localStorage.getItem('idChat')
     //check "my hour" index here
     if ((values !== null) < new Date()) {
-      setShowSessionMessage(true)
-      ///setShowInvalidMessages(false)
+      setShowSessionMessage(false)
+      //setShowInvalidMessages(false)
     }
   }
 
   const logOutMessages = () => {
     //    const myinterval = 60 * 60 * 1000
-    const myinterval = 6000
+    const myinterval = 10000
     setInterval(function () {
       checkExpiration()
     }, myinterval)
@@ -117,7 +117,7 @@ export const Mail = () => {
     const session = localStorage.getItem('idChat')
     //check "my hour" index here
     if (session === null) {
-      setShowInvalidMessages(true)
+      setShowInvalidMessages(false)
     }
     async function getMessages() {
       const { success, response, error } = await messageHistory(
@@ -126,14 +126,14 @@ export const Mail = () => {
       if (success && response) {
         //console.log(response.data)
         setMessages(response.data)
-        if (response.data.length > 5) {
+        if (response.data.length > 4) {
           setScroll(true)
         }
         setLoading(false)
         logOutMessages()
         setTimeout(() => {
           setReload(true)
-        }, 3000)
+        }, 5000)
       } else {
         //console.log(error)
       }
