@@ -16,10 +16,7 @@ import { UserContext } from '../../context/userContext'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import { updateBussinesSchema } from '../../yupSchemas/bussinesSchemas'
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng
-} from 'react-places-autocomplete'
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import DirectionsIcon from '@material-ui/icons/Directions'
 import { GoogleApiWrapper } from 'google-maps-react'
 import Geocode from 'react-geocode'
@@ -30,7 +27,7 @@ import { updateUser } from '../../requests/allValedores'
 
 const BussinesProfile = () => {
   const matches = useMediaQuery('(min-width:600px)')
-  const useStyles = makeStyles((theme) => ({
+  const useStyles = makeStyles(theme => ({
     root: {
       flexGrow: 1
     },
@@ -89,9 +86,7 @@ const BussinesProfile = () => {
   }
 
   const validationSchema = yup.object({
-    bussinesName: yup
-      .string('Enter your bissines name')
-      .required('Bussines name is required')
+    bussinesName: yup.string('Enter your bissines name').required('Bussines name is required')
   })
 
   const [alert, dispatchAlert] = useAlert()
@@ -165,26 +160,26 @@ const BussinesProfile = () => {
     return () => {}
   }, [])
 
-  const handleSelect = async (value) => {
+  const handleSelect = async value => {
     const results = await geocodeByAddress(value)
     const coors = await getLatLng(results[0])
     setLatlng(coors)
     console.log(coors)
   }
 
-  const setMarkerPosition = (location) => {
+  const setMarkerPosition = location => {
     console.log('locatoin')
     console.log(location)
     setLatlng(location)
     Geocode.setApiKey('AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw')
     Geocode.fromLatLng(location.lat, location.lng).then(
-      (response) => {
+      response => {
         console.log('directions')
         console.log(response)
         setAddress(response.results[0].formatted_address)
         setOnEdit(true)
       },
-      (error) => {
+      error => {
         console.error(error)
       }
     )
@@ -217,11 +212,12 @@ const BussinesProfile = () => {
             show: false
           }
         })
+        logout()
       }, 5000)
     }
   }
 
-  const errorImageHandler = (error) => {
+  const errorImageHandler = error => {
     dispatchAlert({
       type: 'error',
       payload: {
@@ -248,83 +244,68 @@ const BussinesProfile = () => {
             <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
               <Grid container>
                 <Grid item xs={12}>
-                  <Typography variant="h5" component="h4" gutterBottom>
+                  <Typography variant='h5' component='h4' gutterBottom>
                     Datos del negocio
                   </Typography>
                 </Grid>
                 <Grid item xs={12} className={classes.avatarContainer}>
-                  <UserAvatar
-                    errorImageHandler={errorImageHandler}
-                    onEdit={onEdit}
-                    ref={avatarRef}
-                  ></UserAvatar>
+                  <UserAvatar errorImageHandler={errorImageHandler} onEdit={onEdit} ref={avatarRef}></UserAvatar>
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextField
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <AccountCircleIcon />
                         </InputAdornment>
                       )
                     }}
                     disabled={!onEdit}
-                    id="bussinesName"
-                    placeholder="Nombre del negocio"
+                    id='bussinesName'
+                    placeholder='Nombre del negocio'
                     fullWidth
-                    label="Nombre del negocio"
-                    type="text"
+                    label='Nombre del negocio'
+                    type='text'
                     className={classes.TextField}
                     value={formik.values.bussinesName}
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.bussinesName &&
-                      Boolean(formik.errors.bussinesName)
-                    }
-                    helperText={
-                      formik.touched.bussinesName && formik.errors.bussinesName
-                    }
+                    error={formik.touched.bussinesName && Boolean(formik.errors.bussinesName)}
+                    helperText={formik.touched.bussinesName && formik.errors.bussinesName}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextField
-                    id="bussinesEmail"
-                    placeholder="Correo electronico"
+                    id='bussinesEmail'
+                    placeholder='Correo electronico'
                     fullWidth
-                    label="Correo electronico"
-                    type="text"
+                    label='Correo electronico'
+                    type='text'
                     className={classes.TextField}
                     disabled={!onEdit}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <AlternateEmailIcon></AlternateEmailIcon>
                         </InputAdornment>
                       )
                     }}
                     value={formik.values.email}
                     onChange={formik.handleChange}
-                    error={
-                      formik.touched.bussinesEmail &&
-                      Boolean(formik.errors.bussinesEmail)
-                    }
-                    helperText={
-                      formik.touched.bussinesEmail &&
-                      formik.errors.bussinesEmail
-                    }
+                    error={formik.touched.bussinesEmail && Boolean(formik.errors.bussinesEmail)}
+                    helperText={formik.touched.bussinesEmail && formik.errors.bussinesEmail}
                   />
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextField
-                    id="bussinesRFC"
-                    placeholder="RFC"
+                    id='bussinesRFC'
+                    placeholder='RFC'
                     fullWidth
-                    label="RFC"
-                    type="text"
+                    label='RFC'
+                    type='text'
                     className={classes.TextField}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <AssignmentIcon></AssignmentIcon>
                         </InputAdornment>
                       )
@@ -335,15 +316,15 @@ const BussinesProfile = () => {
                 </Grid>
                 <Grid item xs={12} lg={6}>
                   <TextField
-                    id="bussinesRole"
-                    placeholder="Rol"
+                    id='bussinesRole'
+                    placeholder='Rol'
                     fullWidth
-                    label="Rol"
-                    type="text"
+                    label='Rol'
+                    type='text'
                     className={classes.TextField}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position="start">
+                        <InputAdornment position='start'>
                           <StoreIcon></StoreIcon>
                         </InputAdornment>
                       )
@@ -355,35 +336,30 @@ const BussinesProfile = () => {
                 <Grid item xs={12} lg={6}>
                   <PlacesAutocomplete
                     value={adress}
-                    onChange={(value) => {
+                    onChange={value => {
                       setAddress(value)
                     }}
-                    onSelect={(value) => {
+                    onSelect={value => {
                       handleSelect(value)
                       setAddress(value)
                     }}
                   >
-                    {({
-                      getInputProps,
-                      suggestions,
-                      getSuggestionItemProps,
-                      loading
-                    }) => (
+                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                       <div>
                         <TextField
                           className={classes.TextField}
-                          label="Direccion del negocio"
-                          onChange={(value) => {
+                          label='Direccion del negocio'
+                          onChange={value => {
                             setAddress(value)
                           }}
-                          id="bussinesAdress"
+                          id='bussinesAdress'
                           {...getInputProps({
                             placeholder: 'Dirección del negocio'
                           })}
-                          type="text"
+                          type='text'
                           InputProps={{
                             startAdornment: (
-                              <InputAdornment position="start">
+                              <InputAdornment position='start'>
                                 <DirectionsIcon></DirectionsIcon>
                               </InputAdornment>
                             )
@@ -392,12 +368,10 @@ const BussinesProfile = () => {
                         />
                         <div>
                           {loading ? <div>...Cargando</div> : null}
-                          {suggestions.map((suggestion) => {
+                          {suggestions.map(suggestion => {
                             const style = {
                               cursor: 'pointer',
-                              backgroundColor: suggestion.active
-                                ? '#00777257'
-                                : '#fff'
+                              backgroundColor: suggestion.active ? '#00777257' : '#fff'
                             }
                             return (
                               <div
@@ -416,20 +390,13 @@ const BussinesProfile = () => {
                   </PlacesAutocomplete>
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                  <a
-                    href="#"
-                    onClick={handleChangePassword}
-                    className={classes.changePassword}
-                  >
+                  <a href='#' onClick={handleChangePassword} className={classes.changePassword}>
                     Cambiar contraseña
                   </a>
                 </Grid>
                 <Grid item xs={12}>
                   <Collapse in={alert.show}>
-                    <Alert
-                      style={{ marginTop: '10px' }}
-                      severity={alert.severity}
-                    >
+                    <Alert style={{ marginTop: '10px' }} severity={alert.severity}>
                       {alert.content}
                     </Alert>
                   </Collapse>
@@ -441,24 +408,20 @@ const BussinesProfile = () => {
                     }}
                   >
                     {!onEdit && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setOnEdit(true)}
-                      >
+                      <Button variant='contained' color='primary' onClick={() => setOnEdit(true)}>
                         Editar
                       </Button>
                     )}
                     {onEdit && (
-                      <Button variant="contained" color="primary" type="reset">
+                      <Button variant='contained' color='primary' type='reset'>
                         Cancelar
                       </Button>
                     )}
                     {onEdit && (
                       <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
+                        variant='contained'
+                        color='secondary'
+                        type='submit'
                         onClick={() => avatarRef.current.test()}
                       >
                         Guardar
@@ -469,15 +432,9 @@ const BussinesProfile = () => {
               </Grid>
             </form>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            lg={6}
-            xl={5}
-            style={{ height: '400px', paddingLeft: '15px' }}
-          >
+          <Grid item xs={12} lg={6} xl={5} style={{ height: '400px', paddingLeft: '15px' }}>
             <Map
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw"
+              googleMapURL='https://maps.googleapis.com/maps/api/js?key=AIzaSyC43U2-wqXxYEk1RBrTLdkYt3aDoOxO4Fw'
               loadingElement={<div style={{ height: `100%` }} />}
               containerElement={<div style={{ height: `400px` }} />}
               mapElement={<div style={{ height: `100%` }} />}
