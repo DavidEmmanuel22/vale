@@ -16,57 +16,42 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TemporaryDrawer({
-  drawerOpen,
-  handleDrawerOpen,
-  routes,
-  handleListItemClick,
-  selectedIndex
-}) {
+export default function TemporaryDrawer({ drawerOpen, handleDrawerOpen, routes, handleListItemClick, selectedIndex }) {
   const classes = useStyles()
 
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
+  const toggleDrawer = open => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return
     }
 
     handleDrawerOpen(open)
   }
 
-  const list = (anchor) => (
+  const list = anchor => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom'
       })}
-      role="presentation"
+      role='presentation'
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <div>
-        <img
-          width="200px"
-          style={{ objectFit: 'contain' }}
-          src="/logo-appbar.png"
-        ></img>
+        <Link to='/'>
+          <img
+            width='200px'
+            style={{ objectFit: 'contain', marginTop: '15px', marginLeft: '10px' }}
+            src='/logo-appbar.png'
+          ></img>
+        </Link>
       </div>
       {routes.map((route, index) => (
-        <Link
-          className="listLink"
-          to={route.path}
-          key={index}
-          onClick={() => handleListItemClick(index)}
-        >
+        <Link className='listLink' to={route.path} key={index} onClick={() => handleListItemClick(index)}>
           <ListItem button selected={index === selectedIndex}>
             <ListItemIcon>
               <route.icon style={{ color: '#007772' }}></route.icon>
             </ListItemIcon>
-            <ListItemText
-              style={{ color: 'grey', fontWeight: '600 !important' }}
-              primary={route.name}
-            />
+            <ListItemText style={{ color: 'grey', fontWeight: '600 !important' }} primary={route.name} />
           </ListItem>
         </Link>
       ))}

@@ -290,6 +290,9 @@ export const Business = () => {
 		window.navigator.geolocation.getCurrentPosition(function (position) {
 			console.log(position);
 			success(position)
+		}, function (err) {
+			console.log(err);
+			errors(false)
 		})
 	}
 
@@ -316,6 +319,8 @@ export const Business = () => {
 				})
 		} else if (window.navigator.geolocation) {
 			getCurrentLocation()
+		} else {
+			errors(false)
 		}
 	}, [])
 
