@@ -20,11 +20,13 @@ const ContextProvider = ({ children }) => {
     } else {
       setIsAuthenticated(false)
     }
+    setHasLoad(true)
   }, [user])
 
-  const login = (token) => {
+  const login = async token => {
+    setHasLoad(false)
     localStorage.setItem('auth-token', token)
-    const decoded = jwt_decode(token)
+    const decoded = await jwt_decode(token)
     setUser(decoded.user)
     setHasLoad(true)
   }
@@ -54,7 +56,6 @@ const ContextProvider = ({ children }) => {
     } else {
       setUser(false)
     }
-    setHasLoad(true)
   }, [localStorage.getItem('auth-token')])
 
   return (
@@ -73,7 +74,7 @@ const ContextProvider = ({ children }) => {
         showContactView
       }}
     >
-      {children}
+      {hasLoad ? children : null}
     </UserContext.Provider>
   )
 }
