@@ -136,7 +136,7 @@ const BussinesProfile = () => {
           dispatchAlert({
             type: 'show',
             payload: {
-              show: true
+              show: false
             }
           })
         }, 10000)
