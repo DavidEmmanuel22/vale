@@ -85,10 +85,6 @@ const BussinesProfile = () => {
         urlImage: user.urlImage
     }
 
-    const validationSchema = yup.object({
-        bussinesName: yup.string('Enter your bissines name').required('Bussines name is required')
-    })
-
     const [alert, dispatchAlert] = useAlert()
     const avatarRef = React.useRef()
     const [adress, setAddress] = useState(initialValues.bussinesAdress.direction)
