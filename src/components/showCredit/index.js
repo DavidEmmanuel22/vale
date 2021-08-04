@@ -16,13 +16,14 @@ background-position: center;
 const ShowCredit = ({ height }) => {
     const useStyles = makeStyles({
         root: {
-            minWidth: 275,
+            width: '100%',
             backgroundImage: `url(${backgroundImage})`,
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             borderRadius: '20px',
-            marginBottom: '10px'
+            marginBottom: '10px',
+            height
         },
         bullet: {
             display: 'inline-block',

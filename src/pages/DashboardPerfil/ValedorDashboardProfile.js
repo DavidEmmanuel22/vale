@@ -297,23 +297,21 @@ const ValedorDashboardProfile = () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
-                    <Hidden smDown>
-                        <ShowCredit height='80%'></ShowCredit>
-                        <Button
-                            variant='contained'
-                            color='secondary'
-                            onClick={() => setShowModalVale(true)}
-                            startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
-                            style={{
-                                width: '100%',
-                                borderRadius: '15px',
-                                height: '20%',
-                                fontSize: '18px'
-                            }}
-                        >
-                            Crear Vale
-                        </Button>
-                    </Hidden>
+                    <ShowCredit height='60%'></ShowCredit>
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        onClick={() => setShowModalVale(true)}
+                        startIcon={<MonetizationOnIcon></MonetizationOnIcon>}
+                        style={{
+                            width: '100%',
+                            borderRadius: '15px',
+                            height: 'calc(40% - 15px)',
+                            fontSize: '18px'
+                        }}
+                    >
+                        Crear Vale
+                    </Button>
                 </Grid>
             </Grid>
             <ResponsivePopUp open={showModalVale} setOpen={setShowModalVale} title={'Crea un nuevo vale'}>

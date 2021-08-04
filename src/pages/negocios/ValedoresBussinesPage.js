@@ -43,8 +43,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        maxHeight: `80vh`,
-        overflowY: 'scroll'
+        width: 'calc(100% - 10px)'
     },
     buttonPaper: {
         padding: theme.spacing(2),
@@ -138,7 +137,10 @@ const ValedoresBussines = () => {
     return (
         <Grid container spacing={3} style={{ height: '100%' }}>
             <Grid item xs={12} style={{ height: '100%' }}>
-                <Paper className={classes.paper} style={{ position: 'sticky', marginBottom: '10px' }}>
+                <Paper
+                    className={classes.paper}
+                    style={{ marginBottom: '10px', height: '65px', width: 'calc(100% - 10px)' }}
+                >
                     <TextField
                         style={{ float: 'left' }}
                         value={search}
@@ -158,7 +160,7 @@ const ValedoresBussines = () => {
                     <Alert severity='info'>!UPS! Parece que aun no hay negocios registrados.</Alert>
                 )}
                 {filteredItems.length > 0 ? (
-                    <Paper className={classes.paper}>
+                    <Paper className={classes.paper} style={{ height: 'calc(100vh - 180px)', overflowY: 'scroll' }}>
                         <TableContainer>
                             <Table>
                                 <TableHead>
