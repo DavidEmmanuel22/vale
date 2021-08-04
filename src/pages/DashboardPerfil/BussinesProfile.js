@@ -142,8 +142,8 @@ const BussinesProfile = () => {
             onS.setValues(initialValues)
             setAddress(initialValues.bussinesAdress.direction)
             setLatlng({
-                lat: parseInt(initialValues.bussinesAdress.latitude),
-                lng: parseInt(initialValues.bussinesAdress.longitude)
+                lat: parseFloat(initialValues.bussinesAdress.latitude),
+                lng: parseFloat(initialValues.bussinesAdress.longitude)
             })
             avatarRef.current.rollbackImage()
             setOnEdit(false)
