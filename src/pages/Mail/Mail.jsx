@@ -29,6 +29,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { SessionExpired } from './SessionExpired'
 import expired from '../../assets/Contact/expired.png'
 import { Link } from 'react-router-dom'
+import Countdown from 'react-countdown';
 
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
 
     justifyContent: 'space-between'
+  },
+  countDownHide: {
+    color: 'white',
   }
 }))
 
@@ -133,7 +137,7 @@ export const Mail = () => {
         logOutMessages()
         setTimeout(() => {
           setReload(true)
-        }, 5000)
+        }, 0)
       } else {
         //console.log(error)
       }
@@ -233,9 +237,14 @@ export const Mail = () => {
                     </Fab>
                   </Tooltip>
                 ) : null}
-
-                {showSessionMessage && !showInvalidMessages ? (
-                  <SessionExpired />
+              <Countdown 
+              date={Date.now() + 1200000}
+              className={classes.countDownHide}
+              >
+                <SessionExpired />
+              </Countdown>
+                { showSessionMessage && !showInvalidMessages ? (
+                 <SessionExpired />
                 ) : (
                   <MessageContent />
                 )}
@@ -251,7 +260,7 @@ export const Mail = () => {
                       para cargar sus mensajes.
                     </span>
                   </div>
-                )}
+                )} 
               </>
             )}
           </div>
@@ -269,6 +278,7 @@ export const Mail = () => {
           }}
         >
           <TextField
+          autoFocus
             style={{
               width: '95%',
               backgroundColor: 'white'
