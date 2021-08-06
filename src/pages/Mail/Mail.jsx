@@ -238,7 +238,7 @@ export const Mail = () => {
                   </Tooltip>
                 ) : null}
               <Countdown 
-              date={Date.now() + 1200000}
+              date={Date.now() + 300000/*1200000*/}
               className={classes.countDownHide}
               >
                 <SessionExpired />
