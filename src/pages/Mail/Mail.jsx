@@ -130,7 +130,7 @@ export const Mail = () => {
       if (success && response) {
         //console.log(response.data)
         setMessages(response.data)
-        if (response.data.length > 4) {
+        if (response.data.length > 3) {
           setScroll(true)
         }
         setLoading(false)
