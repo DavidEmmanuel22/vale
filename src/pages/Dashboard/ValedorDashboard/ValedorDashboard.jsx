@@ -102,7 +102,7 @@ export const ValedorDashboard = ({ showDialog = false }) => {
 	const style = useStyle()
 	return (
 		<>
-			<Paper style={{ height: "410px", width: '98%' }} className={style.root}>
+			<Paper style={{ height: "calc(100vh - 180px)", width: '100%' }} className={style.root}>
 				<div style={{ height: "100%", width: '100%' }}>
 					<DataGrid
 						localeText={GRID_DEFAULT_LOCALE_TEXT}
