@@ -128,7 +128,7 @@ const BussinesProfile = () => {
                     })
                 }
                 setTimeout(() => {
-                    if (!response.error) {
+                    if (response.data) {
                         login(response.data.token)
                     }
                 }, 10000)

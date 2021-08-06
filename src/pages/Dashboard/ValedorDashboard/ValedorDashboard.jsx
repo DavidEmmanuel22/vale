@@ -85,7 +85,11 @@ export const ValedorDashboard = ({ showDialog = false }) => {
 		async function getAllVales() {
 			const { success, response, error } = await valesHistory(user.email)
 			if (success && response) {
-				setVales(response.data)
+				if (response.error) {
+					console.error(response.error)
+				} else {
+					setVales(response.data)
+				}
 				//setIsLoading(false)
 			} else {
 				//console.log(error)
