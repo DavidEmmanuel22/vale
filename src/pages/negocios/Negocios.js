@@ -87,8 +87,12 @@ const Negocios = () => {
             setIsLoading(true)
             const { success, response, error } = await getNegocios()
             if (success && response) {
-                setNegocios(response.data)
-                setIsLoading(false)
+                if (response.error) {
+                    console.error(response.error)
+                } else {
+                    setNegocios(response.data)
+                    setIsLoading(false)
+                }
             } else {
                 //console.log(error)
             }

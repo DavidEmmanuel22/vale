@@ -73,33 +73,25 @@ const ValedoresBussines = () => {
     const [search, setSearch] = useState('')
     const [filteredItems, setTotalItems, setToSearch] = useFilter(negocios, businessSearchProperties, search)
 
-    const filteredBusiness = negocios.filter(negocio => {
-        if (
-            negocio.bussinesName.toLowerCase().includes(searchBusiness.toLowerCase()) ||
-            negocio.bussinesAdress.direction.toLowerCase().includes(searchBusiness.toLowerCase()) ||
-            negocio.email.toLowerCase().includes(searchBusiness.toLowerCase())
-        ) {
-            return negocio
-        } else {
-            return null
-        }
-    })
-
     useEffect(() => {
         async function getAllNegocios() {
             setIsLoading(true)
             const { success, response, error } = await getNegocios()
             if (success && response) {
-                setNegocios(response.data)
-                setTotalItems(
-                    response.data.map(business => {
-                        return {
-                            ...business,
-                            direction: business.bussinesAdress.direction
-                        }
-                    })
-                )
-                setIsLoading(false)
+                if (response.error) {
+                    console.error(response.error)
+                } else {
+                    setNegocios(response.data)
+                    setTotalItems(
+                        response.data.map(business => {
+                            return {
+                                ...business,
+                                direction: business.bussinesAdress.direction
+                            }
+                        })
+                    )
+                    setIsLoading(false)
+                }
             } else {
                 //console.log(error)
             }

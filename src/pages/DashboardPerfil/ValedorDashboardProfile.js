@@ -106,13 +106,13 @@ const ValedorDashboardProfile = () => {
                 })
             }
             setTimeout(() => {
-                /*dispatchAlert({
+                dispatchAlert({
                     type: 'show',
                     payload: {
                         show: false
                     }
-                })*/
-                login(response.data.token)
+                })
+                response.data && login(response.data.token)
             }, 10000)
         }
     }
