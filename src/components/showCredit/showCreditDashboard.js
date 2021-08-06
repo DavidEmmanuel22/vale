@@ -6,14 +6,8 @@ import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import backgroundImage from '../../images/valedor-green.png'
-/*
-background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  border-radius: 20px;*/
 
-const ShowCredit = ({ height }) => {
+const ShowCreditDashboard = ({ height }) => {
     const useStyles = makeStyles({
         root: {
             width: '100%',
@@ -21,9 +15,12 @@ const ShowCredit = ({ height }) => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
-            borderRadius: '20px',
+            borderRadius: '6px',
             marginBottom: '10px',
-            height
+            height,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
         },
         bullet: {
             display: 'inline-block',
@@ -31,14 +28,16 @@ const ShowCredit = ({ height }) => {
             transform: 'scale(0.8)'
         },
         title: {
-            fontSize: 16,
-            color: '#fff',
+            fontSize: 14,
             fontWeight: 600,
-            textAlign: 'center'
+            textAlign: 'center',
+            marginBottom: '-10px',
+            marginTop: '10px'
         },
         credit: {
             fontSize: '40px',
-            color: '#fff'
+            color: '#fff',
+            textAlign: 'center'
         },
         btn: {}
     })
@@ -48,20 +47,15 @@ const ShowCredit = ({ height }) => {
     return (
         <Card className={classes.root} variant='outlined'>
             <CardContent>
-                <Typography className={classes.title} color='textSecondary' gutterBottom>
+                <Typography color='secondary' className={classes.title}>
                     Credito Disponible
                 </Typography>
                 <Typography className={classes.credit} color='textSecondary'>
                     4,500 MXN
                 </Typography>
             </CardContent>
-            <CardActions style={{ justifyContent: 'flex-end' }}>
-                <Button size='small' className={classes.btn} variant='contained' color='secondary'>
-                    Conseguir Mas Credito
-                </Button>
-            </CardActions>
         </Card>
     )
 }
 
-export default ShowCredit
+export default ShowCreditDashboard

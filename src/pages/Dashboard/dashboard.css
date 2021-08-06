@@ -1,99 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
-.dashboard-container p {
-  font-family: 'Open sans', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
+.dashboard-container .dashboard-container-item p {
+    font-family: 'Open sans', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
 }
 .dashboard-container {
-  justify-content: center;
+    justify-content: center;
 }
-.dashboard-container p span {
-  font-family: 'Open sans', sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  background-color: rgb(0, 119, 114);
-  background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
-  border-radius: 6px;
-  color: white;
-  padding-inline-start: 10px;
-  padding-inline-end: 10px;
+.dashboard-container .dashboard-container-item p span {
+    font-family: 'Open sans', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    background-color: rgb(0, 119, 114);
+    background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
+    border-radius: 6px;
+    color: white;
+    padding-inline-start: 10px;
+    padding-inline-end: 10px;
 }
 
 .register-button {
-  display: flex;
-  border-radius: 10px;
-  height: 70px;
-  box-shadow: 2px 4px 6px #888888;
+    display: flex;
+    border-radius: 10px;
+    height: 70px;
+    box-shadow: 2px 4px 6px #888888;
+    cursor: pointer;
 }
 
 .register-button:hover {
-  display: flex;
-  border-radius: 10px;
-  height: 70px;
-  box-shadow: 1px 2px 3px #6e6e6e;
+    display: flex;
+    border-radius: 10px;
+    height: 70px;
+    box-shadow: 1px 2px 3px #6e6e6e;
 }
 
 .register-button div {
-  background-color: #f9a02b;
-  background: linear-gradient(to right, #f9a02b, #fab153);
-  border-radius: 10px 0 0 10px;
-  width: 40%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  text-align: center;
-  align-items: stretch;
-  transition: 0.2s ease-in;
+    background-color: #f9a02b;
+    background: linear-gradient(to right, #f9a02b, #fab153);
+    border-radius: 10px 0 0 10px;
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: stretch;
+    transition: 0.2s ease-in;
 }
 
 .register-button:hover div {
-  background-color: #2d6a4f;
-  border-radius: 10px 0 0 10px;
-  width: 45%;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  text-align: center;
-  align-items: stretch;
+    background-color: #2d6a4f;
+    border-radius: 10px 0 0 10px;
+    width: 45%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    text-align: center;
+    align-items: stretch;
 }
 
 .register-button p {
-  background-color: white;
-  font-size: 20px;
-  width: 100%;
-  text-align: center;
-  border-radius: 0 10px 10px 0;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  color: #2d6a4f;
-  transition: 0.3s ease-out;
+    background-color: white;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    color: #2d6a4f;
+    transition: 0.3s ease-out;
 }
 
 .register-button:hover p {
-  background-color: rgba(255, 255, 255, 0.568);
-  font-size: 20px;
-  width: 100%;
-  text-align: center;
-  border-radius: 0 10px 10px 0;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
-  color: #f9a02b;
+    background-color: rgba(255, 255, 255, 0.568);
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+    border-radius: 0 10px 10px 0;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    color: #f9a02b;
 }
 
 h1.dashboard-title {
-  font-family: 'Montserrat', sans-serif;
-  text-align: center;
-  margin-bottom: 25px;
-  color: rgb(31, 29, 29);
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-bottom: 25px;
+    color: rgb(31, 29, 29);
 }
 
 .table-messages-head {
-  background: rgb(45, 106, 79);
-  background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
+    background: rgb(45, 106, 79);
+    background: linear-gradient(to right, #2d6a4f, rgb(61, 136, 102));
 }

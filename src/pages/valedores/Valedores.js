@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         textAlign: 'center',
         color: theme.palette.text.secondary,
-        maxHeight: `80vh`,
+        height: `calc(100vh - 180px)`,
         overflowY: 'scroll'
     },
     buttonPaper: {
@@ -130,7 +130,7 @@ const Valedores = () => {
                     style={{
                         display: 'flex',
                         textAlign: 'center',
-                        marginBottom: '1.2rem',
+                        marginBottom: '10px',
                         justifyContent: 'space-between'
                     }}
                 >
