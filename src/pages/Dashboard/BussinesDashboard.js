@@ -9,6 +9,7 @@ import QrReader from 'react-qr-reader'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import ResponsivePopUp from '../../components/popUp/responsivePopUp'
 import ExchangeVale from '../../components/exchangeVale'
+import { BusinessHistory } from 'components/BusinessHistory'
 
 const BussinesDashboard = () => {
     const matches = useMediaQuery('(min-width:600px)')
@@ -19,7 +20,15 @@ const BussinesDashboard = () => {
         paper: {
             padding: matches ? theme.spacing(2) : theme.spacing(1),
             textAlign: 'center',
-            borderRadius: '15px',
+            borderRadius: '9px',
+            color: theme.palette.text.secondary
+        },
+        paper2: {
+            padding: matches ? theme.spacing(2) : theme.spacing(1),
+            textAlign: 'center',
+            borderRadius: '9px',
+            marginTop: '10px',
+            height: 'calc(100vh - 180px)',
             color: theme.palette.text.secondary
         },
         input: {
@@ -86,6 +95,11 @@ const BussinesDashboard = () => {
                             </Button>
                         </Grid>
                     </Grid>
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper className={classes.paper2}>
+                    <BusinessHistory></BusinessHistory>
                 </Paper>
             </Grid>
             <ResponsivePopUp open={showExchangePopup} setOpen={setShowExchangePopup} title='Canjea Un Vale'>
