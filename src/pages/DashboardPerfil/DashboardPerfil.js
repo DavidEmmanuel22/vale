@@ -206,11 +206,11 @@ export const DashboardPerfil = () => {
                     setAlertText(response.data.message)
                     setShowAlert(true)
                     setOnEdit(false)
+                    login(response.data.token)
                 }
             }
             setTimeout(() => {
                 setShowAlert(false)
-                response.data && login(response.data.token)
             }, 8000)
         }
         if (error) {

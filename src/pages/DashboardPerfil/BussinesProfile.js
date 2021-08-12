@@ -126,11 +126,10 @@ const BussinesProfile = () => {
                             show: true
                         }
                     })
+                    login(response.data.token)
                 }
                 setTimeout(() => {
-                    if (response.data) {
-                        login(response.data.token)
-                    }
+                    //QUIT ALERT
                 }, 10000)
             }
         },
