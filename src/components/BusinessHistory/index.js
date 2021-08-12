@@ -11,37 +11,46 @@ import { useHistory } from 'react-router'
 import moment from 'moment'
 import 'moment/min/locales'
 import { NoRow } from '../../assets/Helpers/NoRow'
+import { getBusinessHistory } from 'requests/allVales'
+import useUser from 'hooks/useUser'
 
 moment.locale('es')
 
+/*
+"_id": "6113e32e49877a0014c3313b",
+                "idVale": "610433976e59e4001473a2a9",
+                "credits": 2,
+                "idBussines": "61018a784dfb2a00149099c3",
+                "datePurchase": "2021-08-11T14:48:14.903Z",
+                "concept": "hello world",
+                "createdAt": "2021-08-11T14:48:14.904Z",
+                "updatedAt": "2021-08-11T14:48:14.904Z",
+                "__v": 0
+*/
+
 const columns = [
     {
-        field: 'firstName',
-        headerName: 'Nombre',
-        width: 250
-    },
-    {
-        field: 'lastName',
-        headerName: 'Apellido',
-        width: 250
-    },
-    {
-        field: 'credits',
-        headerName: 'Crédito',
-        valueFormatter: valedor => numeral(valedor.row.credits).format('$0,0'),
-        width: 180
-    },
-    {
-        field: 'updatedAt',
-        headerName: 'Fecha de compra',
-
-        valueFormatter: valedor => moment(valedor.row.updatedAt).format('MM/DD/YYYY  hh:mm A'),
+        field: 'idVale',
+        headerName: 'ID del vale',
         width: 250
     },
     {
         field: 'concept',
         headerName: 'Concepto de compra',
-        width: 350
+        width: 250
+    },
+    {
+        field: 'credits',
+        headerName: 'Credito de compra',
+        valueFormatter: valedor => numeral(valedor.row.credits).format('$0,0'),
+        width: 180
+    },
+    {
+        field: 'datePurchase',
+        headerName: 'Fecha de compra',
+
+        valueFormatter: purchase => moment(purchase.row.datePurchase).format('MM/DD/YYYY  hh:mm A'),
+        width: 250
     }
 ]
 
@@ -51,16 +60,11 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export const BusinessHistory = ({ showDialog = false }) => {
+export const BusinessHistory = React.forwardRef((props, ref) => {
     const classes = useStyles()
-    const { user } = useContext(UserContext)
+    const user = useUser()
 
-    const [vales, setVales] = useState([])
-    const history = useHistory()
-
-    const sortedVales = vales.sort((a, b) => {
-        return new Date(b.updatedAt) - new Date(a.updatedAt)
-    })
+    const [history, setHistory] = useState([])
 
     const useStyle = makeStyles({
         root: {
@@ -77,23 +81,25 @@ export const BusinessHistory = ({ showDialog = false }) => {
         }
     })
 
-    useEffect(() => {
-        async function getAllVales() {
-            const { success, response, error } = await valesHistory(user.email)
-            if (success && response) {
-                if (response.error) {
-                    console.error(response.error)
-                } else {
-                    setVales(response.data.map(vale => ({ ...vale, concept: 'Unos Tennis XD' })))
-                }
-                //setIsLoading(false)
-            } else {
-                //console.log(error)
+    const getHistory = async () => {
+        console.log(user)
+        const { success, response, error } = await getBusinessHistory(user._id)
+        if (success && response) {
+            if (response.data) {
+                setHistory(response.data.map(purch => purch.purchase))
             }
         }
+    }
 
-        !showDialog && getAllVales()
-    }, [showDialog])
+    useEffect(() => {
+        getHistory()
+    }, [])
+
+    React.useImperativeHandle(ref, () => {
+        return {
+            reload: () => getHistory()
+        }
+    })
 
     const style = useStyle()
     return (
@@ -101,7 +107,7 @@ export const BusinessHistory = ({ showDialog = false }) => {
             <div style={{ height: '100%', width: '100%' }}>
                 <DataGrid
                     localeText={GRID_DEFAULT_LOCALE_TEXT}
-                    rows={sortedVales}
+                    rows={history}
                     getRowId={row => row._id}
                     components={{
                         NoRowsOverlay: NoRow
@@ -115,4 +121,4 @@ export const BusinessHistory = ({ showDialog = false }) => {
             </div>
         </>
     )
-}
+})

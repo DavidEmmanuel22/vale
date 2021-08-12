@@ -79,6 +79,7 @@ const BussinesDashboard = () => {
     const classes = useStyles()
 
     const [showExchangePopup, setShowExchangePopup] = React.useState(false)
+    const historyRef = React.useRef()
 
     const handleExchangeClick = () => {
         setShowExchangePopup(true)
@@ -99,11 +100,16 @@ const BussinesDashboard = () => {
             </Grid>
             <Grid item xs={12}>
                 <Paper className={classes.paper2}>
-                    <BusinessHistory></BusinessHistory>
+                    <BusinessHistory ref={historyRef}></BusinessHistory>
                 </Paper>
             </Grid>
-            <ResponsivePopUp open={showExchangePopup} setOpen={setShowExchangePopup} title='Canjea Un Vale'>
-                <ExchangeVale></ExchangeVale>
+            <ResponsivePopUp
+                open={showExchangePopup}
+                setOpen={setShowExchangePopup}
+                onClose={() => historyRef.current.reload()}
+                title='Canjea Un Vale'
+            >
+                <ExchangeVale ref={historyRef}></ExchangeVale>
             </ResponsivePopUp>
         </Grid>
     )
