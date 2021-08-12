@@ -13,7 +13,7 @@ export const createVale = vale => {
     )
 }
 
-export const chargeVale = (folio, amount, businessId, concept) => {
+export const chargeVale = (folio, amount, concept) => {
     return fetchRequest(
         `/vale-usado`,
         {
