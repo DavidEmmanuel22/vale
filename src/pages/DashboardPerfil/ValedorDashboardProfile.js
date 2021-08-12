@@ -69,11 +69,11 @@ const ValedorDashboardProfile = () => {
     const formik = useFormik({
         initialValues,
         onSubmit: userUpdated => {
-            console.log('submit')
             setOnEdit(false)
             const theUser = {
                 firstName: userUpdated.firstName,
-                lastName: userUpdated.lastName
+                lastName: userUpdated.lastName,
+                urlImage: avatarRef.current.urlImage()
             }
             handleSubmit(theUser)
         },
@@ -104,6 +104,8 @@ const ValedorDashboardProfile = () => {
                         show: true
                     }
                 })
+                console.log(theUser)
+                login(response.data.token)
             }
             setTimeout(() => {
                 dispatchAlert({
@@ -112,7 +114,6 @@ const ValedorDashboardProfile = () => {
                         show: false
                     }
                 })
-                response.data && login(response.data.token)
             }, 10000)
         }
     }

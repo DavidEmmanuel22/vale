@@ -90,13 +90,21 @@ const ExchangeVale = () => {
 
     const handleScan = scanData => {
         if (scanData) {
-            const folio = {
+            const objData = JSON.parse(scanData)
+            const folioId = {
                 target: {
                     id: 'folio',
-                    value: scanData
+                    value: objData.id
                 }
             }
-            formik.handleChange(folio)
+            const folioCredit = {
+                target: {
+                    id: 'amount',
+                    value: objData.credits
+                }
+            }
+            formik.handleChange(folioId)
+            formik.handleChange(folioCredit)
             setShowScan(false)
         }
     }

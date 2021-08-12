@@ -2,39 +2,38 @@ import React, { useState, useEffect, useMemo } from 'react'
 import { UserContext } from './userContext'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
+import { func } from 'prop-types'
 
 const ContextProvider = ({ children }) => {
-    const [user, setUser] = useState(true)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [hasLoad, setHasLoad] = useState(false)
+    const [user, setUser] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [drawOpen, setDrawOpen] = useState(false)
     const [showContact, setShowContact] = useState(true)
 
-    const handleDrawerOpen = () => {
-        setDrawOpen(!drawOpen)
-    }
+    // eslint-disable-next-line no-unneeded-ternary
+    const isAuthenticated = user ? true : false
 
     useEffect(() => {
-        if (user) {
-            setIsAuthenticated(true)
+        const token = localStorage.getItem('auth-token')
+        if (token) {
+            const decoded = jwt_decode(token)
+            setUser(decoded.user)
         } else {
-            setIsAuthenticated(false)
+            setUser(false)
         }
-        setHasLoad(true)
-    }, [user])
+        setLoading(false)
+    }, [])
 
-    const login = async token => {
+    function login(token) {
         if (!token) {
-            return
+            throw new Error('The token in neccessary to login')
         }
-        setHasLoad(false)
         localStorage.setItem('auth-token', token)
-        const decoded = await jwt_decode(token)
+        const decoded = jwt_decode(token)
         setUser(decoded.user)
-        setHasLoad(true)
     }
 
-    const logout = () => {
+    function logout() {
         localStorage.removeItem('auth-token')
         localStorage.removeItem('idChat')
         localStorage.removeItem('email')
@@ -49,17 +48,9 @@ const ContextProvider = ({ children }) => {
         setShowContact(true)
     }
 
-    useEffect(() => {
-        const token = localStorage.getItem('auth-token')
-        if (token) {
-            const decoded = jwt_decode(token)
-            //console.log(decoded)
-            setUser(decoded.user)
-            //console.log(decoded.user)
-        } else {
-            setUser(false)
-        }
-    }, [localStorage.getItem('auth-token')])
+    const handleDrawerOpen = () => {
+        setDrawOpen(!drawOpen)
+    }
 
     return (
         <UserContext.Provider
@@ -69,15 +60,15 @@ const ContextProvider = ({ children }) => {
                 isAuthenticated,
                 login,
                 logout,
-                hasLoad,
                 handleDrawerOpen,
                 drawOpen,
                 showContact,
                 hiddeContactView,
-                showContactView
+                showContactView,
+                hasLoad: !loading
             }}
         >
-            {hasLoad ? children : null}
+            {loading ? null : children}
         </UserContext.Provider>
     )
 }
