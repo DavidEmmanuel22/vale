@@ -38,7 +38,8 @@ const ShowCredit = ({ height }) => {
         },
         credit: {
             fontSize: '40px',
-            color: '#fff'
+            color: '#fff',
+            textAlign: 'center'
         },
         btn: {}
     })
@@ -55,7 +56,7 @@ const ShowCredit = ({ height }) => {
                     4,500 MXN
                 </Typography>
             </CardContent>
-            <CardActions style={{ justifyContent: 'flex-end' }}>
+            <CardActions style={{ justifyContent: 'center' }}>
                 <Button size='small' className={classes.btn} variant='contained' color='secondary'>
                     Conseguir Mas Credito
                 </Button>
