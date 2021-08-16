@@ -37,6 +37,7 @@ const ValedorDashboardProfile = () => {
     const [showModalVale, setShowModalVale] = useState(false)
     const [alert, dispatchAlert] = useAlert()
     const avatarRef = React.useRef()
+    const creditRef = React.useRef()
     const history = useHistory()
 
     const matches = useMediaQuery('(min-width:600px)')
@@ -298,7 +299,7 @@ const ValedorDashboardProfile = () => {
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={3} lg={3}>
-                    <ShowCredit height='60%'></ShowCredit>
+                    <ShowCredit ref={creditRef} height='60%'></ShowCredit>
                     <Button
                         variant='contained'
                         color='secondary'
@@ -315,7 +316,12 @@ const ValedorDashboardProfile = () => {
                     </Button>
                 </Grid>
             </Grid>
-            <ResponsivePopUp open={showModalVale} setOpen={setShowModalVale} title={'Crea un nuevo vale'}>
+            <ResponsivePopUp
+                onClose={() => creditRef.current.reloadCredit()}
+                open={showModalVale}
+                setOpen={setShowModalVale}
+                title={'Crea un nuevo vale'}
+            >
                 <AddVale></AddVale>
             </ResponsivePopUp>
         </div>
