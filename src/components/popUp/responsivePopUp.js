@@ -56,7 +56,7 @@ const DialogActions = withStyles(theme => ({
 
 export const AlertContext = createContext()
 
-export default function ResponsivePopUp({ title, children, open, setOpen, confirmText, onClose }) {
+export default function ResponsivePopUp({ title, children, open, setOpen, confirmText, onClose = () => {} }) {
     const handleClickOpen = () => {
         setOpen(true)
     }

@@ -72,13 +72,14 @@ const BussinesDashboard = () => {
         },
         gridItem: {
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center'
         }
     }))
     const classes = useStyles()
 
     const [showExchangePopup, setShowExchangePopup] = React.useState(false)
+    const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
     const historyRef = React.useRef()
 
     const handleExchangeClick = () => {
@@ -91,6 +92,12 @@ const BussinesDashboard = () => {
                 <Paper className={classes.paper}>
                     <Grid container>
                         <Grid item xs={12} className={classes.gridItem}>
+                            <TextField
+                                placeholder='search...'
+                                type='date'
+                                value={currentDate}
+                                onChange={e => setCurrentDate(e.target.value)}
+                            ></TextField>
                             <Button onClick={handleExchangeClick} color='primary' variant='contained'>
                                 Canjear Vale
                             </Button>
