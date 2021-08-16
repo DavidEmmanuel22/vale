@@ -15,12 +15,18 @@ const ValedorDashboard = () => {
     const classes = dashboardStyles()
     const [showDialog, setShowDialog] = useState(false)
     const [dialogName, setDialogName] = useState('valedor')
+    const creditRef = React.useRef(null)
     const { user } = useContext(UserContext)
 
     const handleDialog = () => {
         if (dialogName === 'vale') {
             return (
-                <ResponsivePopUp open={showDialog} setOpen={setShowDialog} title={'Crear Vale'}>
+                <ResponsivePopUp
+                    open={showDialog}
+                    onClose={() => creditRef.current.reloadCredit()}
+                    setOpen={setShowDialog}
+                    title={'Crear Vale'}
+                >
                     <AddVale />
                 </ResponsivePopUp>
             )
@@ -49,7 +55,7 @@ const ValedorDashboard = () => {
                 </Grid>
                 <Grid item xs={12} md={4} lg={4}></Grid>
                 <Grid item xs={12} md={4} lg={4}>
-                    <ShowCreditDashboard height='75px'></ShowCreditDashboard>
+                    <ShowCreditDashboard ref={creditRef} height='75px'></ShowCreditDashboard>
                 </Grid>
                 <Grid item xs={12} style={{ marginTop: '-10px' }}>
                     <VD showDialog={showDialog} />

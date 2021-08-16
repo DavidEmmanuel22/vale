@@ -1,17 +1,11 @@
-import React from 'react'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
+import { Grid, Paper, Button, Collapse, InputAdornment, Typography } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { Button, Collapse, InputAdornment, Typography } from '@material-ui/core'
-import QrReader from 'react-qr-reader'
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
-import ResponsivePopUp from '../../components/popUp/responsivePopUp'
-import ExchangeVale from '../../components/exchangeVale'
+import React from 'react'
 import { BusinessHistory } from 'components/BusinessHistory'
 
-const BussinesDashboard = () => {
+const SalesHistory = () => {
     const matches = useMediaQuery('(min-width:600px)')
     const useStyles = makeStyles(theme => ({
         root: {
@@ -72,19 +66,14 @@ const BussinesDashboard = () => {
         },
         gridItem: {
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center'
         }
     }))
     const classes = useStyles()
 
-    const [showExchangePopup, setShowExchangePopup] = React.useState(false)
     const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
-    const historyRef = React.useRef()
-
-    const handleExchangeClick = () => {
-        setShowExchangePopup(true)
-    }
+    const historyRef = React.useRef(null)
 
     return (
         <Grid container>
@@ -92,9 +81,12 @@ const BussinesDashboard = () => {
                 <Paper className={classes.paper}>
                     <Grid container>
                         <Grid item xs={12} className={classes.gridItem}>
-                            <Button onClick={handleExchangeClick} color='primary' variant='contained'>
-                                Canjear Vale
-                            </Button>
+                            <TextField
+                                placeholder='search...'
+                                type='date'
+                                value={currentDate}
+                                onChange={e => setCurrentDate(e.target.value)}
+                            ></TextField>
                         </Grid>
                     </Grid>
                 </Paper>
@@ -104,16 +96,8 @@ const BussinesDashboard = () => {
                     <BusinessHistory ref={historyRef}></BusinessHistory>
                 </Paper>
             </Grid>
-            <ResponsivePopUp
-                open={showExchangePopup}
-                setOpen={setShowExchangePopup}
-                onClose={() => historyRef.current.reload()}
-                title='Canjea Un Vale'
-            >
-                <ExchangeVale ref={historyRef}></ExchangeVale>
-            </ResponsivePopUp>
         </Grid>
     )
 }
 
-export default BussinesDashboard
+export default SalesHistory
