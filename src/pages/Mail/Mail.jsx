@@ -5,7 +5,9 @@ import {
   createMessage,
   messageHistory,
   readMessage,
-  clientMessageHistory
+  clientMessageHistory,
+  createMailToken,
+  createMail
 } from 'requests/createMail'
 import { MessageRight, MessageLeft } from './Messages'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
@@ -30,6 +32,7 @@ import { SessionExpired } from './SessionExpired'
 import expired from '../../assets/Contact/expired.png'
 import { Link } from 'react-router-dom'
 import Countdown from 'react-countdown';
+import jwtDecode from 'jwt-decode'
 
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
@@ -63,6 +66,8 @@ export const Mail = () => {
   const [message, setMessage] = useState({
     message: ''
   })
+  
+  
   const mailFormikValidation = useFormik({
     initialValues: message,
     onSubmit: async (formValue) => {
@@ -118,10 +123,47 @@ export const Mail = () => {
   }
 
   useEffect(() => {
-    const session = localStorage.getItem('idChat')
-    //check "my hour" index here
-    if (session === null) {
-      setShowInvalidMessages(false)
+
+    
+   createChat()
+   
+    async function createChat(){
+    
+      const session = localStorage.getItem('idChat')
+      //check "my hour" index here
+      if (session === null) {
+  
+        const { success, response, error } = await createMailToken({
+          name: user.email,
+          emailUser: user.email,
+          telUser: 0,
+        })
+  
+        if (success && response) {
+         
+          if (response.error) {
+            console.log("error"+ response.error)
+          //	setErrorCreateChat(true)
+        //		setOpenErrorAlert(true)
+            setTimeout(() => {
+          //		setError(false)
+          //		setOpenErrorAlert(false)
+            }, 6000)
+          } else {
+          //	setOpenAlert(true)
+          //	setLoading(false)
+            setTimeout(() => {
+              history.push({
+                pathname: '/mail',
+                state: { email: user.email }
+              })
+              localStorage.setItem('idChat', response.data.chat._id)
+  
+              //localStorage.setItem('emailUser', response.data.message.idChat)
+            }, 6000)
+          }
+        }
+      }
     }
     async function getMessages() {
       const { success, response, error } = await messageHistory(
@@ -130,7 +172,7 @@ export const Mail = () => {
       if (success && response) {
         //console.log(response.data)
         setMessages(response.data)
-        if (response.data.length > 3) {
+        if (response.data.length > 2) {
           setScroll(true)
         }
         setLoading(false)
