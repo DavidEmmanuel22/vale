@@ -90,21 +90,29 @@ const ExchangeVale = () => {
 
     const handleScan = scanData => {
         if (scanData) {
-            const objData = JSON.parse(scanData)
-            const folioId = {
-                target: {
-                    id: 'folio',
-                    value: objData.id
+            try {
+                const objData = JSON.parse(scanData)
+                if (!objData.id || !objData.credits) {
+                    throw new Error('The QR format is not acceptable')
                 }
-            }
-            const folioCredit = {
-                target: {
-                    id: 'amount',
-                    value: objData.credits
+                const folioId = {
+                    target: {
+                        id: 'folio',
+                        value: objData.id
+                    }
                 }
+                const folioCredit = {
+                    target: {
+                        id: 'amount',
+                        value: objData.credits
+                    }
+                }
+                formik.handleChange(folioId)
+                formik.handleChange(folioCredit)
+            } catch (e) {
+                setAlertText('El codigo QR escaneado no es valido')
+                setAlertColor('error')
             }
-            formik.handleChange(folioId)
-            formik.handleChange(folioCredit)
             setShowScan(false)
         }
     }

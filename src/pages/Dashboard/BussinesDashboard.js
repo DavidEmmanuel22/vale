@@ -110,7 +110,7 @@ const BussinesDashboard = () => {
                 onClose={() => historyRef.current.reload()}
                 title='Canjea Un Vale'
             >
-                <ExchangeVale ref={historyRef}></ExchangeVale>
+                <ExchangeVale></ExchangeVale>
             </ResponsivePopUp>
         </Grid>
     )
