@@ -12,6 +12,6 @@ export const validateVale = yup.object({
     concept: yup
         .string()
         .required('El concepto de la venta es necesario')
-        .min(10, 'El concepto de la venta debe tener minimo 10 caracteres')
+        .min(3, 'El concepto de la venta debe tener minimo 3 caracteres')
         .max(500, 'El concepto de la venta debe tener menos de 500 caracteres')
 })
