@@ -143,12 +143,12 @@ export const Mail = () => {
          
           if (response.error) {
             console.log("error"+ response.error)
+            localStorage.setItem('idChat', response.meta._id)
+            getMessages()
+
           //	setErrorCreateChat(true)
         //		setOpenErrorAlert(true)
-            setTimeout(() => {
-          //		setError(false)
-          //		setOpenErrorAlert(false)
-            }, 6000)
+           
           } else {
           //	setOpenAlert(true)
           //	setLoading(false)
