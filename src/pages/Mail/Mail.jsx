@@ -66,7 +66,8 @@ export const Mail = () => {
   const [message, setMessage] = useState({
     message: ''
   })
-  
+  const [userData, setUserData] = useState(false)
+
   
   const mailFormikValidation = useFormik({
     initialValues: message,
@@ -87,8 +88,7 @@ export const Mail = () => {
           readMsg()
           scrollToBottom()
         }
-      }
-      mailFormikValidation.resetForm({
+      }      mailFormikValidation.resetForm({
         values: {
           message: ''
         }
@@ -97,7 +97,7 @@ export const Mail = () => {
     },
     validationSchema: mailValidation
   })
-
+  
   const checkExpiration = () => {
     //check if past expiration date
     const values = localStorage.getItem('idChat')
@@ -123,71 +123,71 @@ export const Mail = () => {
   }
 
   useEffect(() => {
-
-    
+   decodedJwt()
    createChat()
-   
-    async function createChat(){
-    
-      const session = localStorage.getItem('idChat')
-      //check "my hour" index here
-      if (session === null) {
-  
-        const { success, response, error } = await createMailToken({
-          name: user.email,
-          emailUser: user.email,
-          telUser: 0,
-        })
-  
-        if (success && response) {
-         
-          if (response.error) {
-            console.log("error"+ response.error)
-            localStorage.setItem('idChat', response.meta._id)
-            getMessages()
+   getMessages()
+   scrollToBottom()
 
-          //	setErrorCreateChat(true)
-        //		setOpenErrorAlert(true)
-           
-          } else {
-          //	setOpenAlert(true)
-          //	setLoading(false)
-            setTimeout(() => {
-              history.push({
-                pathname: '/mail',
-                state: { email: user.email }
-              })
-              localStorage.setItem('idChat', response.data.chat._id)
-  
-              //localStorage.setItem('emailUser', response.data.message.idChat)
-            }, 6000)
-          }
-        }
-      }
-    }
-    async function getMessages() {
-      const { success, response, error } = await messageHistory(
-        localStorage.getItem('idChat')
-      )
-      if (success && response) {
-        //console.log(response.data)
-        setMessages(response.data)
-        if (response.data.length > 2) {
-          setScroll(true)
-        }
-        setLoading(false)
-        logOutMessages()
-        setTimeout(() => {
-          setReload(true)
-        }, 0)
-      } else {
-        //console.log(error)
-      }
-    }
-    getMessages()
-    scrollToBottom()
   }, [loading])
+  async function decodedJwt(){
+    const tokenAuth = localStorage.getItem('auth-token')
+    if(tokenAuth){
+      const decoded = await jwtDecode(tokenAuth)
+      setUserData(decoded.user)
+    }
+   
+  }
+  async function createChat(){
+    
+    const session = localStorage.getItem('idChat')
+    //check "my hour" index here
+    if (session === null) {
 
+      const { success, response, error } = await createMailToken({
+        name: userData.firstName,
+        emailUser: email || user.email,
+        telUser: 0,
+      })
+      console.log(email)
+      console.log(user.email)
+      if (success && response) {
+       
+        if (response.error) {
+          console.log("error"+ response.error)
+          if(response.error === "EL usuario ya tiene un chat creado")
+            localStorage.setItem('idChat', response.meta._id)
+
+        //	setErrorCreateChat(true)
+      //		setOpenErrorAlert(true)
+         
+        } else {
+        //	setOpenAlert(true)
+        //	setLoading(false)
+          
+        }
+      }
+    }
+  }
+  async function getMessages() {
+    const { success, response, error } = await messageHistory(
+      localStorage.getItem('idChat')
+    )
+    if (success && response) {
+      //console.log(response.data)
+      setMessages(response.data)
+      if (response.data.length > 2) {
+        setScroll(true)
+      }
+      setLoading(false)
+      //logOutMessages()
+      setTimeout(() => {
+        setReload(true)
+      }, 0)
+    } else {
+      //console.log(error)
+    }
+  }
+  
   const readMsg = async () => {
     const { success, response, error } = await readMessage({
       idChat: idChat
@@ -279,17 +279,29 @@ export const Mail = () => {
                     </Fab>
                   </Tooltip>
                 ) : null}
-              <Countdown 
-              date={Date.now() + 300000/*1200000*/}
-              className={classes.countDownHide}
-              >
-                <SessionExpired />
-              </Countdown>
+                { !userData    ? (
+                    <Countdown 
+                    date={Date.now() + 300000/*1200000*/}
+                    className={classes.countDownHide}
+                    autoStart = {true}
+                    >
+                      <SessionExpired />
+                    </Countdown>                
+                ) : (
+                  <Countdown 
+                  date={Date.now() + 300000/*1200000*/}
+                  className={classes.countDownHide}
+                  >
+                  </Countdown>
+                )}
+             
                 { showSessionMessage && !showInvalidMessages ? (
                  <SessionExpired />
                 ) : (
                   <MessageContent />
                 )}
+
+              
                 {showInvalidMessages && (
                   <div style={{ textAlign: 'center', marginTop: '9%' }}>
                     <img src={expired} />
