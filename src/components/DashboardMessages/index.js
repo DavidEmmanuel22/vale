@@ -46,7 +46,6 @@ const DashboardMessages = ({ showAll }) => {
     })
 
     const newMessage = sortedChats.filter(readed => {
-        console.log(readed)
         if (readed.chats.readAdmin && showAll) {
             return null
         }
