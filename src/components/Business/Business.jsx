@@ -9,7 +9,7 @@ import {
 	Marker
 } from 'react-google-maps'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import { DistanceMatrixService } from '@react-google-maps/api'
+import { DistanceMatrixService } from "@react-google-maps/api";
 import Tooltip from '@material-ui/core/Tooltip'
 import { getBusiness } from 'requests/externalUserAllBusiness'
 import './Business.css'
