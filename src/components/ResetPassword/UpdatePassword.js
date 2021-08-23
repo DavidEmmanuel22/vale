@@ -51,8 +51,6 @@ const UpdatePassword = () => {
                     setShowAlert(true)
                     setTimeout(() => {
                         setShowAlert(false)
-                        console.log('entra al setTimeout')
-                        console.log('entró a este if')
                         window.location.href = '/'
                     }, 5000)
                 }
