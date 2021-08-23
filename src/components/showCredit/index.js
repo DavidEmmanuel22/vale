@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import backgroundImage from '../../images/valedor-green.png'
 import { getCredit } from 'requests/allValedores'
 import { CircularProgress } from '@material-ui/core'
+import numeral from 'numeral'
 /*
 background-position: center;
   background-repeat: no-repeat;
@@ -87,7 +88,7 @@ const ShowCredit = React.forwardRef(({ height }, ref) => {
                 </Typography>
                 {loading && <CircularProgress color='secondary'></CircularProgress>}
                 <Typography className={classes.credit} color='textSecondary'>
-                    {!loading && `${credit} MXN`}
+                    {!loading && `${numeral(credit).format('$0,0')} MXN`}
                 </Typography>
             </CardContent>
             <CardActions style={{ justifyContent: 'center' }}>

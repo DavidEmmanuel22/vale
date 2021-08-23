@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import backgroundImage from '../../images/valedor-green.png'
 import { getCredit } from 'requests/allValedores'
+import numeral from 'numeral'
 
 const ShowCreditDashboard = React.forwardRef(({ height }, ref) => {
     const useStyles = makeStyles({
@@ -84,7 +85,7 @@ const ShowCreditDashboard = React.forwardRef(({ height }, ref) => {
                 </Typography>
                 {loading && <CircularProgress color='secondary'></CircularProgress>}
                 <Typography className={classes.credit} color='textSecondary'>
-                    {!loading && `${credit} MXN`}
+                    {!loading && `${numeral(credit).format('$0,0')} MXN`}
                 </Typography>
             </CardContent>
         </Card>
