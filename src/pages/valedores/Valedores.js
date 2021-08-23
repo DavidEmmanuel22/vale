@@ -25,6 +25,7 @@ import DeleteValedor from 'components/valedor/delete'
 import DeleteIcon from '@material-ui/icons/Delete'
 import AttachMoneySharpIcon from '@material-ui/icons/AttachMoneySharp'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -163,7 +164,12 @@ const Valedores = () => {
                         Agregar Valedor
                     </Button>
                 </Paper>
-                {filteredValedores.length > 0 ? (
+                {isLoading && (
+                    <div style={{ textAlign: 'center' }}>
+                        <CircularProgress></CircularProgress>
+                    </div>
+                )}
+                {!isLoading && filteredValedores.length > 0 && (
                     <Paper className={classes.paper}>
                         <TableContainer>
                             <Table>
@@ -320,14 +326,14 @@ const Valedores = () => {
                             </Table>
                         </TableContainer>
                     </Paper>
-                ) : (
-                    <div style={{ textAlign: 'center' }}>
-                        {isLoading ? (
-                            <CircularProgress></CircularProgress>
-                        ) : (
-                            <h2>{`El valedor: "${searchValedor}" no está registrado.`}</h2>
-                        )}
-                    </div>
+                )}
+                {valedores.length === 0 && !isLoading && (
+                    <Alert severity='info'>¡Ups! Parece que aun no hay negocios registrados</Alert>
+                )}
+                {valedores.length !== 0 && filteredValedores.length === 0 && !isLoading && (
+                    <Alert severity='warning'>
+                        !Ups! Parece que no hay resultados disponibles para los filtros aplicados.
+                    </Alert>
                 )}
             </Grid>
             <ResponsivePopUp
