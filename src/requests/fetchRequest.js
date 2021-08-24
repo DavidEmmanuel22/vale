@@ -1,29 +1,31 @@
 export const BASE_API_URL = 'https://devbackend.valevaledor.com'
 
 const fetchRequest = async (requestPath, requestParams = {}, headers = {}) => {
-  try {
-    const response = await fetch(`${BASE_API_URL}${requestPath}`, {
-      mode: 'cors', // no-cors, *cors, same-origin
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('auth-token')}`,
-        ...headers
-      },
-      ...requestParams
-    })
+    try {
+        const response = await fetch(`${BASE_API_URL}${requestPath}`, {
+            mode: 'cors', // no-cors, *cors, same-origin
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('auth-token')}`,
+                ...headers
+            },
+            ...requestParams
+        })
 
-    const responseAsJson = await response.json()
+        console.log(response)
 
-    return {
-      success: true,
-      response: responseAsJson
+        const responseAsJson = await response.json()
+
+        return {
+            success: true,
+            response: responseAsJson
+        }
+    } catch (error) {
+        return {
+            success: false,
+            error
+        }
     }
-  } catch (error) {
-    return {
-      success: false,
-      error
-    }
-  }
 }
 
 export default fetchRequest
