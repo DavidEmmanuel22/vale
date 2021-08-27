@@ -18,76 +18,19 @@ import { Link, useHistory } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
 import { updateUserSelfSchema } from 'yupSchemas'
 import { useFormik } from 'formik'
-import * as yup from 'yup'
 import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
-import BadgeAvatars from './Avatar'
-
-const NameExpression = /^\S/
-
-const validationSchema = yup.object({
-    firstName: yup
-        .string()
-        .min(3, 'Mínimo 3 caracteres')
-        .max(60, 'Maxímo 65 caracteres')
-        .matches(NameExpression, 'No se permiten espacios vacios')
-        .required('Nombre es requerido'),
-    lastName: yup
-        .string()
-        .min(3, 'Mínimo 3 caracteres')
-        .max(60, 'Maxímo 65 caracteres')
-        .matches(NameExpression, 'No se permiten espacios vacios')
-        .required('Apellido es requerido')
-})
+import useAlert from 'hooks/useAlert'
+import UserAvatar from 'components/avatar'
 
 export const DashboardPerfil = () => {
-    const { isAuthenticated, user, login, logout } = useContext(UserContext)
-    const [firstName, setFirstName] = useState(user.firstName)
-    const [lastName, setLastName] = useState(user.lastName)
-    const [email, setEmail] = useState(user.email)
+    const { user, login, logout } = useContext(UserContext)
     const [onEdit, setOnEdit] = useState(false)
-    const [showModal, setShowModal] = useState(false)
-    const [modalTitle, setModalTitle] = useState('valedor')
-    const [alertText, setAlertText] = useState('')
-    const [alertColor, setAlertColor] = useState('success')
-    const [showAlert, setShowAlert] = useState(false)
+    const [alert, dispatchAlert] = useAlert()
+    const avatarRef = React.useRef()
     const history = useHistory()
-    const [imgData, setImgData] = useState('')
-    const [imgUrl, setImageUrl] = useState(user.imgUrl)
-    const [imageTitle, setImageTitle] = useState('')
-
-    const valiateImage = imageName => {
-        const validExtensions = ['png', 'jpg', 'jpeg', 'gif']
-
-        const fileName = imageName.split('.')
-        const extension = fileName[fileName.length - 1]
-        //console.log("extension", extension);
-
-        return validExtensions.find(ext => ext === extension)
-    }
-
-    const onChangePicture = e => {
-        if (e.target.files[0]) {
-            if (valiateImage(e.target.files[0].name)) {
-                const reader = new FileReader()
-                reader.addEventListener('load', () => {
-                    setImgData(reader.result)
-                    setImageTitle(e.target.files[0].name)
-                    console.log('Image was charged')
-                })
-                reader.readAsDataURL(e.target.files[0])
-                setImageUrl(URL.createObjectURL(e.target.files[0]))
-            } else {
-                //console.log("invalid image");
-                setAlertColor('error')
-                setAlertText('Solo se permite subir imagenes de tipo png, jpg, jpeg y gif')
-                setShowAlert(true)
-                setTimeout(() => {
-                    setShowAlert(false)
-                }, 5000)
-            }
-        }
-    }
+    const [showModal, setShowModal] = useState(false)
+    const [modalTitle, setModalTitle] = useState('')
 
     const matches = useMediaQuery('(min-width:600px)')
 
@@ -106,70 +49,88 @@ export const DashboardPerfil = () => {
         }
     }))
 
+    const initialValues = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        urlImage: user.urlImage
+    }
+
     const classes = useStyles()
 
     const formik = useFormik({
-        initialValues: {
-            firstName,
-            lastName
-        },
-
+        initialValues,
         onSubmit: userUpdated => {
-            handleUpdate(userUpdated.firstName, userUpdated.lastName)
-
-            imgData && handleUploadImage()
+            setOnEdit(false)
+            const theUser = {
+                firstName: userUpdated.firstName,
+                lastName: userUpdated.lastName,
+                urlImage: avatarRef.current.urlImage()
+            }
+            handleSubmit(theUser)
+        },
+        onReset: (userUpdated, onS) => {
+            onS.setValues(initialValues)
+            avatarRef.current.rollbackImage()
+            setOnEdit(false)
         },
         validationSchema: updateUserSelfSchema
     })
 
-    useEffect(() => {
-        setEmail(user.email)
-        setFirstName(user.firstName)
-        setLastName(user.lastName)
-        setImageUrl(user.urlImage)
-    }, [user, onEdit])
-
-    const handleEdit = () => {
-        if (onEdit) {
-            formik.handleSubmit()
-        } else {
-            setOnEdit(true)
-        }
-    }
-
-    const handleCancel = () => {
-        const name = {
-            target: {
-                id: 'firstName',
-                value: firstName
+    const handleSubmit = async theUser => {
+        const { success, response, error } = await updateUser(user._id, theUser)
+        if (success && response) {
+            if (response.error || response.data.error) {
+                dispatchAlert({
+                    type: 'error',
+                    payload: {
+                        content: response.error || response.data.error,
+                        show: true
+                    }
+                })
+            } else {
+                dispatchAlert({
+                    type: 'success',
+                    payload: {
+                        content: response.data.message,
+                        show: true
+                    }
+                })
+                console.log(theUser)
+                login(response.data.token)
             }
+            setTimeout(() => {
+                dispatchAlert({
+                    type: 'show',
+                    payload: {
+                        show: false
+                    }
+                })
+            }, 10000)
         }
-        const last = {
-            target: {
-                id: 'lastName',
-                value: lastName
-            }
-        }
-        formik.handleChange(name)
-        formik.handleChange(last)
-        setOnEdit(false)
-        setImgData(null)
-        setImageUrl(user.imgUrl)
     }
 
     const handleChangePassword = async () => {
         const { success, response, error } = await forgotPassword(user.email)
-        if (response) {
+        if (success && response) {
             if (response.error) {
-                setAlertColor('error')
-                setAlertText(response.error)
+                dispatchAlert({
+                    type: 'error',
+                    payload: {
+                        content: response.error,
+                        show: true
+                    }
+                })
             } else {
-                setAlertColor('success')
-                setAlertText(
-                    `Se te ha enviado un correo a ${user.email}, sigue las instrucciones para cambiar contraseña`
-                )
+                dispatchAlert({
+                    type: 'success',
+                    payload: {
+                        content: `Se te ha enviado un correo a ${user.email}, sigue las instrucciones para cambiar contraseña`,
+                        show: true
+                    }
+                })
             }
-            setShowAlert(true)
             setTimeout(() => {
                 logout()
                 history.push('/')
@@ -177,62 +138,23 @@ export const DashboardPerfil = () => {
         }
     }
 
-    const handleUpdate = async (firstName, lastName) => {
-        const body =
-            imgData && imgUrl
-                ? {
-                      firstName: firstName.trim(),
-                      lastName: lastName.trim()
-                  }
-                : {
-                      firstName: firstName.trim(),
-                      lastName: lastName.trim(),
-                      urlImage: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
-                  }
-        const { success, response, error } = await updateUser(user._id, body)
-        if (success && response) {
-            console.log(response)
-            if (response.error) {
-                setAlertColor('error')
-                setAlertText(response.error)
-                setShowAlert(true)
-            } else {
-                if (response.data.error) {
-                    setAlertColor('error')
-                    setAlertText(response.data.error)
-                    setShowAlert(true)
-                } else {
-                    setAlertColor('success')
-                    setAlertText(response.data.message)
-                    setShowAlert(true)
-                    setOnEdit(false)
-                    login(response.data.token)
-                }
+    const errorImageHandler = error => {
+        dispatchAlert({
+            type: 'error',
+            payload: {
+                content: error,
+                show: true
             }
-            setTimeout(() => {
-                setShowAlert(false)
-            }, 8000)
-        }
-        if (error) {
-            setAlertColor('error')
-            setAlertText('Un error ha ocurrido')
-            setShowAlert(true)
-            setTimeout(() => {
-                setShowAlert(false)
-            }, 8000)
-        }
-    }
+        })
 
-    const handleUploadImage = async () => {
-        console.log('uploading')
-        const { success, response, error } = await uploadImage(imgData, imageTitle)
-
-        console.log(response)
-        if (success && response) {
-            setImageUrl(response.data.urlImage)
-            login(response.data.token)
-            setOnEdit(false)
-        }
+        setTimeout(() => {
+            dispatchAlert({
+                type: 'show',
+                payload: {
+                    show: false
+                }
+            })
+        }, 5000)
     }
 
     return (
@@ -240,45 +162,19 @@ export const DashboardPerfil = () => {
             <Grid container spacing={3}>
                 <Grid item xs={12} md={9}>
                     <Paper className={classes.paper}>
-                        <form onSubmit={formik.handleSubmit} className={classes.root}>
+                        <form onSubmit={formik.handleSubmit} onReset={formik.handleReset} className={classes.root}>
                             <Grid container spacing={3}>
                                 <Grid item xs={12}>
                                     <Typography variant='h5' component='h4' gutterBottom>
                                         Perfil de Usuario
                                     </Typography>
-                                    <Collapse in={showAlert}>
-                                        <Alert severity={alertColor}>{alertText}</Alert>
-                                    </Collapse>
                                 </Grid>
                                 <Grid item xs={12} md={2}>
-                                    {onEdit && (
-                                        <input
-                                            accept='image/*'
-                                            id='contained-button-file'
-                                            className={classes.input}
-                                            onChange={e => onChangePicture(e)}
-                                            type='file'
-                                        />
-                                    )}
-                                    {onEdit ? (
-                                        <BadgeAvatars
-                                            onEdit={onEdit}
-                                            image={
-                                                imgUrl ||
-                                                'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
-                                            }
-                                            setImageUrl={setImageUrl}
-                                            setImgData={setImgData}
-                                        />
-                                    ) : (
-                                        <BadgeAvatars
-                                            onEdit={onEdit}
-                                            image={
-                                                imgUrl ||
-                                                'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png'
-                                            }
-                                        />
-                                    )}
+                                    <UserAvatar
+                                        errorImageHandler={errorImageHandler}
+                                        onEdit={onEdit}
+                                        ref={avatarRef}
+                                    ></UserAvatar>
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={5}>
                                     <TextField
@@ -345,6 +241,13 @@ export const DashboardPerfil = () => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
+                                <Grid item xs={12}>
+                                    <Collapse in={alert.show}>
+                                        <Alert style={{ marginTop: '10px' }} severity={alert.severity}>
+                                            {alert.content}
+                                        </Alert>
+                                    </Collapse>
+                                </Grid>
                                 <Grid
                                     item
                                     xs={12}
@@ -364,12 +267,7 @@ export const DashboardPerfil = () => {
                                             >
                                                 Guardar
                                             </Button>
-                                            <Button
-                                                variant='contained'
-                                                color='secondary'
-                                                style={{}}
-                                                onClick={handleCancel}
-                                            >
+                                            <Button variant='contained' color='secondary' style={{}} type='reset'>
                                                 Cancelar
                                             </Button>
                                         </>
@@ -379,7 +277,7 @@ export const DashboardPerfil = () => {
                                             variant='contained'
                                             color='primary'
                                             style={{ marginLeft: '10px' }}
-                                            onClick={e => handleEdit(e)}
+                                            onClick={() => setOnEdit(true)}
                                         >
                                             Editar
                                         </Button>

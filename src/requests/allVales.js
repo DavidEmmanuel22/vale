@@ -30,8 +30,8 @@ export const chargeVale = (folio, amount, concept) => {
     )
 }
 
-export const getBusinessHistory = idBussines => {
-    return fetchRequest(`/get-purchase?idBussines=${idBussines}`, {
+export const getBusinessHistory = (purchaseDate = false) => {
+    return fetchRequest(`/get-purchase${purchaseDate ? `?datePurchaseString=${purchaseDate}` : ''}`, {
         method: 'GET'
     })
 }

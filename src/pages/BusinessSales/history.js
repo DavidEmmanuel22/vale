@@ -85,7 +85,10 @@ const SalesHistory = () => {
                                 placeholder='search...'
                                 type='date'
                                 value={currentDate}
-                                onChange={e => setCurrentDate(e.target.value)}
+                                onChange={e => {
+                                    setCurrentDate(e.target.value)
+                                    historyRef.current.setDate(e.target.value)
+                                }}
                             ></TextField>
                         </Grid>
                     </Grid>

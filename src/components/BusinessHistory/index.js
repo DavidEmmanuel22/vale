@@ -1,32 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
-import { Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
-import { UserContext } from '../../context/userContext'
-import { valesHistory } from '../../requests/allValedores'
 import numeral from 'numeral'
-import clsx from 'clsx'
-import { useHistory } from 'react-router'
 import moment from 'moment'
 import 'moment/min/locales'
 import { NoRow } from '../../assets/Helpers/NoRow'
 import { getBusinessHistory } from 'requests/allVales'
 import useUser from 'hooks/useUser'
+import { RowProvider } from './RowContext'
+import { Alert } from '@material-ui/lab'
 
 moment.locale('es')
-
-/*
-"_id": "6113e32e49877a0014c3313b",
-                "idVale": "610433976e59e4001473a2a9",
-                "credits": 2,
-                "idBussines": "61018a784dfb2a00149099c3",
-                "datePurchase": "2021-08-11T14:48:14.903Z",
-                "concept": "hello world",
-                "createdAt": "2021-08-11T14:48:14.904Z",
-                "updatedAt": "2021-08-11T14:48:14.904Z",
-                "__v": 0
-*/
 
 const columns = [
     {
@@ -63,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 export const BusinessHistory = React.forwardRef((props, ref) => {
     const classes = useStyles()
     const user = useUser()
+    const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
 
     const [history, setHistory] = useState([])
 
@@ -82,42 +68,52 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
     })
 
     const getHistory = async () => {
-        console.log(user)
-        const { success, response, error } = await getBusinessHistory(user._id)
+        const formatNumbers = currentDate.split('-').map(num => parseInt(num))
+        const { success, response, error } = await getBusinessHistory(formatNumbers.reverse().join('-'))
         if (success && response) {
             if (response.data) {
                 setHistory(response.data.map(purch => purch.purchase))
+                console.log(response.data)
             }
         }
     }
 
     useEffect(() => {
         getHistory()
-    }, [])
+    }, [currentDate])
 
     React.useImperativeHandle(ref, () => {
         return {
-            reload: () => getHistory()
+            reload: () => getHistory(),
+            setDate: date => {
+                const datef = date
+                console.log(datef)
+                setCurrentDate(datef)
+            }
         }
     })
+
+    const noRowsComponent = <Alert severity='info'>¡Ups! Parece que no existen registros del {currentDate}</Alert>
 
     const style = useStyle()
     return (
         <>
             <div style={{ height: '100%', width: '100%' }}>
-                <DataGrid
-                    localeText={GRID_DEFAULT_LOCALE_TEXT}
-                    rows={history}
-                    getRowId={row => row._id}
-                    components={{
-                        NoRowsOverlay: NoRow
-                    }}
-                    columns={columns}
-                    pageSize={6}
-                    onRowClick={id => {
-                        console.log(id)
-                    }}
-                />
+                <RowProvider component={noRowsComponent}>
+                    <DataGrid
+                        localeText={GRID_DEFAULT_LOCALE_TEXT}
+                        rows={history}
+                        getRowId={row => row._id}
+                        components={{
+                            NoRowsOverlay: NoRow
+                        }}
+                        columns={columns}
+                        pageSize={6}
+                        onRowClick={id => {
+                            console.log(id)
+                        }}
+                    />
+                </RowProvider>
             </div>
         </>
     )
