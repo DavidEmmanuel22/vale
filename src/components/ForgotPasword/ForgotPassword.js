@@ -51,7 +51,6 @@ const ForgotPassword = () => {
                 setAlertColor('error')
                 setAlertText(error.toString())
                 setChecked(false)
-                history.push('/')
             }
             setShowAlert(true)
         },

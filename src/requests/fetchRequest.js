@@ -16,6 +16,8 @@ const fetchRequest = async (requestPath, requestParams = {}, headers = {}) => {
 
         const responseAsJson = await response.json()
 
+        console.log(responseAsJson)
+
         return {
             success: true,
             response: responseAsJson
