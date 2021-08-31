@@ -34,7 +34,8 @@ const useStyles = makeStyles(
 
 export const NoRow = () => {
     const classes = useStyles()
-    const { noRowComponent } = React.useContext(RowContext)
+    const context = React.useContext(RowContext)
+    const { noRowComponent } = context || <h1>No se han encontrado resultados</h1>
     return (
         <GridOverlay className={classes.root}>
             <svg width='120' height='100' viewBox='0 0 184 152' aria-hidden focusable='false'>
