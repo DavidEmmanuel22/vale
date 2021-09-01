@@ -56,13 +56,17 @@ const DashboardMessages = ({ showAll }) => {
     })
 
     const filterMessages = newMessage.filter((message, index) => {
-        if (
-            message.chats.name.toLowerCase().includes(searchMessage.toLowerCase()) ||
-            message.chats.from.toLowerCase().includes(searchMessage.toLowerCase())
-        ) {
-            return true
+        if (!message.chats.name || !message.chats.from) {
+            return null
         } else {
-            return false
+            if (
+                message.chats.name.toLowerCase().includes(searchMessage.toLowerCase()) ||
+                message.chats.from.toLowerCase().includes(searchMessage.toLowerCase())
+            ) {
+                return true
+            } else {
+                return false
+            }
         }
     })
 
