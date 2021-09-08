@@ -3,29 +3,16 @@ import { Grid, Paper, Button, Hidden, TextField, InputAdornment } from '@materia
 import { makeStyles } from '@material-ui/core/styles'
 import AddCredit from 'components/valedor/addCredit'
 import { useHistory } from 'react-router-dom'
-import Tooltip from '@material-ui/core/Tooltip'
-import Table from '@material-ui/core/Table'
-import TableBody from '@material-ui/core/TableBody'
-import TableCell from '@material-ui/core/TableCell'
-import TableContainer from '@material-ui/core/TableContainer'
-import TableHead from '@material-ui/core/TableHead'
-import Fab from '@material-ui/core/Fab'
 import SearchIcon from '@material-ui/icons/Search'
-import TableRow from '@material-ui/core/TableRow'
 import { getValedores, enableValedor } from 'requests/allValedores'
 import RegisterValedor from 'components/valedor/register'
-import numeral from 'numeral'
-import HistoryIcon from '@material-ui/icons/History'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ResponsivePopUp from 'components/popUp/responsivePopUp'
-import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded'
-import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined'
 import DeleteValedor from 'components/valedor/delete'
-import DeleteIcon from '@material-ui/icons/Delete'
-import AttachMoneySharpIcon from '@material-ui/icons/AttachMoneySharp'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { Alert } from '@material-ui/lab'
+import { ValedorTable } from 'components/Tables/ValedorTable'
+import AddPayment from 'components/valedor/addPayment'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -64,12 +51,11 @@ const Valedores = () => {
     const [openDialog, setOpenDialog] = useState(false)
     const [openAddCredits, setOpenAddCredits] = useState(false)
     const [deleteDialog, setDeleteDialog] = useState(false)
+    const [paymentDialog, setPaymentDialog] = useState(false)
     const [selectedValedor, setSelectedValedor] = useState({})
     const [valedores, setValedores] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [searchValedor, setSearchValedor] = useState('')
-    const [statusValedor, setStatusValedor] = useState(false)
-    const [unableValedor, setUnableValedor] = useState(true)
 
     const filteredValedores = valedores.filter(valedor => {
         if (
@@ -83,43 +69,69 @@ const Valedores = () => {
         }
     })
 
-    useEffect(() => {
-        async function getAllValedores() {
-            setIsLoading(true)
-            const { success, response, error } = await getValedores()
-            if (success && response) {
-                if (response.error) {
-                    console.error(response.error)
-                } else {
-                    setValedores(response.data)
-                    setIsLoading(false)
-                }
+    async function getAllValedores() {
+        setIsLoading(true)
+        const { success, response, error } = await getValedores()
+        if (success && response) {
+            if (response.error) {
+                console.error(response.error)
             } else {
+                setValedores(response.data)
                 setIsLoading(false)
             }
+        } else {
+            setIsLoading(false)
         }
-        if (!openDialog || !deleteDialog || !statusValedor) {
+    }
+
+    useEffect(() => {
+        if (!openDialog && !deleteDialog && !openAddCredits && !paymentDialog) {
             getAllValedores()
         }
-    }, [openDialog, deleteDialog, statusValedor, openAddCredits])
+    }, [openDialog, deleteDialog, openAddCredits, paymentDialog])
 
     const handleChange = e => {
         e.preventDefault()
         setSearchValedor(e.target.value)
     }
 
-    const handleClick = async (e, valedor) => {
-        e.preventDefault()
-        if (valedor.estatus === 1) {
-            const { success, response, error } = await enableValedor(valedor.email)
-            if (response.error) {
-                //console.log(error)
-            } else {
-                setStatusValedor(true)
+    const habilitateValedor = async valedor => {
+        const { success, response, error } = await enableValedor(valedor.email)
+        if (success && response) {
+            if (!response.error) {
+                getAllValedores()
             }
-            setStatusValedor(false)
-        } else {
-            setDeleteDialog(true)
+        }
+    }
+
+    function handleTableEvent(action, payload) {
+        switch (action) {
+            case 'setUser':
+                setSelectedValedor(payload.user)
+                break
+            case 'history':
+                history.push({
+                    pathname: '/valedores/history',
+                    state: {
+                        valedor: selectedValedor
+                    }
+                })
+                break
+            case 'credit':
+                console.log(action)
+                setOpenAddCredits(true)
+                break
+            case 'delete':
+                console.log(action)
+                setDeleteDialog(true)
+                break
+            case 'habilitate':
+                console.log(action)
+                habilitateValedor(selectedValedor)
+                break
+            case 'register':
+                setPaymentDialog(true)
+                break
         }
     }
 
@@ -171,160 +183,7 @@ const Valedores = () => {
                 )}
                 {!isLoading && filteredValedores.length > 0 && (
                     <Paper className={classes.paper}>
-                        <TableContainer>
-                            <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell
-                                            align='center'
-                                            onClick={() => setUnableValedor(!unableValedor)}
-                                            style={{
-                                                background: `${unableValedor ? 'rgb(0, 119, 114)' : '#f44336'}`,
-                                                color: 'white',
-                                                borderRadius: '.3em',
-                                                cursor: 'pointer'
-                                            }}
-                                        >
-                                            Estado
-                                        </TableCell>
-                                        <TableCell align='center'>Nombre</TableCell>
-                                        <Hidden smDown>
-                                            <TableCell align='center'>Correo</TableCell>
-                                        </Hidden>
-                                        <Hidden smDown>
-                                            <TableCell align='center'>Crédito</TableCell>
-                                        </Hidden>
-                                        <TableCell align='center'>Acciones</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {filteredValedores.map((valedor, index) => (
-                                        <TableRow key={index} role='checkbox' tabIndex={-1}>
-                                            <>
-                                                {valedor.estatus === 0 && unableValedor ? (
-                                                    <>
-                                                        <TableCell align='center'>
-                                                            <CheckCircleIcon
-                                                                color='primary'
-                                                                fontSize='large'
-                                                            ></CheckCircleIcon>
-                                                        </TableCell>
-                                                        <TableCell align='center'>
-                                                            {valedor.firstName} {valedor.lastName}
-                                                        </TableCell>
-                                                        <Hidden smDown>
-                                                            <TableCell align='center'>{valedor.email}</TableCell>
-                                                        </Hidden>
-                                                        <Hidden smDown>
-                                                            <TableCell align='center'>
-                                                                {numeral(valedor.credits).format('$0,0')}
-                                                            </TableCell>
-                                                        </Hidden>
-                                                        <TableCell
-                                                            style={{
-                                                                justifyContent: 'center'
-                                                            }}
-                                                            align='center'
-                                                        >
-                                                            <Tooltip title='Agregar Crédito' aria-label='agregar'>
-                                                                <Fab
-                                                                    onClick={() => {
-                                                                        setOpenAddCredits(true)
-                                                                        setSelectedValedor(valedor)
-                                                                    }}
-                                                                    color='primary'
-                                                                    className={classes.fab}
-                                                                >
-                                                                    <AttachMoneySharpIcon
-                                                                        variant='outlined'
-                                                                        fontSize='large'
-                                                                    />
-                                                                </Fab>
-                                                            </Tooltip>
-
-                                                            <Tooltip title='Historial' aria-label='historial'>
-                                                                <Fab
-                                                                    onClick={() =>
-                                                                        history.push({
-                                                                            pathname: '/valedores/history',
-                                                                            state: {
-                                                                                valedor
-                                                                            }
-                                                                        })
-                                                                    }
-                                                                    color='secondary'
-                                                                    className={classes.fab}
-                                                                >
-                                                                    <HistoryIcon fontSize='large' />
-                                                                </Fab>
-                                                            </Tooltip>
-
-                                                            <Tooltip
-                                                                title='Eliminar'
-                                                                aria-label='eliminar'
-                                                                onMouseEnter={() => setSelectedValedor(valedor)}
-                                                            >
-                                                                <Fab
-                                                                    onClick={e => {
-                                                                        handleClick(e, valedor)
-                                                                    }}
-                                                                    color='secondary'
-                                                                    className={classes.danger}
-                                                                >
-                                                                    <DeleteIcon />
-                                                                </Fab>
-                                                            </Tooltip>
-                                                        </TableCell>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        {valedor.estatus === 1 && !unableValedor ? (
-                                                            <>
-                                                                <TableCell align='center'>
-                                                                    <HighlightOffRoundedIcon
-                                                                        fontSize='large'
-                                                                        color='error'
-                                                                    ></HighlightOffRoundedIcon>
-                                                                </TableCell>
-                                                                <TableCell align='center'>
-                                                                    {valedor.firstName} {valedor.lastName}
-                                                                </TableCell>
-                                                                <Hidden smDown>
-                                                                    <TableCell align='center'>
-                                                                        {valedor.email}
-                                                                    </TableCell>
-                                                                </Hidden>
-                                                                <TableCell align='center'>
-                                                                    {numeral(valedor.credits).format('$0,0')}
-                                                                </TableCell>
-                                                                <TableCell align='center'>
-                                                                    <Button
-                                                                        onClick={e => {
-                                                                            handleClick(e, valedor)
-                                                                        }}
-                                                                        onMouseEnter={() => setSelectedValedor(valedor)}
-                                                                        color='secondary'
-                                                                        variant={`${
-                                                                            valedor.estatus === 1
-                                                                                ? 'outlined'
-                                                                                : 'contained'
-                                                                        }`}
-                                                                    >
-                                                                        Habilitar
-                                                                    </Button>
-                                                                </TableCell>
-                                                            </>
-                                                        ) : (
-                                                            <></>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+                        <ValedorTable onEvent={handleTableEvent} vales={filteredValedores}></ValedorTable>
                     </Paper>
                 )}
                 {valedores.length === 0 && !isLoading && (
@@ -360,6 +219,14 @@ const Valedores = () => {
                 confirmText={'Confirm Text'}
             >
                 <AddCredit email={selectedValedor.email}></AddCredit>
+            </ResponsivePopUp>
+            <ResponsivePopUp
+                open={paymentDialog}
+                setOpen={setPaymentDialog}
+                title='Agregar Pago'
+                confirmText='Confirm Text'
+            >
+                <AddPayment email={selectedValedor.email}></AddPayment>
             </ResponsivePopUp>
         </Grid>
     )
