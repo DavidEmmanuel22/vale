@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import numeral from 'numeral'
 import clsx from 'clsx'
-import { useHistory } from 'react-router'
 import moment from 'moment'
 import 'moment/min/locales'
 import { NoRow } from 'assets/Helpers/NoRow'
@@ -16,13 +15,16 @@ import {
     DeleteOutlineSharp,
     HistoryOutlined,
     MonetizationOn,
-    MonetizationOnOutlined
+    MonetizationOnOutlined,
+    EditIcon,
+    Room
 } from '@material-ui/icons'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import _ from 'lodash'
 
 moment.locale('es')
 
-export const ValedorTable = ({ vales = [], onEvent }) => {
+export const BusinessTable = ({ businessList = [], onEvent }) => {
     const [showActive, setShowActive] = useState(true)
 
     const useStyle = makeStyles({
@@ -70,11 +72,11 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             sortable: false,
             width: 100,
             disableClickEventBubbling: true,
-            valueFormatter: valedor => (valedor.row.estatus === 0 ? 'Activo' : 'Inactivo'),
-            cellClassName: valedor =>
+            valueFormatter: business => (business.row.estatus === 0 ? 'Activo' : 'Inactivo'),
+            cellClassName: business =>
                 clsx('super-app', {
-                    negative: valedor.row.estatus === 0,
-                    positive: valedor.row.estatus >= 1
+                    negative: business.row.estatus === 0,
+                    positive: business.row.estatus >= 1
                 })
         },
         {
@@ -83,10 +85,10 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             width: 230,
             hide: true
         },
-        { field: 'firstName', headerName: 'Nombre', width: 150 },
+        { field: 'bussinesName', headerName: 'Nombre Del Negocio', width: 200 },
         {
-            field: 'lastName',
-            headerName: 'Apellido',
+            field: 'bussinesRfc',
+            headerName: 'RFC Del Negocio',
             width: 150
         },
         {
@@ -95,21 +97,23 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             width: 250
         },
         {
-            field: 'credits',
-            headerName: 'Crédito Actual',
-            valueFormatter: valedor => numeral(valedor.row.credits).format('$0,0'),
-            width: 150
+            field: `x`,
+            headerName: 'Deuda',
+            valueFormatter: business => numeral(40000).format('$0,0'),
+            width: 150,
+            cellClassName: business =>
+                clsx('creditsGiven', {
+                    positive: true
+                })
         },
         {
-            field: `creditsGiven`,
-            headerName: 'Deuda',
-            valueFormatter: valedor => numeral(valedor.row.creditsGiven).format('$0,0'),
-            width: 150,
-            cellClassName: valedor =>
-                clsx('creditsGiven', {
-                    positive: valedor.row.creditsGiven > 0,
-                    negative: valedor.row.creditsGiven <= 0
-                })
+            field: `direction`,
+            headerName: 'Direccion Del Negocio',
+            valueFormatter: business => {
+                const dir = _.get(business, 'row.bussinesAdress.direction', 'Direccion No Encontrada')
+                return dir
+            },
+            width: 250
         },
         {
             field: '',
@@ -119,22 +123,13 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             renderCell: function render(params) {
                 return showActive ? (
                     <>
-                        <Tooltip title='Historial del valedor' onClick={() => onEvent('history')}>
+                        <Tooltip title='Historial de compras del Negocio' onClick={() => onEvent('history')}>
                             <Fab color='secondary'>
                                 <HistoryOutlined></HistoryOutlined>
                             </Fab>
                         </Tooltip>
                         <Tooltip
-                            title='Agregar Credito'
-                            style={{ marginLeft: '10px' }}
-                            onClick={() => onEvent('credit')}
-                        >
-                            <Fab color='primary' className={style.addCreditBtn}>
-                                <AddOutlinedIcon></AddOutlinedIcon>
-                            </Fab>
-                        </Tooltip>
-                        <Tooltip
-                            title='Eliminar Valedor'
+                            title='Eliminar Negocio'
                             style={{ marginLeft: '10px' }}
                             onClick={() => onEvent('delete')}
                         >
@@ -143,9 +138,18 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
                             </Fab>
                         </Tooltip>
                         <Tooltip
+                            title='Ubicacion Del Negocio'
+                            style={{ marginLeft: '10px' }}
+                            onClick={() => onEvent('location')}
+                        >
+                            <Fab color='primary' className={style.addCreditBtn}>
+                                <Room></Room>
+                            </Fab>
+                        </Tooltip>
+                        <Tooltip
                             title='Registrar Pago'
                             style={{ marginLeft: '10px' }}
-                            onClick={() => onEvent('register')}
+                            onClick={() => onEvent('payment')}
                         >
                             <Fab color='primary'>
                                 <MonetizationOn></MonetizationOn>
@@ -154,8 +158,8 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
                     </>
                 ) : (
                     <>
-                        <Button variant='outlined' color='secondary' onClick={() => onEvent('habilitate')}>
-                            Habilitar Valedor
+                        <Button variant='outlined' color='secondary' onClick={() => onEvent('activate')}>
+                            Habilitar Negocio
                         </Button>
                     </>
                 )
@@ -163,7 +167,7 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
         }
     ]
 
-    const filteredVales = vales.filter(value => {
+    const filteredBusiness = businessList.filter(value => {
         if (showActive && value.estatus === 0) {
             return true
         }
@@ -176,7 +180,6 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
     const style = useStyle()
 
     function onColumnClick(col) {
-        console.log(col.field)
         if (col.field === 'estatus') {
             setShowActive(a => !a)
         }
@@ -187,7 +190,7 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             <div style={{ height: '100%', width: '100%' }} className={style.root}>
                 <DataGrid
                     localeText={GRID_DEFAULT_LOCALE_TEXT}
-                    rows={filteredVales}
+                    rows={filteredBusiness}
                     rowHeight={80}
                     getRowId={row => row._id}
                     onRowOver={data => {
@@ -206,3 +209,5 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
         </>
     )
 }
+
+export default BusinessTable
