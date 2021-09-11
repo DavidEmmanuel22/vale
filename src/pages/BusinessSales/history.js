@@ -72,7 +72,7 @@ const SalesHistory = () => {
     }))
     const classes = useStyles()
 
-    const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
+    const [currentDate, setCurrentDate] = React.useState('')
     const historyRef = React.useRef(null)
 
     return (
@@ -96,7 +96,7 @@ const SalesHistory = () => {
             </Grid>
             <Grid item xs={12}>
                 <Paper className={classes.paper2}>
-                    <BusinessHistory ref={historyRef}></BusinessHistory>
+                    <BusinessHistory ref={historyRef} date={currentDate}></BusinessHistory>
                 </Paper>
             </Grid>
         </Grid>
