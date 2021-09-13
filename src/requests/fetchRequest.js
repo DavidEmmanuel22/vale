@@ -12,11 +12,7 @@ const fetchRequest = async (requestPath, requestParams = {}, headers = {}) => {
             ...requestParams
         })
 
-        console.log(response)
-
         const responseAsJson = await response.json()
-
-        console.log(responseAsJson)
 
         return {
             success: true,

@@ -12,6 +12,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery'
 import { UserContext } from 'context/userContext'
 import BusinessTable from 'components/negocio/BusinessTable'
 import PayBusiness from 'components/negocio/PayBusiness'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 const Negocios = () => {
     const matches = useMediaQuery('(min-width:525px)')
     const { user } = useContext(UserContext)
+    const history = useHistory()
 
     const classes = useStyles()
 
@@ -111,6 +113,9 @@ const Negocios = () => {
                 setSelectedNegocio(payload.user)
                 break
             case 'history':
+                history.push(`/dashboard/negocio/${selectedNegocio._id}`, {
+                    business: selectedNegocio
+                })
                 break
             case 'delete':
                 setDeleteDialog(true)
