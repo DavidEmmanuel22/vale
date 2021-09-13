@@ -14,6 +14,7 @@ import BussinesRoutes from './bussinesRoutes'
 import { Mail } from 'pages/Mail/Mail'
 import { Vale } from 'pages/valedores/Vale'
 import { Business } from 'components/Business/Business'
+import SingleBusinessHistory from 'pages/negocios/SingleBusinessHistory'
 
 const Routes = () => {
     const { isAuthenticated, user } = useContext(UserContext)
@@ -53,6 +54,11 @@ const Routes = () => {
                             </GeneralLayout>
                         </PrivateRoute>
                     ))}
+                <PrivateRoute exact isAuthenticated={isAuthenticated} path='/dashboard/negocio/:idBusiness'>
+                    <GeneralLayout routes={dashboardRoutes}>
+                        <SingleBusinessHistory></SingleBusinessHistory>
+                    </GeneralLayout>
+                </PrivateRoute>
 
                 <PrivateRoute exact isAuthenticated={isAuthenticated} path='/valedores/history'>
                     <GeneralLayout routes={dashboardRoutes}>
