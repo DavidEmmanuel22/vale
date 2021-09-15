@@ -68,12 +68,19 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
     })
 
     const getHistory = async () => {
-        const formatNumbers = currentDate.split('-').map(num => parseInt(num))
-        const { success, response, error } = await getBusinessHistory(formatNumbers.reverse().join('-'), user._id)
+        const formatNumbers =
+            props.date === ''
+                ? ''
+                : currentDate
+                      .split('-')
+                      .map(num => parseInt(num))
+                      .reverse()
+                      .join('-')
+        console.log(formatNumbers)
+        const { success, response, error } = await getBusinessHistory(formatNumbers, user._id)
         if (success && response) {
             if (response.data) {
                 setHistory(response.data.map(purch => purch.purchase))
-                console.log(response.data)
             }
         }
     }
@@ -93,7 +100,16 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
         }
     })
 
-    const noRowsComponent = <Alert severity='info'>¡Ups! Parece que no existen registros del {currentDate}</Alert>
+    const noRowsComponent = (
+        <Alert severity='info'>
+            ¡Ups! Parece que no existen registros del{' '}
+            {currentDate
+                .split('-')
+                .map(num => parseInt(num))
+                .reverse()
+                .join('-')}
+        </Alert>
+    )
 
     const style = useStyle()
     return (
