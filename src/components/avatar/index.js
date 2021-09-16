@@ -23,7 +23,7 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
     })
 
     const valiateImage = imageName => {
-        const validExtensions = ['png', 'jpg', 'jpeg', 'gif']
+        const validExtensions = ['png', 'jpg', 'jpeg', 'image']
 
         const fileName = imageName.split('.')
         const extension = fileName[fileName.length - 1]
