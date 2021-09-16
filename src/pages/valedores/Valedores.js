@@ -187,7 +187,7 @@ const Valedores = () => {
                     </Paper>
                 )}
                 {valedores.length === 0 && !isLoading && (
-                    <Alert severity='info'>¡Ups! Parece que aun no hay negocios registrados</Alert>
+                    <Alert severity='info'>¡Ups! Parece que aun no hay valedores registrados</Alert>
                 )}
                 {valedores.length !== 0 && filteredValedores.length === 0 && !isLoading && (
                     <Alert severity='warning'>
