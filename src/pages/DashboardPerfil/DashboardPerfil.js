@@ -13,7 +13,6 @@ import RegisterNegocio from 'components/negocio/register'
 import RegisterValedor from 'components/valedor/register'
 import Hidden from '@material-ui/core/Hidden'
 import { updateUser, uploadImage } from 'requests/allValedores'
-import { Alert } from '@material-ui/lab'
 import { Link, useHistory } from 'react-router-dom'
 import { forgotPassword } from 'requests/forgotPassword'
 import { updateUserSelfSchema } from 'yupSchemas'
@@ -22,6 +21,7 @@ import { AccountCircle } from '@material-ui/icons'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import useAlert from 'hooks/useAlert'
 import UserAvatar from 'components/avatar'
+import AlertPopUp from 'components/Alert/AlertPopUp'
 
 export const DashboardPerfil = () => {
     const { user, login, logout } = useContext(UserContext)
@@ -134,7 +134,7 @@ export const DashboardPerfil = () => {
             setTimeout(() => {
                 logout()
                 history.push('/')
-            }, 3000)
+            }, 10000)
         }
     }
 
@@ -241,13 +241,6 @@ export const DashboardPerfil = () => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <Collapse in={alert.show}>
-                                        <Alert style={{ marginTop: '10px' }} severity={alert.severity}>
-                                            {alert.content}
-                                        </Alert>
-                                    </Collapse>
-                                </Grid>
                                 <Grid
                                     item
                                     xs={12}
@@ -352,6 +345,19 @@ export const DashboardPerfil = () => {
                     </Hidden>
                 </Grid>
             </Grid>
+            <AlertPopUp
+                open={alert.show}
+                description={alert.content}
+                setOpen={() => {
+                    dispatchAlert({
+                        type: 'show',
+                        payload: {
+                            show: false
+                        }
+                    })
+                }}
+                type={alert.severity}
+            ></AlertPopUp>
             {modalTitle === 'valedor' ? (
                 <ResponsivePopUp open={showModal} setOpen={setShowModal} title='Registra un valedor'>
                     <RegisterValedor></RegisterValedor>
