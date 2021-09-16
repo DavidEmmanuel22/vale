@@ -5,27 +5,20 @@ import { Link, useHistory } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { countMessagesNotRead } from 'requests/createMail'
 
-const styles = {
-    paperContainer: {
-        backgroundImage: `url(${Image})`,
-        backgroundColor: '#cccccc',
-        height: '100px',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'noRepeat',
-        backgroundSize: 'cover',
-        position: 'relative'
-    }
-}
-
 const BackgroundPaper = ({ redirectTo = '/dashboard' }) => {
     const [notReadMessage, setNotReadMessage] = useState('')
+    const [fetchingMessages, setFetchingMessages] = useState(true)
     const history = useHistory()
 
     useEffect(() => {
         async function notReadMessage() {
             const { success, response, error } = await countMessagesNotRead()
             if (success && response) {
-                !response.error && setNotReadMessage(response.data)
+                console.log(response)
+                if (!response.error) {
+                    setNotReadMessage(response.data)
+                    setFetchingMessages(false)
+                }
             }
         }
         notReadMessage()
@@ -38,7 +31,7 @@ const BackgroundPaper = ({ redirectTo = '/dashboard' }) => {
                 onClick={() => history.push('/dashboard/contactos')}
             >
                 <div className='hero-text'>
-                    {!notReadMessage ? (
+                    {fetchingMessages ? (
                         <>
                             <CircularProgress
                                 style={{

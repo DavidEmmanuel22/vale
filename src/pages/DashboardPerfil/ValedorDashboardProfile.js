@@ -28,6 +28,7 @@ import { AddVale } from 'components/valedor/addVale'
 import ShowCredit from 'components/showCredit'
 import useAlert from 'hooks/useAlert'
 import UserAvatar from 'components/avatar'
+import AlertPopUp from 'components/Alert/AlertPopUp'
 
 const NameExpression = /^\S/
 
@@ -142,7 +143,7 @@ const ValedorDashboardProfile = () => {
             setTimeout(() => {
                 logout()
                 history.push('/')
-            }, 3000)
+            }, 10000)
         }
     }
 
@@ -249,13 +250,6 @@ const ValedorDashboardProfile = () => {
                                 </Grid>
                             </Grid>
                             <Grid container spacing={3}>
-                                <Grid item xs={12}>
-                                    <Collapse in={alert.show}>
-                                        <Alert style={{ marginTop: '10px' }} severity={alert.severity}>
-                                            {alert.content}
-                                        </Alert>
-                                    </Collapse>
-                                </Grid>
                                 <Grid
                                     item
                                     xs={12}
@@ -324,6 +318,19 @@ const ValedorDashboardProfile = () => {
             >
                 <AddVale></AddVale>
             </ResponsivePopUp>
+            <AlertPopUp
+                open={alert.show}
+                description={alert.content}
+                setOpen={() => {
+                    dispatchAlert({
+                        type: 'show',
+                        payload: {
+                            show: false
+                        }
+                    })
+                }}
+                type={alert.severity}
+            ></AlertPopUp>
         </div>
     )
 }

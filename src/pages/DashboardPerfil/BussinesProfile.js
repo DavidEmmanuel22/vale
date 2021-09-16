@@ -24,6 +24,7 @@ import { forgotPassword } from '../../requests/forgotPassword'
 import useAlert from '../../hooks/useAlert'
 import UserAvatar from '../../components/avatar'
 import { updateUser } from '../../requests/allValedores'
+import AlertPopUp from 'components/Alert/AlertPopUp'
 
 const BussinesProfile = () => {
     const matches = useMediaQuery('(min-width:600px)')
@@ -204,7 +205,7 @@ const BussinesProfile = () => {
                     }
                 })
                 logout()
-            }, 5000)
+            }, 10000)
         }
     }
 
@@ -390,11 +391,6 @@ const BussinesProfile = () => {
                                     </a>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Collapse in={alert.show}>
-                                        <Alert style={{ marginTop: '10px' }} severity={alert.severity}>
-                                            {alert.content}
-                                        </Alert>
-                                    </Collapse>
                                     <div
                                         style={{
                                             marginTop: '10px',
@@ -408,7 +404,12 @@ const BussinesProfile = () => {
                                             </Button>
                                         )}
                                         {onEdit && (
-                                            <Button variant='contained' color='primary' type='reset'>
+                                            <Button
+                                                style={{ marginRight: '10px' }}
+                                                variant='contained'
+                                                color='primary'
+                                                type='reset'
+                                            >
                                                 Cancelar
                                             </Button>
                                         )}
@@ -440,6 +441,19 @@ const BussinesProfile = () => {
                         />
                     </Grid>
                 </Grid>
+                <AlertPopUp
+                    open={alert.show}
+                    description={alert.content}
+                    setOpen={() => {
+                        dispatchAlert({
+                            type: 'show',
+                            payload: {
+                                show: false
+                            }
+                        })
+                    }}
+                    type={alert.severity}
+                ></AlertPopUp>
             </Paper>
         </div>
     )
