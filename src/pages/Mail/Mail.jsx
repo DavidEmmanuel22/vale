@@ -9,7 +9,7 @@ import {
   createMailToken,
   createMail
 } from 'requests/createMail'
-import { MessageRight, MessageLeft } from './Messages'
+import { MessageRight, MessageLeft, MessageNot } from './Messages'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -202,15 +202,10 @@ export const Mail = () => {
   const MessageContent = () => (
     <>
       {
-        !messages ?(
-          <div className="contact__welcome-message">
-            <h2>
-              Lorem ipsum dolor sit,
-              amet consectetur adipisicing elit. Deserunt recusandae
-              quae vel sit obcaecati mollitia similique consequatur
-              libero adipisci, incidunt harum perspiciatis doloremque
-            </h2>
-          </div>        ):(
+        messages.length === 0 ?(
+          <MessageNot  data={"Aún no tiene mensajes por ver"} />
+
+          ):(
             messages.map((msg, _) =>
         
             msg.message.email === email || msg.message.email === user.email ? (
@@ -231,24 +226,36 @@ export const Mail = () => {
     <>
       <Grid item xs={12}>
         <Paper className={classes.buttonPaper} style={{ borderRadius: '10px 10px 0px 0px'  }}>
-          <div style={{
-             backgroundColor: 'rgb(0, 119, 114)',
-             display: 'flex',
-             justifyContent: 'center',
-             alignItems: 'center',
-             flexWrap: 'wrap',
-             minHeight: '60px',
-             borderRadius: '10px 10px 0 0',
-             color: '#fff',
-             position: 'sticky',
-             top: '80px',
-             zIndex: '100',
-             marginTop: "-16px",
-             marginLeft: "-15px",
-             width: "105%"
-            }}> 
-              <h2>Mensajes</h2>
-          </div>
+        {userData.role === "Valedor" || userData.role ==="Bussines"  ? ( 
+         <div style={{
+          backgroundColor: 'rgb(0, 119, 114)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          minHeight: '60px',
+          borderRadius: '10px 10px 0 0',
+          color: '#fff',
+          position: 'sticky',
+          top: '80px',
+          zIndex: '100',
+          marginTop: "-16px",
+          marginLeft: "-15px",
+          width: "100%"
+         }}> 
+          <Tooltip color='secondary' onClick={() => window.location.reload(true)} title='Recargar'>
+                     <IconButton aria-label='delete'>
+                         <CachedIcon />
+                     </IconButton>
+                 </Tooltip>
+           <h2>Mensajes</h2>
+       </div>
+        
+        ) : ( null)
+         
+         }
+
+         
           <div
             style={{
               height: `${messages.length < 5 ? '74vh' : ''}`
@@ -369,7 +376,7 @@ export const Mail = () => {
               width: '95%',
               backgroundColor: 'white'
             }}
-            label="Mensaje"
+            label={mailFormikValidation.touched.message ? (mailFormikValidation.errors.message):("Mensaje")}
             variant="filled"
             name="message"
             value={mailFormikValidation.values.message}
@@ -378,7 +385,9 @@ export const Mail = () => {
               mailFormikValidation.touched.message &&
               Boolean(mailFormikValidation.errors.message)
             }
-           
+            placeholder={mailFormikValidation.errors.message}
+            placeholderTextColor="#000" 
+
           />
 
           <Button
