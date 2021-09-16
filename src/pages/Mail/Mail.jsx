@@ -37,7 +37,7 @@ import jwtDecode from 'jwt-decode'
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
     padding: theme.spacing(2),
-    color: theme.palette.text.secondary,
+    color: 'black',
 
     justifyContent: 'space-between'
   },
@@ -117,9 +117,8 @@ export const Mail = () => {
   }
 
   const scrollToBottom = () => {
-    if (messagesEndRef && messagesEndRef.current && scroll) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
+    window.scrollTo(0, document.body.scrollHeight)
+
   }
 
   useEffect(() => {
@@ -202,23 +201,56 @@ export const Mail = () => {
 
   const MessageContent = () => (
     <>
-      {messages.map((msg, _) =>
-        msg.message.email === email || msg.message.email === user.email ? (
-          <MessageRight key={_} data={msg} />
-        ) : (
-          <MessageLeft key={_} data={msg} />
+      {
+        !messages ?(
+          <div className="contact__welcome-message">
+            <h2>
+              Lorem ipsum dolor sit,
+              amet consectetur adipisicing elit. Deserunt recusandae
+              quae vel sit obcaecati mollitia similique consequatur
+              libero adipisci, incidunt harum perspiciatis doloremque
+            </h2>
+          </div>        ):(
+            messages.map((msg, _) =>
+        
+            msg.message.email === email || msg.message.email === user.email ? (
+              <MessageRight key={_} data={msg} />
+            ) : (
+              <MessageLeft key={_} data={msg} />
+            )
+          )
         )
-      )}
+      }
+
+      
+     
     </>
   )
 
   return (
     <>
       <Grid item xs={12}>
-        <Paper className={classes.buttonPaper}>
+        <Paper className={classes.buttonPaper} style={{ borderRadius: '10px 10px 0px 0px'  }}>
+          <div style={{
+             backgroundColor: 'rgb(0, 119, 114)',
+             display: 'flex',
+             justifyContent: 'center',
+             alignItems: 'center',
+             flexWrap: 'wrap',
+             minHeight: '60px',
+             borderRadius: '10px 10px 0 0',
+             color: '#fff',
+             position: 'sticky',
+             top: '80px',
+             zIndex: '100',
+             marginTop: "-16px",
+             marginLeft: "-15px",
+             width: "105%"
+            }}> 
+              <h2>Mensajes</h2>
+          </div>
           <div
             style={{
-              padding: '1.2em',
               height: `${messages.length < 5 ? '74vh' : ''}`
             }}
           >
@@ -346,10 +378,7 @@ export const Mail = () => {
               mailFormikValidation.touched.message &&
               Boolean(mailFormikValidation.errors.message)
             }
-            helperText={
-              mailFormikValidation.touched.message &&
-              mailFormikValidation.errors.message
-            }
+           
           />
 
           <Button
