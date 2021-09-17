@@ -5,6 +5,7 @@ import Badge from '@material-ui/core/Badge'
 import Avatar from '@material-ui/core/Avatar'
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate'
 import { uploadImage } from '../../requests/allValedores'
+import { CircularProgress } from '@material-ui/core'
 
 const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
     const { user } = React.useContext(UserContext)
@@ -13,6 +14,7 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
     const initialUrlImage = user.urlImage ? user.urlImage : defaultUrlImage
 
     const [urlImage, setUrlImage] = React.useState(initialUrlImage)
+    const [uploading, setUploading] = React.useState(false)
 
     React.useImperativeHandle(ref, () => {
         return {
@@ -52,6 +54,7 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
     }
 
     const handleUploadImage = async (imgData, imageTitle) => {
+        setUploading(true)
         const { success, response, error } = await uploadImage(imgData, imageTitle)
 
         if (success && response) {
@@ -61,6 +64,7 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
             console.log(response)
             setUrlImage(response.data.urlImage)
         }
+        setUploading(false)
     }
 
     const handleDeleteImage = () => {
@@ -95,6 +99,17 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
                     <Avatar style={{ width: '100px', height: '100px' }} src={urlImage}>
                         A
                     </Avatar>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            display: uploading ? 'block' : 'none'
+                        }}
+                    >
+                        <CircularProgress color='primary'></CircularProgress>
+                    </div>
                 </Badge>
             </label>
             <a
