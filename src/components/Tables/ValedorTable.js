@@ -16,7 +16,8 @@ import {
     DeleteOutlineSharp,
     HistoryOutlined,
     MonetizationOn,
-    MonetizationOnOutlined
+    MonetizationOnOutlined,
+    PaymentOutlined
 } from '@material-ui/icons'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 
@@ -58,6 +59,12 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             background: '#054aaf',
             '&:hover': {
                 background: '#083e8f'
+            }
+        },
+        creditBtn: {
+            background: '#9032bb',
+            '&:hover': {
+                background: '#7900ac'
             }
         }
     })
@@ -115,7 +122,7 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
             field: '',
             headerName: 'Acciones',
             sortable: false,
-            width: 300,
+            width: 350,
             renderCell: function render(params) {
                 return showActive ? (
                     <>
@@ -149,6 +156,15 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
                         >
                             <Fab color='primary'>
                                 <MonetizationOn></MonetizationOn>
+                            </Fab>
+                        </Tooltip>
+                        <Tooltip
+                            title='Historial De Pagos'
+                            style={{ marginLeft: '10px' }}
+                            onClick={() => onEvent('paymentHistory')}
+                        >
+                            <Fab color='secondary' className={style.creditBtn}>
+                                <PaymentOutlined></PaymentOutlined>
                             </Fab>
                         </Tooltip>
                     </>

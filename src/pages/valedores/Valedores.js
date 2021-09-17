@@ -132,6 +132,14 @@ const Valedores = () => {
             case 'register':
                 setPaymentDialog(true)
                 break
+            case 'paymentHistory':
+                history.push({
+                    pathname: `/dashboard/valedor/${selectedValedor._id}`,
+                    state: {
+                        valedor: selectedValedor
+                    }
+                })
+                break
         }
     }
 

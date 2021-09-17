@@ -15,6 +15,7 @@ import { Mail } from 'pages/Mail/Mail'
 import { Vale } from 'pages/valedores/Vale'
 import { Business } from 'components/Business/Business'
 import SingleBusinessHistory from 'pages/negocios/SingleBusinessHistory'
+import ValedorPayment from 'pages/ValedorPayment'
 
 const Routes = () => {
     const { isAuthenticated, user } = useContext(UserContext)
@@ -57,6 +58,12 @@ const Routes = () => {
                 <PrivateRoute exact isAuthenticated={isAuthenticated} path='/dashboard/negocio/:idBusiness'>
                     <GeneralLayout routes={dashboardRoutes}>
                         <SingleBusinessHistory></SingleBusinessHistory>
+                    </GeneralLayout>
+                </PrivateRoute>
+
+                <PrivateRoute exact isAuthenticated={isAuthenticated} path='/dashboard/valedor/:idValedor'>
+                    <GeneralLayout routes={dashboardRoutes}>
+                        <ValedorPayment></ValedorPayment>
                     </GeneralLayout>
                 </PrivateRoute>
 
