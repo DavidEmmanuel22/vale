@@ -90,6 +90,16 @@ const SalesHistory = () => {
                                     historyRef.current.setDate(e.target.value)
                                 }}
                             ></TextField>
+                            <Button
+                                style={{
+                                    display: currentDate ? 'block' : 'none'
+                                }}
+                                onClick={() => setCurrentDate('')}
+                                variant='contained'
+                                color='primary'
+                            >
+                                Ver Todo
+                            </Button>
                         </Grid>
                     </Grid>
                 </Paper>

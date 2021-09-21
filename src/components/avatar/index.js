@@ -108,7 +108,7 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
                             display: uploading ? 'block' : 'none'
                         }}
                     >
-                        <CircularProgress color='primary'></CircularProgress>
+                        <CircularProgress color='secondary'></CircularProgress>
                     </div>
                 </Badge>
             </label>

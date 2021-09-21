@@ -102,12 +102,8 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
 
     const noRowsComponent = (
         <Alert severity='info'>
-            ¡Ups! Parece que no existen registros del{' '}
-            {currentDate
-                .split('-')
-                .map(num => parseInt(num))
-                .reverse()
-                .join('-')}
+            ¡Ups! Parece que no existen registros del
+            {` ${props.date || 'negocio'}`}
         </Alert>
     )
 
