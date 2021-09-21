@@ -7,16 +7,21 @@ import Styles from './Styles'
 import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { AlertContext } from '../popUp/responsivePopUp'
-import { addCredit } from 'requests/allValedores'
+import { addPaymentValedor } from 'requests/allValedores'
+import { ReceiptOutlined } from '@material-ui/icons'
 
-const AddPayment = ({ email = '' }) => {
+const AddPayment = ({ valedor }) => {
     const creditsExpression = /^\d+$/
 
     const validationSchema = yup.object({
-        credits: yup
-            .string()
+        amount: yup
+            /*.string()
             .matches(creditsExpression, 'Solo nùmeros enteros positivos')
-            .required('Credito es requerido')
+            .required('Credito es requerido')*/
+            .number()
+            .required('El pago a registrar es requerido')
+            .positive('El pago a registrar debe ser mayor a 0'),
+        transaction: yup.string()
     })
 
     const { alertText, alertColor, setAlertText, setAlertColor, handleClose } = React.useContext(AlertContext)
@@ -24,23 +29,30 @@ const AddPayment = ({ email = '' }) => {
 
     const formik = useFormik({
         initialValues: {
-            credits: ''
+            amount: 0,
+            transaction: ''
         },
         onSubmit: async (valedorUser, { resetForm }) => {
-            /*const { success, response, error } = await addCredit(email, parseInt(valedorUser.credits))
+            const { success, response, error } = await addPaymentValedor(
+                valedor._id,
+                valedorUser.transaction,
+                valedorUser.amount
+            )
             if (success && response) {
-                if (response.error) {
+                if (!response.error) {
+                    setAlertColor('success')
+                    setAlertText('El pago fue agregado correctamente')
+                    resetForm({ valedorUser: '' })
+                } else {
                     setAlertColor('error')
                     setAlertText(response.error)
-                } else {
-                    setAlertColor('success')
-                    setAlertText('El crédito fue agregado correctamente')
                     resetForm({ valedorUser: '' })
-                    setTimeout(() => {
-                        handleClose()
-                    }, 2000)
                 }
-            }*/
+                console.log(response)
+                setTimeout(() => {
+                    handleClose()
+                }, 10000)
+            }
         },
         validationSchema: validationSchema
     })
@@ -55,7 +67,7 @@ const AddPayment = ({ email = '' }) => {
                             id='email'
                             placeholder='Correo'
                             type='email'
-                            value={email}
+                            value={valedor.email}
                             disabled
                             InputProps={{
                                 startAdornment: (
@@ -70,13 +82,13 @@ const AddPayment = ({ email = '' }) => {
                     <Grid item xs={12} md={6}>
                         <TextField
                             className={classes.widthnew}
-                            id='credits'
+                            id='amount'
                             placeholder='Valor del pago'
-                            type='text'
-                            value={formik.values.credits}
+                            type='number'
+                            value={formik.values.amount}
                             onChange={formik.handleChange}
-                            error={formik.touched.credits && Boolean(formik.errors.credits)}
-                            helperText={formik.touched.credits && formik.errors.credits}
+                            error={formik.touched.amount && Boolean(formik.errors.amount)}
+                            helperText={formik.touched.amount && formik.errors.amount}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position='start' className='MuiInputAdornment-root'>
@@ -86,10 +98,29 @@ const AddPayment = ({ email = '' }) => {
                             }}
                         />
                     </Grid>
+                    <Grid item xs={8}>
+                        <TextField
+                            className={classes.widthnew}
+                            id='transaction'
+                            placeholder='ID de transaccion o identificador (si existe)'
+                            type='text'
+                            value={formik.values.transaction}
+                            onChange={formik.handleChange}
+                            error={formik.touched.transaction && Boolean(formik.errors.transaction)}
+                            helperText={formik.touched.transaction && formik.errors.transaction}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position='start' className='MuiInputAdornment-root'>
+                                        <ReceiptOutlined></ReceiptOutlined>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <div className='button-login'>
                             <Button className={`${classes.widthbutton} `} type='submit' color='primary'>
-                                Asignar Pago
+                                Registrar pago de {valedor.firstName}
                             </Button>
                         </div>
                     </Grid>

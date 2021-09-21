@@ -234,7 +234,7 @@ const Valedores = () => {
                 title='Agregar Pago'
                 confirmText='Confirm Text'
             >
-                <AddPayment email={selectedValedor.email}></AddPayment>
+                <AddPayment valedor={selectedValedor}></AddPayment>
             </ResponsivePopUp>
         </Grid>
     )
