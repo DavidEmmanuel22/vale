@@ -56,6 +56,17 @@ export const addCredit = (email, credits) => {
     })
 }
 
+export const addPaymentValedor = (idUser, idTransaction, amount) => {
+    return fetchRequest('/create-pay', {
+        method: 'POST',
+        body: JSON.stringify({
+            idUser,
+            idTransaction,
+            credits: amount
+        })
+    })
+}
+
 export const valesHistory = emailUser => {
     return fetchRequest(`/vales?emailUser=${emailUser}`, {
         method: 'GET'
