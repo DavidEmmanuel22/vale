@@ -32,13 +32,22 @@ const UserAvatar = React.forwardRef(({ onEdit, errorImageHandler }, ref) => {
         return validExtensions.find(ext => ext === extension)
     }
 
+    const validateSize = imgFile => {
+        return imgFile.size <= 5242880
+    }
+
     const rollbackToLastImage = () => {
         setUrlImage(initialUrlImage)
     }
 
     const handleChangeImage = e => {
         if (e.target.files[0]) {
+            // eslint-disable-next-line no-constant-condition
             if (valiateImage(e.target.files[0].name)) {
+                if (!validateSize(e.target.files[0])) {
+                    errorImageHandler('El tamaño maximo de imagen permitido son 5MB')
+                    return
+                }
                 const reader = new FileReader()
                 reader.addEventListener('load', () => {
                     /*setImgData(reader.result)
