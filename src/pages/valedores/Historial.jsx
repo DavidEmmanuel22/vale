@@ -12,7 +12,7 @@ import clsx from 'clsx'
 import moment from 'moment'
 import 'moment/min/locales'
 import { NoRow } from 'assets/Helpers/NoRow'
-import _ from "lodash"
+import _ from 'lodash'
 moment.locale('es')
 
 const Historial = () => {
@@ -21,7 +21,7 @@ const Historial = () => {
     const email = location.state.valedor.email
     const [history, setHistory] = useState([])
 
-    const useStyles = makeStyles({
+    const useStyles = makeStyles(theme => ({
         root: {
             '& .super-app.negative': {
                 backgroundColor: 'rgba(157, 255, 118, 0.49)',
@@ -33,8 +33,20 @@ const Historial = () => {
                 color: '#1a3e72',
                 fontWeight: '600'
             }
-        }
-    })
+        },
+        paper: {
+            padding: theme.spacing(2),
+            textAlign: 'center',
+            color: theme.palette.text.secondary,
+            height: `calc(100vh - 190px)`,
+            overflowY: 'scroll'
+        },
+        buttonPaper: {
+            padding: theme.spacing(1),
+            color: theme.palette.text.secondary,
+            marginBottom:"10px",
+        },
+    }))
 
     useEffect(() => {
         async function getAllVales() {
@@ -89,25 +101,29 @@ const Historial = () => {
             {isLoading ? (
                 <CircularProgress></CircularProgress>
             ) : (
-                <Paper style={{ height: 550, width: '100%' }} className={classes.root}>
-                    <Typography variant='h5' style={{ paddingTop: '15px', marginBottom: '15px' }}>
-                        Historial de vales de {_.get(location, "state.valedor.email", "Desconocido")}
-                    </Typography>
-                    <DataGrid
-                        pageSize={9}
-                        components={
-                            history.length > 0
-                                ? {
-                                      Toolbar: GridToolbar
-                                  }
-                                : { NoRowsOverlay: NoRow }
-                        }
-                        localeText={GRID_DEFAULT_LOCALE_TEXT}
-                        getRowId={row => row._id}
-                        rows={history}
-                        columns={columns}
-                    />
-                </Paper>
+                <>
+                    <Paper style={{ width: '100%' }} className={classes.buttonPaper}>
+                        <Typography variant='h5' style={{ paddingTop: '15px', marginBottom: '15px' }}>
+                            Historial de vales de {_.get(location, 'state.valedor.email', 'Desconocido')}
+                        </Typography>
+                    </Paper>
+                    <Paper className={classes.paper}>
+                        <DataGrid
+                            pageSize={6}
+                            components={
+                                history.length > 0
+                                    ? {
+                                          Toolbar: GridToolbar
+                                      }
+                                    : { NoRowsOverlay: NoRow }
+                            }
+                            localeText={GRID_DEFAULT_LOCALE_TEXT}
+                            getRowId={row => row._id}
+                            rows={history}
+                            columns={columns}
+                        />
+                    </Paper>
+                </>
             )}
         </div>
     )
