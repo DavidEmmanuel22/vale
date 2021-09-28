@@ -52,6 +52,7 @@ const DashboardMessages = ({ showAll }) => {
         if (!readed.chats.lastMessage) {
             return null
         }
+
         return readed
     })
 

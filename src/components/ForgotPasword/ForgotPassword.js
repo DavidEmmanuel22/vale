@@ -101,7 +101,7 @@ const ForgotPassword = () => {
                             <Button className={classes.ButtonPassword} type='submit' color='primary'>
                                 Enviar para restablecer contraseña
                             </Button>
-                            <a href='#' onClick={() => history.push('/')}>
+                            <a href='#' onClick={() => history.push('/')} style={{ marginLeft: '80%' }}>
                                 Regresar
                             </a>
                         </div>

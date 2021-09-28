@@ -54,3 +54,19 @@ export const MessageRight = ({ data }) => {
     </div>
   )
 }
+export const MessageNot = ({ data }) => {
+  const classes = styleMessage()
+  console.log(data)
+  const message = data
+  return (
+    <div style={{ width: '100%' }}>
+      {
+        <div className={classes.messageRowCenter}>
+          <div className={classes.messageBot}>
+            <p className={classes.messageContentBot}>{message}</p>
+          </div>
+        </div>
+      }
+    </div>
+  )
+}
