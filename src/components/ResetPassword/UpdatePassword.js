@@ -33,7 +33,9 @@ const UpdatePassword = () => {
         },
         validationSchema: validationSchema,
         onSubmit: async data => {
-            if (data.password && data.passwordCheck !== '' && data.password === data.passwordCheck) {
+            const newPassword = data.password.replace(/\s+/g, '')
+            const newPasswordCheck = data.passwordCheck.replace(/\s+/g, '')
+            if (newPassword && newPasswordCheck !== '' && newPassword === newPasswordCheck) {
                 const { success, response, error } = await resetPassword(data)
                 if (response && success) {
                     if (response.error) {
@@ -54,7 +56,7 @@ const UpdatePassword = () => {
                         window.location.href = '/'
                     }, 5000)
                 }
-            } else if (data.password !== data.passwordCheck) {
+            } else if (newPassword !== newPasswordCheck) {
                 setAlertColor('error')
                 setAlertText('Error, las contraseñas no coinciden, intente nuevamente.')
                 setShowAlert(true)
