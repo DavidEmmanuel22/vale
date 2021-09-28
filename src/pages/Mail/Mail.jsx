@@ -36,9 +36,8 @@ import jwtDecode from 'jwt-decode'
 
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
-    padding: theme.spacing(2),
     color: 'black',
-
+    marginTop: '5%',
     justifyContent: 'space-between'
   },
   countDownHide: {
@@ -240,7 +239,7 @@ export const Mail = () => {
           top: '80px',
           zIndex: '100',
           marginTop: "-16px",
-          marginLeft: "-15px",
+          marginBottom: "100px;",
           width: "100%"
          }}> 
           <Tooltip color='secondary' onClick={() => window.location.reload(true)} title='Recargar'>
