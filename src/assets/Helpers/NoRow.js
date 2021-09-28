@@ -1,7 +1,8 @@
 import React from 'react'
 import { GridOverlay } from '@material-ui/data-grid'
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles'
-import { RowContext } from 'components/BusinessHistory/RowContext'
+import _ from 'lodash'
+import { RowContext } from './RowContext'
 
 const defaultTheme = createMuiTheme()
 const useStyles = makeStyles(
@@ -35,7 +36,7 @@ const useStyles = makeStyles(
 export const NoRow = () => {
     const classes = useStyles()
     const context = React.useContext(RowContext)
-    const { noRowComponent } = context || <h1>No se han encontrado resultados</h1>
+    const noRowComponent = _.get(context, 'noRowComponent', <></>) //context?.noRowComponent
     return (
         <GridOverlay className={classes.root}>
             <svg width='120' height='100' viewBox='0 0 184 152' aria-hidden focusable='false'>

@@ -8,8 +8,8 @@ import 'moment/min/locales'
 import { NoRow } from '../../assets/Helpers/NoRow'
 import { getBusinessHistory } from 'requests/allVales'
 import useUser from 'hooks/useUser'
-import { RowProvider } from './RowContext'
 import { Alert } from '@material-ui/lab'
+import { RowProvider } from 'assets/Helpers/RowContext'
 
 moment.locale('es')
 
@@ -87,7 +87,7 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
 
     useEffect(() => {
         getHistory()
-    }, [currentDate])
+    }, [currentDate, props.date])
 
     React.useImperativeHandle(ref, () => {
         return {
