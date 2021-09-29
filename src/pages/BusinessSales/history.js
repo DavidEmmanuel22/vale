@@ -1,9 +1,13 @@
-import { Grid, Paper, Button, Collapse, InputAdornment, Typography } from '@material-ui/core'
+import { Grid, Paper, Button, Collapse, Typography, IconButton, Tooltip, Popover } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import { makeStyles } from '@material-ui/core/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery'
 import React from 'react'
 import { BusinessHistory } from 'components/BusinessHistory'
+import { FilterList } from '@material-ui/icons'
+import 'react-date-range/dist/styles.css' // main style file
+import 'react-date-range/dist/theme/default.css' // theme css file
+import DateRange from 'components/filters/DateRangePicker'
 
 const SalesHistory = () => {
     const matches = useMediaQuery('(min-width:600px)')
@@ -72,8 +76,38 @@ const SalesHistory = () => {
     }))
     const classes = useStyles()
 
-    const [currentDate, setCurrentDate] = React.useState('')
     const historyRef = React.useRef(null)
+
+    const [currentDate, setCurrentDate] = React.useState('')
+
+    const [anchorEl, setAnchorEl] = React.useState(null)
+
+    const [state, setState] = React.useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ])
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    const open = Boolean(anchorEl)
+    const id = open ? 'simple-popover' : undefined
+
+    function handleSelectRange(item) {
+        setState([item.selection])
+    }
+
+    function handleSelectAll() {
+        console.log('select all')
+    }
 
     return (
         <Grid container>
@@ -81,8 +115,9 @@ const SalesHistory = () => {
                 <Paper className={classes.paper}>
                     <Grid container>
                         <Grid item xs={12} className={classes.gridItem}>
+                            <Typography component='h4'>Historial De Ventas</Typography>
+                            {/*
                             <TextField
-                                placeholder='search...'
                                 type='date'
                                 value={currentDate}
                                 onChange={e => {
@@ -100,6 +135,29 @@ const SalesHistory = () => {
                             >
                                 Ver Todo
                             </Button>
+                            */}
+                            <Tooltip title='Mostrar filtros' onClick={handleClick} style={{ marginRight: '30px' }}>
+                                <IconButton aria-describedby={id}>
+                                    <FilterList color='primary'></FilterList>
+                                </IconButton>
+                            </Tooltip>
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left'
+                                }}
+                                style={{ overflow: 'scroll' }}
+                            >
+                                <DateRange
+                                    date={state}
+                                    onRangeChange={handleSelectRange}
+                                    onSelectAll={handleSelectAll}
+                                ></DateRange>
+                            </Popover>
                         </Grid>
                     </Grid>
                 </Paper>
