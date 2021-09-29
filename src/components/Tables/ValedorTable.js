@@ -20,6 +20,8 @@ import {
     PaymentOutlined
 } from '@material-ui/icons'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
+import { RowProvider } from 'assets/Helpers/RowContext'
+import { Alert } from '@material-ui/lab'
 
 moment.locale('es')
 
@@ -198,26 +200,30 @@ export const ValedorTable = ({ vales = [], onEvent }) => {
         }
     }
 
+    const NoRowComponent = <Alert severity='info'>¡Ups! Parece que no existen resultados</Alert>
+
     return (
         <>
             <div style={{ height: '100%', width: '100%' }} className={style.root}>
-                <DataGrid
-                    localeText={GRID_DEFAULT_LOCALE_TEXT}
-                    rows={filteredVales}
-                    rowHeight={80}
-                    getRowId={row => row._id}
-                    onRowOver={data => {
-                        onEvent('setUser', {
-                            user: data.row
-                        })
-                    }}
-                    components={{
-                        NoRowsOverlay: NoRow
-                    }}
-                    onColumnHeaderClick={onColumnClick}
-                    columns={columns}
-                    pageSize={6}
-                />
+                <RowProvider component={NoRowComponent}>
+                    <DataGrid
+                        localeText={GRID_DEFAULT_LOCALE_TEXT}
+                        rows={filteredVales}
+                        rowHeight={80}
+                        getRowId={row => row._id}
+                        onRowOver={data => {
+                            onEvent('setUser', {
+                                user: data.row
+                            })
+                        }}
+                        components={{
+                            NoRowsOverlay: NoRow
+                        }}
+                        onColumnHeaderClick={onColumnClick}
+                        columns={columns}
+                        pageSize={6}
+                    />
+                </RowProvider>
             </div>
         </>
     )

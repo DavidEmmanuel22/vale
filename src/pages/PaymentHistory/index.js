@@ -11,15 +11,14 @@ import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import moment from 'moment'
 import 'moment/min/locales'
-import { NoRow } from 'assets/Helpers/NoRow'
 import _ from 'lodash'
+import { NoRow } from 'assets/Helpers/NoRow'
+import { RowProvider } from 'assets/Helpers/RowContext'
+import { Alert } from '@material-ui/lab'
 moment.locale('es')
 
-const Historial = () => {
-    const location = useLocation()
-    const [isLoading, setIsLoading] = useState(true)
-    const email = location.state.valedor.email
-    const [history, setHistory] = useState([])
+const PaymentHistoryPage = () => {
+    const [isLoading, setIsLoading] = useState(false)
 
     const useStyles = makeStyles(theme => ({
         root: {
@@ -38,18 +37,18 @@ const Historial = () => {
             padding: theme.spacing(2),
             textAlign: 'center',
             color: theme.palette.text.secondary,
-            height: `calc(100vh - 190px)`,
+            height: `calc(100vh - 180px)`,
             overflowY: 'scroll'
         },
         buttonPaper: {
-            padding: theme.spacing(1),
+            padding: theme.spacing(2),
             color: theme.palette.text.secondary,
-            marginBottom:"10px",
-        },
+            marginBottom: '10px'
+        }
     }))
 
     useEffect(() => {
-        async function getAllVales() {
+        /*async function getAllVales() {
             const { success, response, error } = await valesHistory(email)
             if (success && response) {
                 setHistory(response.data)
@@ -58,7 +57,7 @@ const Historial = () => {
                 //console.log(error)
             }
         }
-        getAllVales()
+        getAllVales()*/
     }, [])
 
     const columns = [
@@ -96,32 +95,30 @@ const Historial = () => {
 
     const classes = useStyles()
 
+    const NoRowComponent = <Alert severity='info'>¡Ups! Parece que no hay resultados</Alert>
+
     return (
         <div style={{ textAlign: 'center' }}>
+            <Paper style={{ width: '100%' }} className={classes.buttonPaper}>
+                <Typography variant='h5'>Historial de compras</Typography>
+            </Paper>
             {isLoading ? (
                 <CircularProgress></CircularProgress>
             ) : (
                 <>
-                    <Paper style={{ width: '100%' }} className={classes.buttonPaper}>
-                        <Typography variant='h5' style={{ paddingTop: '15px', marginBottom: '15px' }}>
-                            Historial de vales de {_.get(location, 'state.valedor.email', 'Desconocido')}
-                        </Typography>
-                    </Paper>
                     <Paper className={classes.paper}>
-                        <DataGrid
-                            pageSize={6}
-                            components={
-                                history.length > 0
-                                    ? {
-                                          Toolbar: GridToolbar
-                                      }
-                                    : { NoRowsOverlay: NoRow }
-                            }
-                            localeText={GRID_DEFAULT_LOCALE_TEXT}
-                            getRowId={row => row._id}
-                            rows={history}
-                            columns={columns}
-                        />
+                        <RowProvider component={NoRowComponent}>
+                            <DataGrid
+                                pageSize={6}
+                                components={{
+                                    NoRowsOverlay: NoRow
+                                }}
+                                localeText={GRID_DEFAULT_LOCALE_TEXT}
+                                getRowId={row => row._id}
+                                rows={[]}
+                                columns={columns}
+                            />
+                        </RowProvider>
                     </Paper>
                 </>
             )}
@@ -129,4 +126,4 @@ const Historial = () => {
     )
 }
 
-export default Historial
+export default PaymentHistoryPage

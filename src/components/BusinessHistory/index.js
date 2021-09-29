@@ -8,8 +8,11 @@ import 'moment/min/locales'
 import { NoRow } from '../../assets/Helpers/NoRow'
 import { getBusinessHistory } from 'requests/allVales'
 import useUser from 'hooks/useUser'
-import { RowProvider } from './RowContext'
 import { Alert } from '@material-ui/lab'
+import { RowProvider } from 'assets/Helpers/RowContext'
+import _ from 'lodash'
+import 'react-date-range/dist/styles.css' // main style file
+import 'react-date-range/dist/theme/default.css' // theme css file
 
 moment.locale('es')
 
@@ -51,6 +54,9 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
     const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
 
     const [history, setHistory] = useState([])
+    const [page, setPage] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [totalPages, setTotalPages] = useState(1)
 
     const useStyle = makeStyles({
         root: {
@@ -68,6 +74,7 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
     })
 
     const getHistory = async () => {
+        setLoading(true)
         const formatNumbers =
             props.date === ''
                 ? ''
@@ -76,18 +83,20 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
                       .map(num => parseInt(num))
                       .reverse()
                       .join('-')
-        console.log(formatNumbers)
-        const { success, response, error } = await getBusinessHistory(formatNumbers, user._id)
+        const { success, response, error } = await getBusinessHistory(formatNumbers, user._id, page)
         if (success && response) {
             if (response.data) {
-                setHistory(response.data.map(purch => purch.purchase))
+                setHistory(_.get(response, 'data.docs', []))
+                console.log(_.get(response, 'data.docs', []))
+                setLoading(false)
+                setTotalPages(response.data.totalDocs)
             }
         }
     }
 
     useEffect(() => {
         getHistory()
-    }, [currentDate])
+    }, [page, currentDate, props.date])
 
     React.useImperativeHandle(ref, () => {
         return {
@@ -120,10 +129,16 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
                             NoRowsOverlay: NoRow
                         }}
                         columns={columns}
-                        pageSize={6}
-                        onRowClick={id => {
-                            console.log(id)
+                        pageSize={5}
+                        pagination
+                        rowsPerPageOptions={[5]}
+                        rowCount={totalPages}
+                        paginationMode='server'
+                        onPageChange={newPage => {
+                            console.log(newPage.page)
+                            setPage(newPage.page + 1)
                         }}
+                        loading={loading}
                     />
                 </RowProvider>
             </div>
