@@ -35,9 +35,8 @@ export const enableNegocio = email => {
     })
 }
 
-export const getSingleBusinessHistory = idBusiness => {
-    console.log(`/get-purchase?idBussines=${idBusiness}`)
-    return fetchRequest(`/get-purchase?idBussines=${idBusiness}`, {
+export const getSingleBusinessHistory = (idBusiness, page = 1) => {
+    return fetchRequest(`/get-purchase?idBussines=${idBusiness}&page=${page}`, {
         method: 'GET'
     })
 }
