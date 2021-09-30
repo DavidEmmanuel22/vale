@@ -1,24 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { DataGrid } from '@material-ui/data-grid'
-import { Button, Fab, Paper, Tooltip } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import numeral from 'numeral'
-import clsx from 'clsx'
 import moment from 'moment'
 import 'moment/min/locales'
 import { NoRow } from 'assets/Helpers/NoRow'
-import {
-    AttachFileOutlined,
-    CastSharp,
-    DeleteForeverOutlined,
-    DeleteOutlineSharp,
-    HistoryOutlined,
-    MonetizationOn,
-    MonetizationOnOutlined,
-    EditIcon,
-    Room
-} from '@material-ui/icons'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import _ from 'lodash'
 import { getSingleBusinessHistory } from 'requests/allNegocios'
@@ -34,18 +21,20 @@ const columns = [
     {
         field: 'concept',
         headerName: 'Concepto de compra',
-        width: 250
+        width: 250,
+        sortable: false
     },
     {
         field: 'credits',
         headerName: 'Credito de compra',
         valueFormatter: valedor => numeral(valedor.row.credits).format('$0,0'),
-        width: 180
+        width: 180,
+        sortable: false
     },
     {
         field: 'datePurchase',
         headerName: 'Fecha de compra',
-
+        sortable: false,
         valueFormatter: purchase => moment(purchase.row.datePurchase).format('MM/DD/YYYY  hh:mm A'),
         width: 250
     }
@@ -93,22 +82,26 @@ export const SingleBusinessTable = ({ business }) => {
 
     const style = useStyle()
 
+    const [page, setPage] = React.useState(1)
+    const [totalDocs, setTotalDocs] = React.useState(1)
+    const [loading, setLoading] = React.useState(true)
+
     React.useEffect(() => {
         async function getPurchaseHistory() {
-            console.log('buss')
-            console.log(business)
-            const { success, response, error } = await getSingleBusinessHistory(business._id)
+            setLoading(true)
+            const { success, response, error } = await getSingleBusinessHistory(business._id, page)
             if (success && response) {
-                console.log(response)
                 if (!response.error && !response.data.error) {
-                    const x = response.data.map(p => ({ ...p.purchase, id: p.purchase._id }))
-                    setPurchase(x)
+                    console.log(response)
+                    setTotalDocs(_.get(response, 'data.totalDocs', 5))
+                    setPurchase(_.get(response, 'data.docs', []).map(p => ({ ...p, id: p._id })))
                 }
+                setLoading(false)
             }
         }
 
         getPurchaseHistory()
-    }, [])
+    }, [page])
 
     return (
         <>
@@ -121,7 +114,16 @@ export const SingleBusinessTable = ({ business }) => {
                         NoRowsOverlay: NoRow
                     }}
                     columns={columns}
-                    pageSize={6}
+                    pageSize={5}
+                    pagination
+                    rowsPerPageOptions={[5]}
+                    rowCount={totalDocs}
+                    paginationMode='server'
+                    onPageChange={newPage => {
+                        console.log(newPage.page)
+                        setPage(newPage.page + 1)
+                    }}
+                    loading={loading}
                 />
             </div>
         </>
