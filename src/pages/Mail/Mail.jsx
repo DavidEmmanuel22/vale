@@ -365,14 +365,14 @@ export const Mail = () => {
           style={{
             position: 'sticky',
             bottom: '0',
-
+            width: '100%',
             display: 'flex'
           }}
         >
           <TextField
           autoFocus
             style={{
-              width: '95%',
+              width: '100%',
               backgroundColor: 'white'
             }}
             label={mailFormikValidation.touched.message ? (mailFormikValidation.errors.message):("Mensaje")}
