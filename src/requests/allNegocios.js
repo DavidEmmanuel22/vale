@@ -36,9 +36,6 @@ export const enableNegocio = email => {
 }
 
 export const getSingleBusinessHistory = (idBusiness, page = 1, startDate, endDate) => {
-    console.log(page)
-    console.log(startDate)
-    console.log(endDate)
     let url = `/get-purchase-dates?idBussines=${idBusiness}&page=${page}`
     if (startDate) {
         url += `&firstDate=${startDate}`
