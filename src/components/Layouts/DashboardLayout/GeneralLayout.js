@@ -9,13 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import {
-  Dashboard,
-  Person,
-  People,
-  Store,
-  DashboardOutlined
-} from '@material-ui/icons'
+import { Dashboard, Person, People, Store, DashboardOutlined } from '@material-ui/icons'
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import ContactsIcon from '@material-ui/icons/Contacts'
 import { Link, Route } from 'react-router-dom'
@@ -29,104 +23,86 @@ import TemporaryDrawer from './Drawer/TemporaryDrawer'
 
 // eslint-disable-next-line react/prop-types
 export default function GeneralLayout({ children, routes }) {
-  const classes = GeneralLayoutStyle()
-  const matches = useMediaQuery('(min-width:600px)')
-  const theme = useTheme()
-  const [open, setOpen] = useState(false)
-  const [selectedIndex, setSelectedIndex] = useState(-1)
+    const classes = GeneralLayoutStyle()
+    const matches = useMediaQuery('(min-width:600px)')
+    const theme = useTheme()
+    const [open, setOpen] = useState(false)
+    const [selectedIndex, setSelectedIndex] = useState(-1)
 
-  const {
-    isAuthenticated,
-    user,
-    logout,
-    hasLoad,
-    drawOpen,
-    handleDrawerOpen
-  } = useContext(UserContext)
+    const { isAuthenticated, user, logout, hasLoad, drawOpen, handleDrawerOpen } = useContext(UserContext)
 
-  React.useEffect(() => {
-    const path = window.location.pathname
-    routes.forEach((route, index) => {
-      if (route.path === path) {
-        setSelectedIndex(index)
-      }
-    })
-  }, [])
+    React.useEffect(() => {
+        const path = window.location.pathname
+        routes.forEach((route, index) => {
+            if (route.path === path) {
+                setSelectedIndex(index)
+            }
+        })
+    }, [])
 
-  const handleListItemClick = (index) => {
-    if (drawOpen) {
-      handleDrawerOpen(!drawOpen)
-    }
-  }
-
-  const toggleDrawer = (open) => (event) => {
-    if (
-      event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
-    ) {
-      return
+    const handleListItemClick = index => {
+        if (drawOpen) {
+            handleDrawerOpen(!drawOpen)
+        }
     }
 
-    handleDrawerOpen(drawOpen)
-  }
+    const toggleDrawer = open => event => {
+        if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return
+        }
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <NavBar />
-      <Hidden smDown>
-        <Drawer
-          variant="permanent"
-          className={clsx(classes.drawer, {
-            [classes.drawerOpen]: drawOpen,
-            [classes.drawerClose]: !drawOpen
-          })}
-          classes={{
-            paper: clsx({
-              [classes.drawerOpen]: drawOpen,
-              [classes.drawerClose]: !drawOpen
-            })
-          }}
-        >
-          <List style={{ marginTop: '22px' }}>
-            {routes.map((route, index) => (
-              <Link
-                to={route.path}
-                key={index}
-                onClick={() => handleListItemClick(index)}
-              >
-                <ListItem button selected={selectedIndex === index}>
-                  <ListItemIcon>
-                    <route.icon style={{ color: '#007772' }}></route.icon>
-                  </ListItemIcon>
-                  <ListItemText
-                    style={{ color: 'grey', fontWeight: '600 !important' }}
-                    primary={route.name}
-                  />
-                </ListItem>
-              </Link>
-            ))}
-          </List>
-        </Drawer>
-      </Hidden>
-      <Hidden mdUp>
-        <TemporaryDrawer
-          routes={routes}
-          drawerOpen={drawOpen}
-          handleDrawerOpen={handleDrawerOpen}
-          selectedIndex={selectedIndex}
-          handleListItemClick={handleListItemClick}
-        ></TemporaryDrawer>
-      </Hidden>
-      <main className={`${classes.content}`}>
-        <Container
-          style={{ minHeight: '100vh', padding: 9, paddingTop: '90px' }}
-          maxWidth={false}
-        >
-          {hasLoad && children}
-        </Container>
-      </main>
-    </div>
-  )
+        handleDrawerOpen(drawOpen)
+    }
+
+    return (
+        <div className={classes.root}>
+            <CssBaseline />
+            <NavBar />
+            <Hidden smDown>
+                <Drawer
+                    variant='permanent'
+                    className={clsx(classes.drawer, {
+                        [classes.drawerOpen]: drawOpen,
+                        [classes.drawerClose]: !drawOpen
+                    })}
+                    classes={{
+                        paper: clsx({
+                            [classes.drawerOpen]: drawOpen,
+                            [classes.drawerClose]: !drawOpen
+                        })
+                    }}
+                >
+                    <List style={{ marginTop: '22px' }}>
+                        {routes.map((route, index) => (
+                            <Link to={route.path} key={index} onClick={() => handleListItemClick(index)}>
+                                <ListItem button selected={selectedIndex === index}>
+                                    <ListItemIcon>
+                                        <route.icon style={{ color: '#007772' }}></route.icon>
+                                    </ListItemIcon>
+                                    <ListItemText
+                                        style={{ color: 'grey', fontWeight: '600 !important' }}
+                                        primary={route.name}
+                                    />
+                                </ListItem>
+                            </Link>
+                        ))}
+                    </List>
+                </Drawer>
+            </Hidden>
+            <Hidden mdUp>
+                <TemporaryDrawer
+                    routes={routes}
+                    drawerOpen={drawOpen}
+                    handleDrawerOpen={handleDrawerOpen}
+                    selectedIndex={selectedIndex}
+                    handleListItemClick={handleListItemClick}
+                ></TemporaryDrawer>
+            </Hidden>
+            <main className={`${classes.content}`}>
+                <Container style={{ minHeight: '100vh', padding: 9, paddingTop: '50px' }} maxWidth={false}>
+                    {hasLoad && children}
+                </Container>
+            </main>
+        </div>
+    )
 }
