@@ -40,7 +40,7 @@ const columns = [
     }
 ]
 
-export const SingleBusinessTable = ({ business }) => {
+export const SingleBusinessTable = ({ business, dateRange }) => {
     const [purchase, setPurchase] = React.useState([])
 
     const useStyle = makeStyles({
@@ -89,7 +89,12 @@ export const SingleBusinessTable = ({ business }) => {
     React.useEffect(() => {
         async function getPurchaseHistory() {
             setLoading(true)
-            const { success, response, error } = await getSingleBusinessHistory(business._id, page)
+            const { success, response, error } = await getSingleBusinessHistory(
+                business._id,
+                page,
+                formatDate(dateRange[0].startDate),
+                formatDate(dateRange[0].endDate)
+            )
             if (success && response) {
                 if (!response.error && !response.data.error) {
                     console.log(response)
@@ -101,7 +106,18 @@ export const SingleBusinessTable = ({ business }) => {
         }
 
         getPurchaseHistory()
-    }, [page])
+    }, [page, dateRange])
+
+    function formatDate(date) {
+        if (!(date instanceof Date)) {
+            return false
+        }
+        const month = date.getUTCMonth() + 1
+        const day = date.getUTCDate()
+        const year = date.getUTCFullYear()
+
+        return day + '-' + month + '-' + year
+    }
 
     return (
         <>

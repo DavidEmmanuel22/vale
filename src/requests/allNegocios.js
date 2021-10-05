@@ -35,8 +35,21 @@ export const enableNegocio = email => {
     })
 }
 
-export const getSingleBusinessHistory = (idBusiness, page = 1) => {
-    return fetchRequest(`/get-purchase?idBussines=${idBusiness}&page=${page}`, {
+export const getSingleBusinessHistory = (idBusiness, page = 1, startDate, endDate) => {
+    let url = `/get-purchase-dates?idBussines=${idBusiness}&page=${page}`
+    if (startDate) {
+        url += `&firstDate=${startDate}`
+    } else {
+        url += `&firstDate=1-1-2020`
+    }
+    if (endDate) {
+        url += `&lastDate=${endDate}`
+    } else {
+        const date = new Date()
+        url += `&lastDate=${date.getUTCDate() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCFullYear()}`
+    }
+    console.log(url)
+    return fetchRequest(url, {
         method: 'GET'
     })
 }

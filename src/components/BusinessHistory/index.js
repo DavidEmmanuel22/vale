@@ -13,6 +13,7 @@ import { RowProvider } from 'assets/Helpers/RowContext'
 import _ from 'lodash'
 import 'react-date-range/dist/styles.css' // main style file
 import 'react-date-range/dist/theme/default.css' // theme css file
+import { getSingleBusinessHistory } from 'requests/allNegocios'
 
 moment.locale('es')
 
@@ -48,10 +49,9 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export const BusinessHistory = React.forwardRef((props, ref) => {
+export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
     const classes = useStyles()
     const user = useUser()
-    const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
 
     const [history, setHistory] = useState([])
     const [page, setPage] = useState(1)
@@ -75,15 +75,12 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
 
     const getHistory = async () => {
         setLoading(true)
-        const formatNumbers =
-            props.date === ''
-                ? ''
-                : currentDate
-                      .split('-')
-                      .map(num => parseInt(num))
-                      .reverse()
-                      .join('-')
-        const { success, response, error } = await getBusinessHistory(formatNumbers, user._id, page)
+        const { success, response, error } = await getSingleBusinessHistory(
+            user._id,
+            page,
+            formatDate(dateRange[0].startDate),
+            formatDate(dateRange[0].endDate)
+        ) //getBusinessHistory(formatNumbers, user._id, page)
         if (success && response) {
             if (response.data) {
                 setHistory(_.get(response, 'data.docs', []))
@@ -96,25 +93,27 @@ export const BusinessHistory = React.forwardRef((props, ref) => {
 
     useEffect(() => {
         getHistory()
-    }, [page, currentDate, props.date])
+    }, [page, dateRange])
+
+    function formatDate(date) {
+        if (!(date instanceof Date)) {
+            return false
+        }
+        const month = date.getUTCMonth() + 1
+        const day = date.getUTCDate()
+        const year = date.getUTCFullYear()
+
+        return day + '-' + month + '-' + year
+    }
 
     React.useImperativeHandle(ref, () => {
         return {
             reload: () => getHistory(),
-            setDate: date => {
-                const datef = date
-                console.log(datef)
-                setCurrentDate(datef)
-            }
+            setDate: date => {}
         }
     })
 
-    const noRowsComponent = (
-        <Alert severity='info'>
-            ¡Ups! Parece que no existen registros del
-            {` ${props.date || 'negocio'}`}
-        </Alert>
-    )
+    const noRowsComponent = <Alert severity='info'>¡Ups! Parece que no existen registros del negocio</Alert>
 
     const style = useStyle()
     return (

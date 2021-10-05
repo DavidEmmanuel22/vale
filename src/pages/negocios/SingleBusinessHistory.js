@@ -39,7 +39,7 @@ const SingleBusinessHistory = () => {
 
     const [state, setState] = React.useState([
         {
-            startDate: new Date(),
+            startDate: null,
             endDate: null,
             key: 'selection'
         }
@@ -62,6 +62,13 @@ const SingleBusinessHistory = () => {
 
     function handleSelectAll() {
         console.log('select all')
+        setState([
+            {
+                startDate: null,
+                endDate: null,
+                key: 'selection'
+            }
+        ])
     }
 
     const classes = useStyles()
@@ -102,7 +109,10 @@ const SingleBusinessHistory = () => {
             <Grid item xs={12}>
                 <Paper className={classes.mainPaper}>
                     <RowProvider component={noRowsComponent}>
-                        <SingleBusinessTable business={_.get(location, 'state.business', {})}></SingleBusinessTable>
+                        <SingleBusinessTable
+                            dateRange={state}
+                            business={_.get(location, 'state.business', {})}
+                        ></SingleBusinessTable>
                     </RowProvider>
                 </Paper>
             </Grid>
