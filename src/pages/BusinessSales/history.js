@@ -84,7 +84,7 @@ const SalesHistory = () => {
 
     const [state, setState] = React.useState([
         {
-            startDate: new Date(),
+            startDate: null,
             endDate: null,
             key: 'selection'
         }
@@ -106,7 +106,13 @@ const SalesHistory = () => {
     }
 
     function handleSelectAll() {
-        console.log('select all')
+        setState([
+            {
+                startDate: null,
+                endDate: null,
+                key: 'selection'
+            }
+        ])
     }
 
     return (
@@ -164,7 +170,7 @@ const SalesHistory = () => {
             </Grid>
             <Grid item xs={12}>
                 <Paper className={classes.paper2}>
-                    <BusinessHistory ref={historyRef} date={currentDate}></BusinessHistory>
+                    <BusinessHistory ref={historyRef} dateRange={state}></BusinessHistory>
                 </Paper>
             </Grid>
         </Grid>
