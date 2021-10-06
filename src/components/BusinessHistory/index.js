@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { DataGrid } from '@material-ui/data-grid'
+import { DataGrid, useGridSlotComponentProps } from '@material-ui/data-grid'
 import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import numeral from 'numeral'
@@ -8,7 +8,7 @@ import 'moment/min/locales'
 import { NoRow } from '../../assets/Helpers/NoRow'
 import { getBusinessHistory } from 'requests/allVales'
 import useUser from 'hooks/useUser'
-import { Alert } from '@material-ui/lab'
+import { Alert, Pagination } from '@material-ui/lab'
 import { RowProvider } from 'assets/Helpers/RowContext'
 import _ from 'lodash'
 import 'react-date-range/dist/styles.css' // main style file
@@ -46,8 +46,35 @@ const columns = [
 const useStyles = makeStyles(theme => ({
     button: {
         margin: theme.spacing(1)
+    },
+    pagination: {
+        display: 'flex'
     }
 }))
+
+const PaginationHandler = React.createContext(null)
+
+function CustomPagination() {
+    const { state, apiRef } = useGridSlotComponentProps()
+    const { paginationRef } = React.useContext(PaginationHandler)
+    const classes = useStyles()
+
+    React.useImperativeHandle(paginationRef, () => ({
+        resetPage: () => {
+            apiRef.current.setPage(0)
+        }
+    }))
+
+    return (
+        <Pagination
+            className={classes.pagination}
+            color='primary'
+            count={state.pagination.pageCount}
+            page={state.pagination.page + 1}
+            onChange={(event, value) => apiRef.current.setPage(value - 1)}
+        />
+    )
+}
 
 export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
     const classes = useStyles()
@@ -57,6 +84,8 @@ export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
     const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(true)
     const [totalPages, setTotalPages] = useState(1)
+
+    const paginationRef = React.useRef(null)
 
     const useStyle = makeStyles({
         root: {
@@ -84,7 +113,6 @@ export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
         if (success && response) {
             if (response.data) {
                 setHistory(_.get(response, 'data.docs', []))
-                console.log(_.get(response, 'data.docs', []))
                 setLoading(false)
                 setTotalPages(response.data.totalDocs)
             }
@@ -94,6 +122,10 @@ export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
     useEffect(() => {
         getHistory()
     }, [page, dateRange])
+
+    useEffect(() => {
+        paginationRef.current && paginationRef.current.resetPage()
+    }, [dateRange])
 
     function formatDate(date) {
         if (!(date instanceof Date)) {
@@ -120,25 +152,28 @@ export const BusinessHistory = React.forwardRef(({ dateRange }, ref) => {
         <>
             <div style={{ height: '100%', width: '100%' }}>
                 <RowProvider component={noRowsComponent}>
-                    <DataGrid
-                        localeText={GRID_DEFAULT_LOCALE_TEXT}
-                        rows={history}
-                        getRowId={row => row._id}
-                        components={{
-                            NoRowsOverlay: NoRow
-                        }}
-                        columns={columns}
-                        pageSize={5}
-                        pagination
-                        rowsPerPageOptions={[5]}
-                        rowCount={totalPages}
-                        paginationMode='server'
-                        onPageChange={newPage => {
-                            console.log(newPage.page)
-                            setPage(newPage.page + 1)
-                        }}
-                        loading={loading}
-                    />
+                    <PaginationHandler.Provider value={{ paginationRef }}>
+                        <DataGrid
+                            localeText={GRID_DEFAULT_LOCALE_TEXT}
+                            rows={history}
+                            rowHeight={80}
+                            getRowId={row => row._id}
+                            components={{
+                                NoRowsOverlay: NoRow,
+                                Pagination: CustomPagination
+                            }}
+                            columns={columns}
+                            pageSize={5}
+                            pagination
+                            rowsPerPageOptions={[5]}
+                            rowCount={totalPages}
+                            paginationMode='server'
+                            onPageChange={newPage => {
+                                setPage(newPage.page + 1)
+                            }}
+                            loading={loading}
+                        />
+                    </PaginationHandler.Provider>
                 </RowProvider>
             </div>
         </>

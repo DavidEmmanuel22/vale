@@ -48,7 +48,6 @@ export const getSingleBusinessHistory = (idBusiness, page = 1, startDate, endDat
         const date = new Date()
         url += `&lastDate=${date.getUTCDate() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCFullYear()}`
     }
-    console.log(url)
     return fetchRequest(url, {
         method: 'GET'
     })

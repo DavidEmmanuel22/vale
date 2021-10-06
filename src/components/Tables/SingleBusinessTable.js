@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { DataGrid } from '@material-ui/data-grid'
+import { DataGrid, useGridSlotComponentProps } from '@material-ui/data-grid'
 import { makeStyles } from '@material-ui/core/styles'
 import { GRID_DEFAULT_LOCALE_TEXT } from '../../themes/gridText'
 import numeral from 'numeral'
@@ -9,6 +9,7 @@ import { NoRow } from 'assets/Helpers/NoRow'
 import AddOutlinedIcon from '@material-ui/icons/AddOutlined'
 import _ from 'lodash'
 import { getSingleBusinessHistory } from 'requests/allNegocios'
+import { Alert, Pagination } from '@material-ui/lab'
 
 moment.locale('es')
 
@@ -40,45 +41,74 @@ const columns = [
     }
 ]
 
-export const SingleBusinessTable = ({ business, dateRange }) => {
-    const [purchase, setPurchase] = React.useState([])
-
-    const useStyle = makeStyles({
-        root: {
-            '& .super-app.negative': {
-                backgroundColor: 'rgb(0, 119, 114)',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            },
-            '& .super-app.positive': {
-                backgroundColor: '#d47483',
-                color: 'white',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            },
-            '& .creditsGiven.negative': {
-                color: 'green'
-            },
-            '& .creditsGiven.positive': {
-                color: 'red'
-            }
+const useStyle = makeStyles({
+    root: {
+        '& .super-app.negative': {
+            backgroundColor: 'rgb(0, 119, 114)',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
-        deleteBtn: {
-            background: '#cf1c24',
-            '&:hover': {
-                background: '#9e0e0e'
-            }
+        '& .super-app.positive': {
+            backgroundColor: '#d47483',
+            color: 'white',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
         },
-        addCreditBtn: {
-            background: '#054aaf',
-            '&:hover': {
-                background: '#083e8f'
-            }
+        '& .creditsGiven.negative': {
+            color: 'green'
+        },
+        '& .creditsGiven.positive': {
+            color: 'red'
         }
-    })
+    },
+    deleteBtn: {
+        background: '#cf1c24',
+        '&:hover': {
+            background: '#9e0e0e'
+        }
+    },
+    addCreditBtn: {
+        background: '#054aaf',
+        '&:hover': {
+            background: '#083e8f'
+        }
+    },
+    pagination: {
+        display: 'flex'
+    }
+})
+
+const PaginationHandler = React.createContext(null)
+
+function CustomPagination() {
+    const { state, apiRef } = useGridSlotComponentProps()
+    const { paginationRef } = React.useContext(PaginationHandler)
+    const classes = useStyle()
+
+    React.useImperativeHandle(paginationRef, () => ({
+        resetPage: () => {
+            apiRef.current.setPage(0)
+        }
+    }))
+
+    return (
+        <Pagination
+            className={classes.pagination}
+            color='primary'
+            count={state.pagination.pageCount}
+            page={state.pagination.page + 1}
+            onChange={(event, value) => apiRef.current.setPage(value - 1)}
+        />
+    )
+}
+
+export const SingleBusinessTable = ({ business, dateRange }) => {
+    const paginationRef = React.useRef(null)
+
+    const [purchase, setPurchase] = React.useState([])
 
     const style = useStyle()
 
@@ -108,6 +138,10 @@ export const SingleBusinessTable = ({ business, dateRange }) => {
         getPurchaseHistory()
     }, [page, dateRange])
 
+    useEffect(() => {
+        paginationRef.current && paginationRef.current.resetPage()
+    }, [dateRange])
+
     function formatDate(date) {
         if (!(date instanceof Date)) {
             return false
@@ -122,25 +156,27 @@ export const SingleBusinessTable = ({ business, dateRange }) => {
     return (
         <>
             <div style={{ height: '100%', width: '100%' }} className={style.root}>
-                <DataGrid
-                    localeText={GRID_DEFAULT_LOCALE_TEXT}
-                    rows={purchase}
-                    rowHeight={80}
-                    components={{
-                        NoRowsOverlay: NoRow
-                    }}
-                    columns={columns}
-                    pageSize={5}
-                    pagination
-                    rowsPerPageOptions={[5]}
-                    rowCount={totalDocs}
-                    paginationMode='server'
-                    onPageChange={newPage => {
-                        console.log(newPage.page)
-                        setPage(newPage.page + 1)
-                    }}
-                    loading={loading}
-                />
+                <PaginationHandler.Provider value={{ paginationRef }}>
+                    <DataGrid
+                        localeText={GRID_DEFAULT_LOCALE_TEXT}
+                        rows={purchase}
+                        rowHeight={80}
+                        components={{
+                            NoRowsOverlay: NoRow,
+                            Pagination: CustomPagination
+                        }}
+                        columns={columns}
+                        pageSize={5}
+                        pagination
+                        rowsPerPageOptions={[5]}
+                        rowCount={totalDocs}
+                        paginationMode='server'
+                        onPageChange={newPage => {
+                            setPage(newPage.page + 1)
+                        }}
+                        loading={loading}
+                    />
+                </PaginationHandler.Provider>
             </div>
         </>
     )
