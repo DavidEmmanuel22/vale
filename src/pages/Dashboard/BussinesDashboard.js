@@ -72,18 +72,27 @@ const BussinesDashboard = () => {
         },
         gridItem: {
             display: 'flex',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center'
         }
     }))
     const classes = useStyles()
 
     const [showExchangePopup, setShowExchangePopup] = React.useState(false)
-    const [currentDate, setCurrentDate] = React.useState(new Date().toISOString().slice(0, 10))
     const historyRef = React.useRef()
 
     const handleExchangeClick = () => {
         setShowExchangePopup(true)
+    }
+
+    function getDateRangeToday() {
+        return [
+            {
+                key: 'selection',
+                startDate: new Date(),
+                endDate: new Date()
+            }
+        ]
     }
 
     return (
@@ -92,6 +101,7 @@ const BussinesDashboard = () => {
                 <Paper className={classes.paper}>
                     <Grid container>
                         <Grid item xs={12} className={classes.gridItem}>
+                            <Typography component='h4'>Ventas del día</Typography>
                             <Button onClick={handleExchangeClick} color='primary' variant='contained'>
                                 Canjear Vale
                             </Button>
@@ -101,7 +111,7 @@ const BussinesDashboard = () => {
             </Grid>
             <Grid item xs={12}>
                 <Paper className={classes.paper2}>
-                    <BusinessHistory ref={historyRef}></BusinessHistory>
+                    <BusinessHistory ref={historyRef} dateRange={getDateRangeToday()}></BusinessHistory>
                 </Paper>
             </Grid>
             <ResponsivePopUp
