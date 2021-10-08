@@ -122,9 +122,8 @@ export const Mail = () => {
 
   useEffect(() => {
    decodedJwt()
-  //  createChat()
    getMessages()
-  //  scrollToBottom()
+   scrollToBottom()
 
   }, [loading])
   async function decodedJwt(){
