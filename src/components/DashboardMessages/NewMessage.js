@@ -18,7 +18,13 @@ const NewMessage = ({ chat, clicked, readed, id }) => {
                 className='message-container'
                 style={chat.readAdmin ? { backgroundColor: 'gainsboro' } : { backgroundColor: '#f9a02b94' }}
             >
-                <span>{chat.roleChat === 'Invited' ? `${'Invitado'}` : chat.roleChat}</span>
+                <span>
+                    {chat.roleChat === 'Invited'
+                        ? `${'Invitado'}`
+                        : chat.roleChat === 'Bussines'
+                        ? 'Negocio'
+                        : chat.roleChat}
+                </span>
                 <div key={id} className='data-container'>
                     <img width='50' src='/images/no-avatar.png'></img>
 
