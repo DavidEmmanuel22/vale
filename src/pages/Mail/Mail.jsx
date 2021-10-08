@@ -184,7 +184,6 @@ export const Mail = () => {
       //console.log(error)
     }
   }
-  console.log(messages)
   
   const readMsg = async () => {
     const { success, response, error } = await readMessage({
