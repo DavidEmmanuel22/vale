@@ -121,7 +121,6 @@ export const Mail = () => {
 
   useEffect(() => {
    decodedJwt()
-   createChat()
    getMessages()
    scrollToBottom()
 
@@ -135,42 +134,42 @@ export const Mail = () => {
    
   }
   async function createChat(){
-    
-    const session = localStorage.getItem('idChat')
+    const chatSession = localStorage.getItem('idChat')
     //check "my hour" index here
-    if (session === null) {
+    if (chatSession === null) {
 
       const { success, response, error } = await createMailToken({
-        name: userData.firstName,
+        name: user.firstName || user.bussinesName || userData.firstName,
         emailUser: email || user.email,
         telUser: 0,
       })
-      console.log(email)
-      console.log(user.email)
-      if (success && response) {
-       
-        if (response.error) {
-          console.log("error"+ response.error)
-          if(response.error === "EL usuario ya tiene un chat creado")
-            localStorage.setItem('idChat', response.meta._id)
 
-        //	setErrorCreateChat(true)
-      //		setOpenErrorAlert(true)
-         
-        } else {
-        //	setOpenAlert(true)
-        //	setLoading(false)
-          
+      if(success && response){
+        if(response.error){
+          if(response.error === 'EL usuario ya tiene un chat creado'){
+            console.log('Ya existe un Chat creado para este usuario. ' + response.meta._id)
+            localStorage.setItem('idChat', response.meta._id)
+            return response.meta._id
+          }
+        }else{
+          localStorage.setItem('idChat', response.data.chat._id)
+          return response.data.chat._id
         }
       }
     }
+    return chatSession;
   }
+
   async function getMessages() {
+
+    const id = await createChat()
+    console.log(id)
+
     const { success, response, error } = await messageHistory(
-      localStorage.getItem('idChat')
+      id
     )
+
     if (success && response) {
-      //console.log(response.data)
       setMessages(response.data)
       if (response.data.length > 2) {
         setScroll(true)
@@ -237,7 +236,7 @@ export const Mail = () => {
           position: 'sticky',
           top: '80px',
           zIndex: '100',
-          marginTop: "-16px",
+          marginTop: "-90px",
           marginBottom: "100px;",
           width: "100%"
          }}> 
@@ -256,7 +255,7 @@ export const Mail = () => {
          
           <div
             style={{
-              height: `${messages.length < 5 ? '74vh' : ''}`
+              height: `${messages.length < 7 ? '79vh' : ' '}`
             }}
           >
             {loading ? (

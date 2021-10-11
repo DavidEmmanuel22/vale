@@ -106,7 +106,8 @@ const DashboardMessages = ({ showAll }) => {
             color: '#fff',
             position: 'sticky',
             top: '80px',
-            zIndex: '100'
+            zIndex: '100',
+            marginTop: '-10px'
         },
         messagesStyles: {
             padding: '20px 30px'

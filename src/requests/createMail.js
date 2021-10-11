@@ -8,10 +8,10 @@ export const createMail = message => {
     })
 }
 
-export const createMailToken = message => {
+export const createMailToken = (emailUser, name, telUser) => {
     return fetchRequest(`/create-chat`, {
         method: 'POST',
-        body: JSON.stringify(message)
+        body: JSON.stringify(emailUser, name, telUser)
     })
 }
 
