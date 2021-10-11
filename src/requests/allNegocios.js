@@ -52,3 +52,22 @@ export const getSingleBusinessHistory = (idBusiness, page = 1, startDate, endDat
         method: 'GET'
     })
 }
+
+export const getGeneralBusinessHistory = (page = 1, startDate, endDate) => {
+    let url = `/get-purchase-dates?page=${page}`
+    if (startDate) {
+        url += `&firstDate=${startDate}`
+    } else {
+        url += `&firstDate=1-1-2020`
+    }
+    if (endDate) {
+        url += `&lastDate=${endDate}`
+    } else {
+        const date = new Date()
+        url += `&lastDate=${date.getUTCDate() + '-' + (date.getUTCMonth() + 1) + '-' + date.getUTCFullYear()}`
+    }
+    console.log(url)
+    return fetchRequest(url, {
+        method: 'GET'
+    })
+}

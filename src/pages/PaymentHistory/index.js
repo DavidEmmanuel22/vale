@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Paper, Typography } from '@material-ui/core'
+import { IconButton, Paper, Popover, Tooltip, Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { DataGrid, GridToolbar } from '@material-ui/data-grid'
 import { valesHistory } from 'requests/allValedores'
@@ -15,113 +15,99 @@ import _ from 'lodash'
 import { NoRow } from 'assets/Helpers/NoRow'
 import { RowProvider } from 'assets/Helpers/RowContext'
 import { Alert } from '@material-ui/lab'
+import { GeneralPaymentsTable } from 'components/Tables/GeneralPaymenjsTable'
+import { FilterList } from '@material-ui/icons'
+import DateRange from 'components/filters/DateRangePicker'
 moment.locale('es')
 
 const PaymentHistoryPage = () => {
-    const [isLoading, setIsLoading] = useState(false)
-
     const useStyles = makeStyles(theme => ({
-        root: {
-            '& .super-app.negative': {
-                backgroundColor: 'rgba(157, 255, 118, 0.49)',
-                color: '#1a3e72',
-                fontWeight: '600'
-            },
-            '& .super-app.positive': {
-                backgroundColor: '#d47483',
-                color: '#1a3e72',
-                fontWeight: '600'
-            }
-        },
         paper: {
             padding: theme.spacing(2),
             textAlign: 'center',
             color: theme.palette.text.secondary,
-            height: `calc(100vh - 180px)`,
+            height: `calc(100vh - 190px)`,
             overflowY: 'scroll'
         },
         buttonPaper: {
             padding: theme.spacing(2),
             color: theme.palette.text.secondary,
-            marginBottom: '10px'
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
         }
     }))
 
-    useEffect(() => {
-        /*async function getAllVales() {
-            const { success, response, error } = await valesHistory(email)
-            if (success && response) {
-                setHistory(response.data)
-                setIsLoading(false)
-            } else {
-                //console.log(error)
-            }
-        }
-        getAllVales()*/
-    }, [])
-
-    const columns = [
-        { field: '_id', headerName: 'Folio', width: 150, flex: 0.1 },
-        {
-            field: 'createdAt',
-            headerName: 'Fecha',
-            width: 250,
-            valueFormatter: valedor => moment(valedor.row.createdAt).format('MM/DD/YYYY  hh:mm A')
-        },
-        {
-            field: 'credits',
-            headerName: 'Crédito',
-            valueFormatter: valedor => numeral(valedor.row.credits).format('$0,0'),
-            width: 150
-        },
-        {
-            field: `estatus`,
-            headerName: 'Usado',
-            valueFormatter: valedor => (valedor.row.estatus === 0 ? 'No' : 'Si'),
-            cellClassName: valedor =>
-                clsx('super-app', {
-                    negative: valedor.row.estatus === 0,
-                    positive: valedor.row.estatus >= 1
-                }),
-            width: 150
-        },
-        {
-            field: 'placeSpent',
-            headerName: 'Negocio',
-            valueFormatter: valedor => (valedor.row.placeSpent ? valedor.row.placeSpent : 'Vale sin utilizar'),
-            width: 150
-        }
-    ]
-
     const classes = useStyles()
 
-    const NoRowComponent = <Alert severity='info'>¡Ups! Parece que no hay resultados</Alert>
+    const [anchorEl, setAnchorEl] = React.useState(null)
+    const [state, setState] = React.useState([
+        {
+            startDate: null,
+            endDate: null,
+            key: 'selection'
+        }
+    ])
+
+    const handleClick = event => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    function handleSelectRange(item) {
+        setState([item.selection])
+    }
+
+    function handleSelectAll() {
+        console.log('select all')
+        setState([
+            {
+                startDate: null,
+                endDate: null,
+                key: 'selection'
+            }
+        ])
+    }
+
+    const open = Boolean(anchorEl)
+    const id = open ? 'simple-popover' : undefined
+
+    const noRowsComponent = (
+        <Alert severity='info'>¡Ups! Parece que no existe un historial de compras para las fechas seleccionadas</Alert>
+    )
 
     return (
         <div style={{ textAlign: 'center' }}>
-            <Paper style={{ width: '100%' }} className={classes.buttonPaper}>
-                <Typography variant='h5'>Historial de compras</Typography>
+            <Paper className={classes.buttonPaper}>
+                <Typography variant='h6'>Historial de compras</Typography>
+                <Tooltip title='Mostrar filtros' onClick={handleClick} style={{ marginRight: '30px' }}>
+                    <IconButton aria-describedby={id}>
+                        <FilterList color='primary'></FilterList>
+                    </IconButton>
+                </Tooltip>
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left'
+                    }}
+                    style={{ overflow: 'scroll' }}
+                >
+                    <DateRange date={state} onRangeChange={handleSelectRange} onSelectAll={handleSelectAll}></DateRange>
+                </Popover>
             </Paper>
-            {isLoading ? (
-                <CircularProgress></CircularProgress>
-            ) : (
-                <>
-                    <Paper className={classes.paper}>
-                        <RowProvider component={NoRowComponent}>
-                            <DataGrid
-                                pageSize={6}
-                                components={{
-                                    NoRowsOverlay: NoRow
-                                }}
-                                localeText={GRID_DEFAULT_LOCALE_TEXT}
-                                getRowId={row => row._id}
-                                rows={[]}
-                                columns={columns}
-                            />
-                        </RowProvider>
-                    </Paper>
-                </>
-            )}
+            <Paper className={classes.paper}>
+                <RowProvider component={noRowsComponent}>
+                    <GeneralPaymentsTable dateRange={state}></GeneralPaymentsTable>
+                </RowProvider>
+            </Paper>
         </div>
     )
 }
