@@ -37,7 +37,8 @@ import jwtDecode from 'jwt-decode'
 const useStyles = makeStyles((theme) => ({
   buttonPaper: {
     color: 'black',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginTop: '5%'
   },
   countDownHide: {
     color: 'white',
