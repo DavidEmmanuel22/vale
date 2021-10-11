@@ -1,6 +1,7 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
 import { DateRangePicker } from 'react-date-range'
+import * as locales from 'react-date-range/dist/locale'
 
 const DateRange = ({ date, onRangeChange, onSelectAll }) => {
     React.useEffect(() => {
@@ -23,6 +24,9 @@ const DateRange = ({ date, onRangeChange, onSelectAll }) => {
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={date}
+                locale={locales.es}
+                maxDate={new Date()}
+                color='rgb(0, 119, 114)'
             />
         </div>
     )
