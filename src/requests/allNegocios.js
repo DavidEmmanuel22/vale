@@ -71,3 +71,14 @@ export const getGeneralBusinessHistory = (page = 1, startDate, endDate) => {
         method: 'GET'
     })
 }
+
+export const addPaymentBusiness = (idUser, idTransaction, amount) => {
+    return fetchRequest('/create-pay', {
+        method: 'POST',
+        body: JSON.stringify({
+            idUser,
+            idTransaction,
+            credits: amount
+        })
+    })
+}

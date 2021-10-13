@@ -8,8 +8,10 @@ import EmailIcon from '@material-ui/icons/Email'
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn'
 import { AlertContext } from '../popUp/responsivePopUp'
 import { addCredit } from 'requests/allValedores'
+import { addPaymentBusiness } from 'requests/allNegocios'
+import { FormatColorText } from '@material-ui/icons'
 
-const PayBusiness = ({ email = '' }) => {
+const PayBusiness = ({ email = '', business }) => {
     const creditsExpression = /^\d+$/
 
     const validationSchema = yup.object({
@@ -24,23 +26,28 @@ const PayBusiness = ({ email = '' }) => {
 
     const formik = useFormik({
         initialValues: {
-            credits: ''
+            credits: 0,
+            transaction: ''
         },
-        onSubmit: async (valedorUser, { resetForm }) => {
-            /*const { success, response, error } = await addCredit(email, parseInt(valedorUser.credits))
+        onSubmit: async (payment, { resetForm }) => {
+            const { success, response, error } = await addPaymentBusiness(
+                business._id,
+                payment.transaction,
+                payment.credits
+            )
             if (success && response) {
                 if (response.error) {
                     setAlertColor('error')
                     setAlertText(response.error)
                 } else {
                     setAlertColor('success')
-                    setAlertText('El crédito fue agregado correctamente')
-                    resetForm({ valedorUser: '' })
+                    setAlertText('El pago fue registrado correctamente')
+                    resetForm({ payment: '' })
                     setTimeout(() => {
                         handleClose()
                     }, 2000)
                 }
-            }*/
+            }
         },
         validationSchema: validationSchema
     })
@@ -72,7 +79,7 @@ const PayBusiness = ({ email = '' }) => {
                             className={classes.widthnew}
                             id='credits'
                             placeholder='Valor del pago'
-                            type='text'
+                            type='number'
                             value={formik.values.credits}
                             onChange={formik.handleChange}
                             error={formik.touched.credits && Boolean(formik.errors.credits)}
@@ -87,9 +94,28 @@ const PayBusiness = ({ email = '' }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
+                        <TextField
+                            className={classes.widthnew}
+                            id='transaction'
+                            placeholder='ID de transaccion (si existe)'
+                            type='text'
+                            value={formik.values.transaction}
+                            onChange={formik.handleChange}
+                            error={formik.touched.transaction && Boolean(formik.errors.transaction)}
+                            helperText={formik.touched.transaction && formik.errors.transaction}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position='start' className='MuiInputAdornment-root'>
+                                        <FormatColorText></FormatColorText>
+                                    </InputAdornment>
+                                )
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
                         <div className='button-login'>
-                            <Button className={`${classes.widthbutton} `} type='submit' color='primary'>
-                                Asignar Pago
+                            <Button variant='contained' type='submit' color='primary'>
+                                Registrar pago de {business.bussinesName}
                             </Button>
                         </div>
                     </Grid>
