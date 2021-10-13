@@ -196,7 +196,7 @@ const Negocios = () => {
                 <DeleteNegocio negocio={selectedNegocio}></DeleteNegocio>
             </ResponsivePopUp>
             <ResponsivePopUp open={payDialog} setOpen={setPayDialog} title='Registrar Pago A Negocio'>
-                <PayBusiness email={selectedNegocio.email}></PayBusiness>
+                <PayBusiness email={selectedNegocio.email} business={selectedNegocio}></PayBusiness>
             </ResponsivePopUp>
         </Grid>
     )

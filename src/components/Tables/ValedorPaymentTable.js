@@ -146,13 +146,7 @@ export const ValedorPaymentTable = ({ dateRange, valedor }) => {
                         }}
                         columns={columns}
                         pageSize={5}
-                        pagination
                         rowsPerPageOptions={[5]}
-                        rowCount={totalDocs}
-                        paginationMode='server'
-                        onPageChange={newPage => {
-                            setPage(newPage.page + 1)
-                        }}
                         loading={loading}
                     />
                 </PaginationHandler.Provider>
