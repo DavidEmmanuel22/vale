@@ -92,3 +92,9 @@ export const getCredit = () => {
         method: 'GET'
     })
 }
+
+export const getValedorPaymentHistory = idValedor => {
+    return fetchRequest(`/get-pays?idUser=${idValedor}`, {
+        method: 'GET'
+    })
+}
